@@ -5,10 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using test_app2.Utilities;
 
-
-namespace test_app2.SerialP
+namespace test_app2.SerialPMessages
 {
-    class SerialPortViewModel : BaseViewModel
+    public class SerialPortMessagesViewModel : BaseViewModel
     {
         private string _messagesText;
         private string _toBeSentText;
@@ -28,9 +27,9 @@ namespace test_app2.SerialP
         public Command ClearMessagesCommand { get; }
         public Command SendMessageCommand { get; }
 
-        public SerialPortSend Sender { get; set; }
+        public SerialPortMessagesSend Sender { get; set; }
 
-        public SerialPortViewModel()
+        public SerialPortMessagesViewModel()
         {
             //MessagesCount = 0;
             MessagesText = "";
@@ -46,8 +45,19 @@ namespace test_app2.SerialP
             {
                 try
                 {
-                    Sender;
+                    Sender.SendMessage(ToBeSentText);
+                    AddSentMessage(ToBeSentText);
+                    ToBeSentText = "";
                 }
+                catch(TimeoutException timeout) 
+                {
+                    AddMessage("Время ожидания отправки истекло. Не удалось отаправить сообщение");
+                }
+                catch(Exception e)
+                {
+                    AddMessage("Ошибка: " + e.ToString());
+                }
+
             }
         }
         private void ClearMessages()

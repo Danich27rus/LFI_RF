@@ -5,16 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO.Ports;
 
-namespace test_app2.SerialP
+namespace test_app2.SerialPMessages
 {
     /// <summary>
     /// Used for sending messages to the serial port (on the main thread...). Just an easier way to manage receiving/sending tbh
     /// </summary>
-    public class SerialPortSend
+    public class SerialPortMessagesSend
     {
         public SerialPort Port;
         public bool CanSend { get; set; }
-        public SerialPortSend()
+        public SerialPortMessagesSend()
         {
             CanSend = true;
         }
