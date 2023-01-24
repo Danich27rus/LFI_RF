@@ -5,27 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:test_app2"
         mc:Ignorable="d"
-        Title="Aboba" Height="600" Width="897">
+        Title="Aboba" Height="720" Width="1280">
     <Grid Margin="5">
-        <Button  x:Name="Open_Close_Port" Content="Открыть порт" HorizontalAlignment="Left" Height="31"
-                                Margin="10,0,0,10" VerticalAlignment="Bottom" Width="96" Background="#FFA5D6A7"
-                                BorderBrush="#FF388E3C" Foreground="#FF1B5E20" BorderThickness="0,0,0,0"
-                                 Grid.ColumnSpan="1" RenderTransformOrigin="0.521,1.874">
-            <Button.OpacityMask>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black"/>
-                    <GradientStop Color="#FF921D1D" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.OpacityMask>
-        </Button>
-        <TextBlock x:Name="COMConnectionTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="COM порт:" VerticalAlignment="Top"/>
-        <TextBlock x:Name="COMBaudRateTextBlock" HorizontalAlignment="Left" Margin="10,44,0,0" TextWrapping="Wrap" Text="Скорость:" VerticalAlignment="Top"/>
-        <ComboBox x:Name="COMPortsComboBox" HorizontalAlignment="Left" Margin="82,7,0,0" VerticalAlignment="Top" Width="68"/>
-        <ComboBox x:Name="COMBaudRatesComboBox" HorizontalAlignment="Left" Margin="82,41,0,0" VerticalAlignment="Top" Width="141"/>
-        <Grid Margin="323,0,0,0">
-            <GroupBox Header="Сообщения" Margin="0,0,0,45">
+        <Grid HorizontalAlignment="Left" Width="318" Margin="0,0,0,600">
+            <Button  x:Name="COMOpenClosePortButton" Content="Открыть порт" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22"
+                 Margin="227,44,0,0" Width="83" Background="#FFA5D6A7"
+                 BorderBrush="#FF388E3C" Foreground="#FF1B5E20" BorderThickness="0,0,0,0"/>
+            <Button x:Name="COMRefreshButton" Content="Обновить" HorizontalAlignment="Left" Margin="227,7,0,0" VerticalAlignment="Top" BorderThickness ="0,0,0,0" Height="22" Width="83"
+                    Background="#FFA5D6A7" BorderBrush="#FF388E3C" Foreground="#FF1B5E20"/>
+            <TextBlock x:Name="COMConnectionTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="COM порт:" VerticalAlignment="Top"/>
+            <TextBlock x:Name="COMBaudRateTextBlock" HorizontalAlignment="Left" Margin="10,47,0,0" TextWrapping="Wrap" Text="Скорость:" VerticalAlignment="Top"/>
+            <ComboBox x:Name="COMPortsComboBox" HorizontalAlignment="Left" Margin="82,7,0,0" VerticalAlignment="Top" Width="68"/>
+            <ComboBox x:Name="COMBaudRatesComboBox" HorizontalAlignment="Left" Margin="82,44,0,0" VerticalAlignment="Top" Width="97"/>
+        </Grid>
+        <Grid Margin="323,0,0,380">
+            <GroupBox Header="Сообщения" Margin="0,0,0,40">
                 <Grid>
-                    <TextBox Text="Beb"
+                    <TextBox Text="a"
                          FontSize="12"
                          IsReadOnly="true"
                          Margin="0,0,0,0"/>
@@ -33,10 +29,8 @@
             </GroupBox>
             <Grid VerticalAlignment="Bottom" Height="40">
                 <Button x:Name="SendButton" Content="Отправить" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="137"/>
-                <TextBox x:Name="textBox" Margin="200,0,6,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Center" Height="30"/>
+                <TextBox x:Name="COMInputTextBox" Margin="200,0,6,0" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Height="30"/>
             </Grid>
         </Grid>
-        <Button x:Name="COMRefresh" Content="Обновить" HorizontalAlignment="Left" Margin="155,7,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.278,0.002" BorderThickness ="0,0,0,0" Height="22" Width="68"
-                Background="#FFA5D6A7" BorderBrush="#FF388E3C" Foreground="#FF1B5E20"/>
     </Grid>
 </Window>

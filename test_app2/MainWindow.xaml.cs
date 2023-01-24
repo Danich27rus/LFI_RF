@@ -22,6 +22,7 @@ namespace test_app2
     /// </summary>
     public partial class MainWindow : Window
     {
+        public SerialPort kek;
         public MainWindow()
         {
             InitializeComponent();
