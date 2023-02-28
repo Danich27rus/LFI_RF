@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace test_app2.Utilities
+namespace TheRFramework.Utilities
 {
     public class Command : ICommand
     {

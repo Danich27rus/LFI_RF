@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace test_app2.Utilities
+namespace TheRFramework.Utilities
 {
     public class BaseViewModel : INotifyPropertyChanged
     {

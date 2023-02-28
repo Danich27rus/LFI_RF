@@ -5,23 +5,41 @@ using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using test_app2.Utilities;
+using TheRFramework.Utilities;
 
 namespace test_app2.SerialPortDevice
 {
     public class PortSettingsViewModel : BaseViewModel
     {
         private string _selectedComPort;
-        private string _selectedBaudRate;
+        private int _selectedBaudRate;
+        private Parity _selectedParityBits;
+        private int _selectedDataBits;
+        private StopBits _selectedStopBits;
         public string SelectedCOMPort 
         {
             get => _selectedComPort; 
             set => RaisePropertyChanged(ref _selectedComPort, value); 
         }
-        public string SelectedBaudRate
+        public int SelectedBaudRate
         {
             get => _selectedBaudRate;
             set => RaisePropertyChanged(ref _selectedBaudRate, value);
+        }
+        public StopBits SelectedStopBits
+        {
+            get => _selectedStopBits;
+            set => RaisePropertyChanged(ref _selectedStopBits, value);
+        }
+        public Parity SelectedParityBits
+        {
+            get => _selectedParityBits;
+            set => RaisePropertyChanged(ref _selectedParityBits, value);
+        }
+        public int SelectedDataBits
+        {
+            get => _selectedDataBits;
+            set => RaisePropertyChanged(ref _selectedDataBits, value);
         }
         public ObservableCollection<string> AvaliablePorts { get; set; }
 
@@ -49,13 +67,13 @@ namespace test_app2.SerialPortDevice
 
             StopBits = new ObservableCollection<double>
             {
-                1, 1.5, 2
+                0, 1, 1.5, 2
             };
 
-            ParityBits = new ObservableCollection<string>
+            /*ParityBits = new ObservableCollection<string>
             {
                 "Odd", "Even", "Mark", "Space"
-            };
+            };*/
 
             BaudRates = new ObservableCollection<int> 
             { 

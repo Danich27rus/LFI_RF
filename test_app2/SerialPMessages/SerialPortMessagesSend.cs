@@ -12,14 +12,15 @@ namespace test_app2.SerialPMessages
     /// </summary>
     public class SerialPortMessagesSend
     {
-        public SerialPort Port;
+        public SerialPort Port { get; set; }
         public bool CanSend { get; set; }
+        public SerialPortMessagesViewModel Messages { get; set; }
         public SerialPortMessagesSend()
         {
             CanSend = true;
         }
 
-        public void SendMessage(string message, bool shouldSendNewLine = true)
+        public void SendMessage(string message, bool shouldSendNewLine = false)
         {
             // Adds a new line if needed
             string newMessage = message + (shouldSendNewLine ? "\n" : "");

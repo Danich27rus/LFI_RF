@@ -4,7 +4,7 @@ using System.Linq;
 using System.IO.Ports;
 using System.Text;
 using System.Threading.Tasks;
-using test_app2.Utilities;
+using TheRFramework.Utilities;
 using test_app2.SerialPMessages;
 
 namespace test_app2.SerialPortDevice
@@ -28,9 +28,14 @@ namespace test_app2.SerialPortDevice
             set => RaisePropertyChanged(ref _isConnected, value);
         }
 
+        public void CloseAll()
+        {
+            Disconnect();
+            Receiver.StopThreadLoop();
+        }
         // Because a button is used to connect/disconnect, well....
         public Command AutoConnectDisconnectCommand { get; }
-        // NOt really that useful, but can be used to clear the serialport's receive/send buffers, but they probably wont fill up unless you send a giant message and noone responds... sort of
+        // Not really that useful, but can be used to clear the serialport's receive/send buffers, but they probably wont fill up unless you send a giant message and noone responds... sort of
         public Command ClearBuffersCommand { get; }
 
         public PortSettingsViewModel Settings { get; set; }
@@ -43,13 +48,106 @@ namespace test_app2.SerialPortDevice
 
         public SerialPortViewModel()
         {
+            ConnectedPort = "None";
+            Port = new SerialPort
+            {
+                ReadTimeout = 1000,
+                WriteTimeout = 1000
+            };
+            Settings = new PortSettingsViewModel();
 
+            AutoConnectDisconnectCommand = new Command(AutoConnectDisconnect);
+            ClearBuffersCommand = new Command(ClearBuffers);
         }
 
-        public void CloseAll()
+        public void AutoConnectDisconnect()
         {
-            Disconnect();
-            Receiver.StopThreadLoop();
+            IsConnected = Port.IsOpen; 
+            if (IsConnected)
+            {
+                Disconnect();
+            }
+            else
+            {
+                Connect();
+            }
+        }
+
+        public void Connect()
+        {
+            IsConnected = Port.IsOpen;
+            if (IsConnected)
+            {
+                Messages.AddMessage("Порт уже открыт!");
+                return;
+            }
+            if (Settings.SelectedCOMPort == "COM1")
+            {
+                Messages.AddMessage("Нельзя использовать COM1");
+                return;
+            }
+            if (string.IsNullOrEmpty(Settings.SelectedCOMPort) || Settings.SelectedDataBits == 0 || 
+                Settings.SelectedBaudRate == 0 || Settings.SelectedParityBits == null ||
+                Settings.SelectedStopBits == null)
+                //TODO: исправить проблему с null/0
+            {
+                Messages.AddMessage("Ошибка с конфигурацией COM порта. Проверьте, выбрали ли все пункты в настройках");
+                return;
+            }
+            Port.PortName = Settings.SelectedCOMPort;
+            Port.BaudRate = Settings.SelectedBaudRate;
+            Port.StopBits = Settings.SelectedStopBits;
+            Port.Parity = Settings.SelectedParityBits;
+            Port.DataBits = Settings.SelectedDataBits;
+
+            try
+            {
+                Port.Open();
+            }
+            catch(Exception ex)
+            {
+                Messages.AddMessage($"Ошибка приложения: {ex.Message}");
+                return;
+            }
+            ConnectedPort = Settings.SelectedCOMPort;
+            Messages.AddMessage($"Подключен к порту {ConnectedPort}!");
+            IsConnected = true;
+            Receiver.CanReceive = true;
+        }
+
+        public void Disconnect()
+        {
+            IsConnected = Port.IsOpen;
+            if (!IsConnected)
+            {
+                Messages.AddMessage("Порт уже закрыт!");
+                return;
+            }
+            try
+            {
+                Port.Close();
+            }
+            catch(Exception ex)
+            {
+                Messages.AddMessage($"Ошибка закрытия порта: {ex.Message}!");
+                return;
+            }
+
+            Messages.AddMessage($"Отлючен от порта {ConnectedPort}");
+            ConnectedPort = "None";
+            IsConnected = Port.IsOpen;
+            Receiver.CanReceive = false;
+        }
+
+        private void ClearBuffers()
+        {
+            if (!Port.IsOpen)
+            {
+                Messages.AddMessage("необходимо подключение к порту, чтобы отчистить буффер");
+                return;
+            }
+            Port.DiscardInBuffer();
+            Port.DiscardOutBuffer();
         }
     }
 }

@@ -14,7 +14,7 @@ namespace test_app2.Converters
         {
             if (value is bool isConnected)
             {
-                return isConnected ? "Disconnect" : "Connect";
+                return isConnected ? "Отключить" : "Подключить";
             }
             return "Error: BTIC_C";
         }
@@ -23,7 +23,7 @@ namespace test_app2.Converters
         {
             if (value is string str)
             {
-                return str == "Disconnect";
+                return str == "Отключить";
             }
             return false;
         }
