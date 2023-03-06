@@ -1,14 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
+using System.Xml.Linq;
 using TheRFramework.Utilities;
 
 namespace test_app2.SerialPortDevice
 {
+    public enum CustomParity
+    {
+        [Display(Name = "None")]
+        None = 0,
+        [Display(Name = "Odd")]
+        Odd = 1,
+        [Display(Name = "Even")]
+        Even = 2,
+        [Display(Name = "Mark")]
+        Mark = 3,
+        [Display(Name = "Space")]
+        Space = 4,
+    }
+
     public class PortSettingsViewModel : BaseViewModel
     {
         private string _selectedComPort;
@@ -49,7 +66,7 @@ namespace test_app2.SerialPortDevice
 
         public ObservableCollection<double> StopBits { get; set; }
 
-        public ObservableCollection<String> ParityBits { get; set; }
+        //public CustomParity ParityBits { get; }
 
         //public
         //public ObservableCollection<int> FlowControl { get; set; }
@@ -67,17 +84,14 @@ namespace test_app2.SerialPortDevice
 
             StopBits = new ObservableCollection<double>
             {
-                0, 1, 1.5, 2
+                0.0F, 1.0F, 1.5F, 2.0F
             };
 
-            /*ParityBits = new ObservableCollection<string>
-            {
-                "Odd", "Even", "Mark", "Space"
-            };*/
+            //CustomParity ParityBits;
 
             BaudRates = new ObservableCollection<int> 
             { 
-                110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 56000, 57600, 115200, 128000, 230400, 256000, 460800, 500000, 512000
+                110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 56000, 57600, 115200//, 128000, 230400, 256000, 460800, 500000, 512000
             };
 
             RefreshPortsCommand = new Command(RefreshPorts);

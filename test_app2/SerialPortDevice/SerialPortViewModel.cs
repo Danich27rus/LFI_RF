@@ -76,6 +76,11 @@ namespace test_app2.SerialPortDevice
         public void Connect()
         {
             IsConnected = Port.IsOpen;
+            Port.PortName = null;
+            Port.BaudRate = 0;
+            Port.StopBits = 0;
+            Port.Parity = Parity.None;
+            Port.DataBits = 0;
             if (IsConnected)
             {
                 Messages.AddMessage("Порт уже открыт!");

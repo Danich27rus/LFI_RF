@@ -5,6 +5,8 @@ using System.Text;
 using System.IO.Ports;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
+using System.Windows.Controls;
 
 namespace test_app2.SerialPMessages
 {
@@ -47,6 +49,9 @@ namespace test_app2.SerialPMessages
 
             while (true)
             {
+                if (cancelToken.IsCancellationRequested) {
+                    ShouldShutDownPermanently = true;
+                }
                 if (ShouldShutDownPermanently)
                 {
                     return;
@@ -74,8 +79,8 @@ namespace test_app2.SerialPMessages
                     }
                 }
                 Thread.Sleep(1);
-                cancelToken.ThrowIfCancellationRequested();
             }
+            //Dispatcher.Thread.Interrupt();
         }
 
         public void StopThreadLoop()//CancellationTokenSource cancelToken)
@@ -83,7 +88,10 @@ namespace test_app2.SerialPMessages
             CanReceive = false;
             ShouldShutDownPermanently = true; //&= ReceiverThread.IsAlive;
             cancelSource.Cancel();
-            ReceiverThread.Interrupt();
+            //if (ReceiverThread != null)
+            //{
+                //ReceiverThread.Interrupt();
+            //}
         }
     }
 }

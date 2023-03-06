@@ -15,10 +15,11 @@ namespace test_app2
         public MainWindow()
         {
             InitializeComponent();
+            //test_app2.SerialPortDevice.CustomParity;
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            //((MainViewModel)DataContext).SerialPort.CloseAll();
+            ((MainViewModel)DataContext).SerialPort.CloseAll();
         }
     }
 
