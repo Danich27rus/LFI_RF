@@ -42,23 +42,26 @@ namespace test_app2.SerialPMessages
 
         private void SendMessage()
         {
-            if (!string.IsNullOrEmpty(ToBeSentText))
+            if (Sender.Port.IsOpen)
             {
-                try
+                if (!string.IsNullOrEmpty(ToBeSentText))
                 {
-                    Sender.SendMessage(ToBeSentText);
-                    AddSentMessage(ToBeSentText);
-                    ToBeSentText = "";
-                }
-                catch(TimeoutException timeout) 
-                {
-                    AddMessage("Время ожидания отправки истекло. Не удалось отаправить сообщение");
-                }
-                catch(Exception e)
-                {
-                    AddMessage("Ошибка: " + e.ToString());
-                }
+                    try
+                    {
+                        Sender.SendMessage(ToBeSentText);
+                        AddSentMessage(ToBeSentText);
+                        ToBeSentText = "";
+                    }
+                    catch (TimeoutException timeout)
+                    {
+                        AddMessage("Время ожидания отправки истекло. Не удалось отаправить сообщение");
+                    }
+                    catch (Exception e)
+                    {
+                        AddMessage("Ошибка: " + e.ToString());
+                    }
 
+                }
             }
         }
         private void ClearMessages()

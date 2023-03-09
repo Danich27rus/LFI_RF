@@ -64,7 +64,7 @@ namespace test_app2.SerialPortDevice
 
         public ObservableCollection<int> DataBits { get; set; }
 
-        public ObservableCollection<double> StopBits { get; set; }
+        //public ObservableCollection<int> StopBits { get; set; }
 
         //public CustomParity ParityBits { get; }
 
@@ -82,10 +82,10 @@ namespace test_app2.SerialPortDevice
                 5, 6, 7, 8
             };
 
-            StopBits = new ObservableCollection<double>
-            {
-                0.0F, 1.0F, 1.5F, 2.0F
-            };
+            //StopBits = new ObservableCollection<int>
+            //{
+               // 0, 1, 2, 3
+            //};
 
             //CustomParity ParityBits;
 

@@ -11,11 +11,18 @@
         Closing="Window_Closing"
         Title="Aboba" Height="720" Width="1280">
     <Window.Resources>
-        <ObjectDataProvider x:Key="PortSettingsViewModel" 
+        <ObjectDataProvider x:Key="PortParitySettingsViewModel" 
                             MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="custom:Parity"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="PortStopSettingsViewModel" 
+                            MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="custom:StopBits"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
         <Converters:BoolToIsConnectedConverter x:Key="BoolToIsConnectedConverter"/>
@@ -29,9 +36,11 @@
                      Command="{Binding SerialPort.AutoConnectDisconnectCommand, Mode=OneTime}"
                      Content="{Binding SerialPort.IsConnected, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToIsConnectedConverter}}" 
                      HorizontalAlignment="Left" VerticalAlignment="Top" Height="22"
-                 Margin="227,44,0,0" Width="83" Background="#FFA5D6A7"
+                 Margin="117,187,0,0" Width="83" Background="#FFA5D6A7"
                  BorderBrush="#FF388E3C" Foreground="#FF1B5E20" BorderThickness="0,0,0,0"/>
-            <Button x:Name="COMRefreshButton" Content="Обновить" HorizontalAlignment="Left" Margin="227,7,0,0" VerticalAlignment="Top" BorderThickness ="0,0,0,0" Height="22" Width="83"
+            <Button x:Name="COMRefreshButton" 
+                    Command="{Binding SerialPort.Settings.RefreshPortsCommand, Mode=OneTime}"
+                    Content="Обновить" HorizontalAlignment="Left" Margin="17,187,0,0" VerticalAlignment="Top" BorderThickness ="0,0,0,0" Height="22" Width="83"
                     Background="#FFA5D6A7" BorderBrush="#FF388E3C" Foreground="#FF1B5E20"/>
             <TextBlock x:Name="COMConnectionTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="COM-порт:" VerticalAlignment="Top"/>
             <TextBlock x:Name="COMBaudRateTextBlock" HorizontalAlignment="Left" Margin="10,45,0,0" TextWrapping="Wrap" Text="Скорость, бод/c:" VerticalAlignment="Top"/>
@@ -51,26 +60,41 @@
                       SelectedValue="{Binding SerialPort.Settings.SelectedDataBits, UpdateSourceTrigger=PropertyChanged}"
                       HorizontalAlignment="Left" Margin="112,77,0,0" VerticalAlignment="Top" Width="90"/>
             <ComboBox x:Name="COMStopBitsComboBox" 
-                      ItemsSource="{Binding SerialPort.Settings.StopBits, Mode=OneTime}"
+                      ItemsSource="{Binding Source={StaticResource PortStopSettingsViewModel}, Mode=OneTime}"
                       SelectedValue="{Binding SerialPort.Settings.SelectedStopBits, UpdateSourceTrigger=PropertyChanged}"
                       HorizontalAlignment="Left" Margin="112,112,0,0" VerticalAlignment="Top" Width="90"/>
             <ComboBox x:Name="COMStartBitsComboBox" 
-                      ItemsSource="{Binding Source={StaticResource PortSettingsViewModel}, Mode=OneTime}"
+                      ItemsSource="{Binding Source={StaticResource PortParitySettingsViewModel}, Mode=OneTime}"
                       SelectedValue="{Binding SerialPort.Settings.SelectedParityBits, UpdateSourceTrigger=PropertyChanged}"
                       HorizontalAlignment="Left" Margin="112,147,0,0" VerticalAlignment="Top" Width="90"/>
         </Grid>
-        <Grid Margin="323,0,0,380">
+        <Grid Margin="0,330,952,0">
+        </Grid>
+        <Grid Margin="323,0,0,250">
+            <!--ScrollViewer/-->
+            <!--DataGrid x:Name="dataGrid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,0,0,97"/-->
+
+        </Grid>
+        <Grid Margin="323,450,0,0">
             <GroupBox Header="Сообщения" Margin="0,0,0,40">
                 <Grid>
-                    <TextBox Text="a"
+                    <TextBox Text="{Binding Messages.MessagesText, UpdateSourceTrigger=PropertyChanged}"
                          FontSize="12"
                          IsReadOnly="true"
                          Margin="0,0,0,0"/>
                 </Grid>
             </GroupBox>
             <Grid VerticalAlignment="Bottom" Height="40">
-                <Button x:Name="SendButton" Content="Отправить" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="137"/>
-                <TextBox x:Name="COMInputTextBox" Margin="200,0,6,0" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Height="30"/>
+                <Button x:Name="SendButton" 
+                        Command="{Binding Messages.SendMessageCommand, Mode=OneTime}"
+                        Content="Отправить" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="137"/>
+                <TextBox x:Name="COMInputTextBox" 
+                         Text="{Binding Messages.ToBeSentText, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="200,0,6,0" TextWrapping="Wrap" VerticalAlignment="Center" Height="30">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Return" Command="{Binding Messages.SendMessageCommand, Mode=OneTime}"/>
+                    </TextBox.InputBindings>
+                </TextBox>
             </Grid>
         </Grid>
     </Grid>

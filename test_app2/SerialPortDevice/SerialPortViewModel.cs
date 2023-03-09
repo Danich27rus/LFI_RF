@@ -76,11 +76,11 @@ namespace test_app2.SerialPortDevice
         public void Connect()
         {
             IsConnected = Port.IsOpen;
-            Port.PortName = null;
-            Port.BaudRate = 0;
-            Port.StopBits = 0;
-            Port.Parity = Parity.None;
-            Port.DataBits = 0;
+            //Port.PortName = null;
+            //Port.BaudRate = 0;
+            //Port.StopBits = 0;
+            //Port.Parity = Parity.None;
+            //Port.DataBits = 0;
             if (IsConnected)
             {
                 Messages.AddMessage("Порт уже открыт!");
@@ -91,10 +91,8 @@ namespace test_app2.SerialPortDevice
                 Messages.AddMessage("Нельзя использовать COM1");
                 return;
             }
-            if (string.IsNullOrEmpty(Settings.SelectedCOMPort) || Settings.SelectedDataBits == 0 || 
-                Settings.SelectedBaudRate == 0 || Settings.SelectedParityBits == null ||
-                Settings.SelectedStopBits == null)
-                //TODO: исправить проблему с null/0
+            if (string.IsNullOrEmpty(Settings.SelectedCOMPort) || Settings.SelectedDataBits == 0 || Settings.SelectedBaudRate == 0)
+            //TODO: исправить проблему с null/0
             {
                 Messages.AddMessage("Ошибка с конфигурацией COM порта. Проверьте, выбрали ли все пункты в настройках");
                 return;
@@ -138,7 +136,7 @@ namespace test_app2.SerialPortDevice
                 return;
             }
 
-            Messages.AddMessage($"Отлючен от порта {ConnectedPort}");
+            Messages.AddMessage($"Отключен от порта {ConnectedPort}");
             ConnectedPort = "None";
             IsConnected = Port.IsOpen;
             Receiver.CanReceive = false;
