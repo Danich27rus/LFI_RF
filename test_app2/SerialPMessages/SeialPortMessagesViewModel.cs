@@ -12,6 +12,8 @@ namespace test_app2.SerialPMessages
     {
         private string _messagesText;
         private string _toBeSentText;
+        private bool _isHEX;
+        private bool _isRepeat; //тест репетативной отправки
 
         public string MessagesText
         {
@@ -25,6 +27,18 @@ namespace test_app2.SerialPMessages
             set => RaisePropertyChanged(ref _toBeSentText, value);
         }
 
+        public bool IsHEX
+        {
+            get => _isHEX;
+            set => RaisePropertyChanged(ref _isHEX, value);
+        }
+
+        public bool Repeat
+        {
+            get => _isRepeat;
+            set => RaisePropertyChanged(ref _isRepeat, value);
+        }
+
         public Command ClearMessagesCommand { get; }
         public Command SendMessageCommand { get; }
 
@@ -35,6 +49,7 @@ namespace test_app2.SerialPMessages
             //MessagesCount = 0;
             MessagesText = "";
             ToBeSentText = "";
+            IsHEX = false;
 
             ClearMessagesCommand = new Command(ClearMessages);
             SendMessageCommand = new Command(SendMessage);
@@ -73,7 +88,14 @@ namespace test_app2.SerialPMessages
         public void AddSentMessage(string message)
         {
             // (Date) | TX> hello there
-            AddMessage($"{DateTime.Now} | TX> {message}");
+            if (_isHEX)
+            {
+
+            }
+            else
+            {
+                AddMessage($"{DateTime.Now} | TX> {message}");
+            } 
         }
 
         public void AddReceivedMessage(string message)

@@ -20,7 +20,7 @@ namespace test_app2.SerialPMessages
         public bool CanReceive { get; set; }
         public bool ShouldShutDownPermanently { get; set; }
 
-        public SerialPortMessagesViewModel SerialPortModel { get; set; }
+        //public SerialPortMessagesViewModel SerialPortModel { get; set; }
         public SerialPort Port { get; set; }
         public SerialPortMessagesViewModel Messages { get; set; }
         public SerialPortMessagesReceive() 
@@ -36,7 +36,7 @@ namespace test_app2.SerialPMessages
                 }
                 catch (OperationCanceledException)
                 {
-                    SerialPortModel.AddReceivedMessage("Галя, отмена по токену!");
+                    Messages.AddReceivedMessage("Галя, отмена по токену!");
                 }
             }).Start();
             //ReceiverThread.Start();
@@ -63,12 +63,13 @@ namespace test_app2.SerialPMessages
                         while(Port.BytesToRead > 0)
                         {
                             read = (char)Port.ReadChar();
+                            //TODO: Нет обработки без '/n'
                             switch (read)
                             {
                                 case '\r':
                                     break;
                                 case '\n':
-                                    SerialPortModel.AddReceivedMessage(message);
+                                    Messages.AddReceivedMessage(message);
                                     message = "";
                                     break;
                                 default:

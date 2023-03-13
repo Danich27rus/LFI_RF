@@ -78,7 +78,11 @@
         <Grid Margin="323,450,0,0">
             <GroupBox Header="Сообщения" Margin="0,0,0,40">
                 <Grid>
-                    <TextBox Text="{Binding Messages.MessagesText, UpdateSourceTrigger=PropertyChanged}"
+                    <TextBox
+                         TextWrapping="Wrap" 
+                         VerticalScrollBarVisibility="Auto" 
+                         AcceptsReturn="True"
+                         Text="{Binding Messages.MessagesText, UpdateSourceTrigger=PropertyChanged}"
                          FontSize="12"
                          IsReadOnly="true"
                          Margin="0,0,0,0"/>
@@ -90,11 +94,19 @@
                         Content="Отправить" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="137"/>
                 <TextBox x:Name="COMInputTextBox" 
                          Text="{Binding Messages.ToBeSentText, UpdateSourceTrigger=PropertyChanged}"
-                         Margin="200,0,6,0" TextWrapping="Wrap" VerticalAlignment="Center" Height="30">
+                         Margin="300,0,6,0" TextWrapping="Wrap" VerticalAlignment="Center" Height="30">
                     <TextBox.InputBindings>
                         <KeyBinding Key="Return" Command="{Binding Messages.SendMessageCommand, Mode=OneTime}"/>
                     </TextBox.InputBindings>
                 </TextBox>
+                <CheckBox x:Name="HEXCheckBox"
+                          Margin="140,5,680,20"
+                          IsChecked="{Binding Messages.IsHEX, UpdateSourceTrigger=PropertyChanged}"
+                          Content="Отправка HEX"/>
+                <!--CheckBox x:Name="RepeatSendCheckBox"
+                          Margin="140,20,650,0"
+                          IsChecked="{Binding Messages.IsHEX, UpdateSourceTrigger=PropertyChanged}"
+                          Content="Постоянная отправка"/-->
             </Grid>
         </Grid>
     </Grid>

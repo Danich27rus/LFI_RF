@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TheRFramework.Utilities;
 using test_app2.SerialPMessages;
+using System.Threading;
 
 namespace test_app2.SerialPortDevice
 {
@@ -93,6 +94,7 @@ namespace test_app2.SerialPortDevice
             }
             if (string.IsNullOrEmpty(Settings.SelectedCOMPort) || Settings.SelectedDataBits == 0 || Settings.SelectedBaudRate == 0)
             //TODO: исправить проблему с null/0
+            //TODO: добавить конфигурацию всех настроек в основную форму
             {
                 Messages.AddMessage("Ошибка с конфигурацией COM порта. Проверьте, выбрали ли все пункты в настройках");
                 return;
@@ -102,7 +104,7 @@ namespace test_app2.SerialPortDevice
             Port.StopBits = Settings.SelectedStopBits;
             Port.Parity = Settings.SelectedParityBits;
             Port.DataBits = Settings.SelectedDataBits;
-
+            Port.Handshake = Handshake.None;
             try
             {
                 Port.Open();
