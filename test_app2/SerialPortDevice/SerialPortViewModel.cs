@@ -148,7 +148,7 @@ namespace test_app2.SerialPortDevice
         {
             if (!Port.IsOpen)
             {
-                Messages.AddMessage("необходимо подключение к порту, чтобы отчистить буффер");
+                Messages.AddMessage("Необходимо подключение к порту, чтобы очистить буффер");
                 return;
             }
             Port.DiscardInBuffer();

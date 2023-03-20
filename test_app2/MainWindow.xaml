@@ -31,7 +31,7 @@
         <viewmodels:MainViewModel/>
     </Window.DataContext>
     <Grid Margin="5">
-        <Grid HorizontalAlignment="Left" Width="318" Margin="0,0,0,380">
+        <Grid HorizontalAlignment="Left" Width="318" Margin="0,0,0,450">
             <Button  x:Name="COMOpenClosePortButton" 
                      Command="{Binding SerialPort.AutoConnectDisconnectCommand, Mode=OneTime}"
                      Content="{Binding SerialPort.IsConnected, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToIsConnectedConverter}}" 
@@ -68,14 +68,13 @@
                       SelectedValue="{Binding SerialPort.Settings.SelectedParityBits, UpdateSourceTrigger=PropertyChanged}"
                       HorizontalAlignment="Left" Margin="112,147,0,0" VerticalAlignment="Top" Width="90"/>
         </Grid>
-        <Grid Margin="0,330,952,0">
-        </Grid>
         <Grid Margin="323,0,0,250">
             <!--ScrollViewer/-->
             <!--DataGrid x:Name="dataGrid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,0,0,97"/-->
-
         </Grid>
-        <Grid Margin="323,450,0,0">
+        <Grid Margin="0,230,952,270">
+        </Grid>
+        <Grid Margin="0,450,800,0">
             <GroupBox Header="Сообщения" Margin="0,0,0,40">
                 <Grid>
                     <TextBox
