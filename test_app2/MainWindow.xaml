@@ -6,10 +6,13 @@
         xmlns:custom="clr-namespace:System.IO.Ports;assembly=System"
         xmlns:viewmodels="clr-namespace:test_app2.ViewModels"
         xmlns:Converters="clr-namespace:test_app2.Converters"
+        xmlns:UI="clr-namespace:test_app2.UI"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Closing="Window_Closing"
-        Title="Aboba" Height="720" Width="1280">
+        Title="Aboba" Height="720" Width="1280"
+        MinWidth="1280"
+        Style="{DynamicResource CustomWindowStyle}">
     <Window.Resources>
         <ObjectDataProvider x:Key="PortParitySettingsViewModel" 
                             MethodName="GetValues"
@@ -31,23 +34,17 @@
         <viewmodels:MainViewModel/>
     </Window.DataContext>
     <Grid Margin="5">
-        <!--Grid.RowDefinitions>
-            <RowDefinition Height="643*"/>
-            <RowDefinition Height="51*"/>
-        </Grid.RowDefinitions-->
-        <!--Grid HorizontalAlignment="Left" Width="450"-->
         <Grid>
-            <!--Grid.RowSpan="2"-->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150*"/>
                 <ColumnDefinition Width="5"/>
-                <ColumnDefinition Width="250*"/>
+                <ColumnDefinition Width="800"/>
             </Grid.ColumnDefinitions>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="240"/>
-                    <RowDefinition Height="150"/>
-                    <RowDefinition Height="250*"/>
+                    <RowDefinition Height="240*"/>
+                    <RowDefinition Height="170*"/>
+                    <RowDefinition Height="260"/>
                 </Grid.RowDefinitions>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -56,7 +53,7 @@
                         <RowDefinition Height="40"/>
                         <RowDefinition Height="40"/>
                         <RowDefinition Height="40"/>
-                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
                     <!--Grid HorizontalAlignment="Left" VerticalAlignment="Top" Width="320" Height="210" Margin="0,0,0,480"-->
                     <TextBlock x:Name="COMConnectionTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="COM-порт:" VerticalAlignment="Top"/>
@@ -67,34 +64,39 @@
                     <ComboBox x:Name="COMPortsComboBox"
                       ItemsSource="{Binding SerialPort.Settings.AvaliablePorts, Mode=OneTime}"
                       SelectedItem="{Binding SerialPort.Settings.SelectedCOMPort, UpdateSourceTrigger=PropertyChanged}"
-                      HorizontalAlignment="Left" Margin="112,7,0,0" VerticalAlignment="Top" Width="90"/>
+                      HorizontalAlignment="Left" Margin="135,7,0,0" VerticalAlignment="Top" Width="90"/>
                     <ComboBox x:Name="COMBaudRatesComboBox" 
                       ItemsSource="{Binding SerialPort.Settings.BaudRates, Mode=OneTime}"
                       SelectedValue="{Binding SerialPort.Settings.SelectedBaudRate, UpdateSourceTrigger=PropertyChanged}"
-                      HorizontalAlignment="Left" Margin="112,7,0,0" Grid.Row="1"  VerticalAlignment="Top" Width="90"/>
+                      HorizontalAlignment="Left" Margin="135,7,0,0" Grid.Row="1"  VerticalAlignment="Top" Width="90"/>
                     <ComboBox x:Name="COMDataRatesComboBox" 
                       ItemsSource="{Binding SerialPort.Settings.DataBits, Mode=OneTime}"
                       SelectedValue="{Binding SerialPort.Settings.SelectedDataBits, UpdateSourceTrigger=PropertyChanged}"
-                      HorizontalAlignment="Left" Margin="112,7,0,0" Grid.Row="2" VerticalAlignment="Top" Width="90"/>
+                      HorizontalAlignment="Left" Margin="135,7,0,0" Grid.Row="2" VerticalAlignment="Top" Width="90"/>
                     <ComboBox x:Name="COMStopBitsComboBox" 
                       ItemsSource="{Binding Source={StaticResource PortStopSettingsViewModel}, Mode=OneTime}"
                       SelectedValue="{Binding SerialPort.Settings.SelectedStopBits, UpdateSourceTrigger=PropertyChanged}"
-                      HorizontalAlignment="Left" Margin="112,7,0,0" Grid.Row="3" VerticalAlignment="Top" Width="90"/>
+                      HorizontalAlignment="Left" Margin="135,7,0,0" Grid.Row="3" VerticalAlignment="Top" Width="90"/>
                     <ComboBox x:Name="COMStartBitsComboBox" 
                       ItemsSource="{Binding Source={StaticResource PortParitySettingsViewModel}, Mode=OneTime}"
                       SelectedValue="{Binding SerialPort.Settings.SelectedParityBits, UpdateSourceTrigger=PropertyChanged}"
-                      HorizontalAlignment="Left" Margin="112,7,0,0" Grid.Row="4" VerticalAlignment="Top" Width="90"/>
+                      HorizontalAlignment="Left" Margin="135,7,0,0" Grid.Row="4" VerticalAlignment="Top" Width="90"/>
                     <Button  x:Name="COMOpenClosePortButton" 
                       Command="{Binding SerialPort.AutoConnectDisconnectCommand, Mode=OneTime}"
                       Content="{Binding SerialPort.IsConnected, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToIsConnectedConverter}}" 
-                      HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Grid.Row="5" Margin="115,5,0,0"
-                      Width="83" Background="#FFA5D6A7"
-                      BorderBrush="#FF388E3C" Foreground="#FF1B5E20" BorderThickness="0,0,0,0"/>
+                      HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="5" Margin="135,10,0,0" Height="30" Width='90'
+                      />
                     <Button x:Name="COMRefreshButton" 
                       Command="{Binding SerialPort.Settings.RefreshPortsCommand, Mode=OneTime}"
-                      Content="Обновить" HorizontalAlignment="Left" Margin="15,5,0,0" VerticalAlignment="Top" Grid.Row="5" 
-                      BorderThickness ="0,0,0,0" Height="22" Width="83"
-                      Background="#FFA5D6A7" BorderBrush="#FF388E3C" Foreground="#FF1B5E20"/>
+                      Content="Обновить" HorizontalAlignment="Left" Margin="15,10,0,0" VerticalAlignment="Top" Grid.Row="5" Height="30" Width='90'
+                      />
+                    <Button x:Name="COMConfButton" 
+                      Command="{Binding Config.ConfigCommand, Mode=OneTime}"
+                      Content="Конфигурация" HorizontalAlignment="Left" Margin="245,10,0,0" VerticalAlignment="Top" Grid.Row="5" Height="30" Width='90'
+                      />
+                    <!--Для кнопок
+                    Width="83" Background="#FFA5D6A7"
+                      BorderBrush="#FF388E3C" Foreground="#FF1B5E20" BorderThickness="0,0,0,0"/-->
                 </Grid>
                 <Grid Grid.Row="1">
                     <GroupBox Header="Параметры для связи с индикаторами">
@@ -133,7 +135,7 @@
                 <Grid Grid.Row="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="225"/>
-                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
                     <GroupBox Header="Сообщения">
                         <Grid>
@@ -150,40 +152,47 @@
                     <Grid VerticalAlignment="Bottom" Height="40" Grid.Row="1">
                         <Button x:Name="SendButton" Margin="5,0,0,0" Command="{Binding Messages.SendMessageCommand, Mode=OneTime}"
                          Content="Отправить" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="137"/>
-                        <TextBox x:Name="COMInputTextBox" 
-                         Text="{Binding Messages.ToBeSentText, UpdateSourceTrigger=PropertyChanged}"
-                         Margin="150,0,150,0" TextWrapping="Wrap" VerticalAlignment="Center" Height="30">
-                            <TextBox.InputBindings>
-                                <KeyBinding Key="Return" Command="{Binding Messages.SendMessageCommand, Mode=OneTime}"/>
-                            </TextBox.InputBindings>
-                        </TextBox>
                         <CheckBox x:Name="HEXCheckBox"
-                          Margin="340,5,10,10"
-                          IsChecked="{Binding Messages.IsHEX, UpdateSourceTrigger=PropertyChanged}"
-                          Content="Отправка HEX"/>
-                        <!--CheckBox x:Name="RepeatSendCheckBox"
-                          Margin="140,20,650,0"
-                          IsChecked="{Binding Messages.IsHEX, UpdateSourceTrigger=PropertyChanged}"
-                          Content="Постоянная отправка"/-->
+                         Margin="340,5,10,10"
+                         IsChecked="{Binding Messages.IsHEX, UpdateSourceTrigger=PropertyChanged}"
+                         Content="Отправка HEX"/>
+                        <TextBox x:Name="COMInputTextBox"
+                         Text="{Binding Messages.ToBeSentText, UpdateSourceTrigger=PropertyChanged}"   
+                         Margin="150,0,150,0" TextWrapping="Wrap" VerticalAlignment="Center" Height="30">
+                        </TextBox>
                     </Grid>
                 </Grid>
             </Grid>
             <Grid Grid.Column="2">
-                <!--ScrollViewer/-->
-                <!--DataGrid x:Name="dataGrid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,0,0,97"/-->
-                <GroupBox x:Name="IndicatorParamsGroupBox" Header="Значения в памяти индикатора">
-                    <TabControl x:Name="IndicatorParamsTabControl" Margin="0,0,0,0">
-                        <TabItem Header="Общие параметры индикатора" Width="190" Height="30">
-                            <Grid Background="#FFE5E5E5"/>
-                        </TabItem>
-                        <TabItem Header="Параметры определения межфазного замыкания" Width="300" Height="30">
-                            <Grid Background="#FFE5E5E5"/>
-                        </TabItem>
-                        <TabItem Header="Параметры определения замыкания на землю" Width="270" Height="30">
-                            <Grid Background="#FFE5E5E5"/>
-                        </TabItem>
-                    </TabControl>
-                </GroupBox>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="450"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="150*"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <!--ScrollViewer/-->
+                    <!--DataGrid x:Name="dataGrid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,0,0,97"/-->
+                    <GroupBox x:Name="IndicatorParamsGroupBox" Header="Значения в памяти индикатора">
+                        <TabControl x:Name="IndicatorParamsTabControl" Margin="0,0,0,0">
+                            <TabItem Header="Общие параметры индикатора" Width="190" Height="30">
+                                <Grid Background="#FF2F2F2F">
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Параметры определения межфазного замыкания" Width="300" Height="30">
+                                <Grid Background="#FF2F2F2F">
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Параметры определения замыкания на землю" Width="280" Height="30">
+                                <Grid Background="#FF2F2F2F">
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                    </GroupBox>
+                </Grid>
+                <Grid Grid.Column="2" Grid.Row="2">
+                    <GroupBox x:Name="SendParamsGroupBox" Header="Информация о параметрах передачи">
+                    </GroupBox>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

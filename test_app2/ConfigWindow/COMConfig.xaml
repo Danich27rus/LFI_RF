@@ -1,0 +1,174 @@
+﻿<Window x:Class="test_app2.Config.ConfigWindow"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:custom="clr-namespace:System.IO.Ports;assembly=System"
+      xmlns:System="clr-namespace:System;assembly=mscorlib"
+      xmlns:Converters="clr-namespace:test_app2.Converters"
+      mc:Ignorable="d" 
+      Height="700" Width="800"
+      Title="Конфигурация COM"
+      Closing="ConfigWindow_Closing"
+      Style="{DynamicResource CustomWindowStyle}">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="PortParitySettingsViewModel" 
+                            MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="custom:Parity"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="PortStopSettingsViewModel" 
+                            MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="custom:StopBits"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <Converters:BoolToIsConnectedConverter x:Key="BoolToIsConnectedConverter"/>
+    </Window.Resources>
+    <Grid Margin="5">
+        <Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="215"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="250*"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="95*"/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <StackPanel>
+                            <TextBlock Text="Конфигурация COM порта" FontSize="30" TextWrapping="Wrap"/>
+                            <Separator Margin="0 5"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="80"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="5"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="5"/>
+                                <RowDefinition Height="95*"/>
+                            </Grid.RowDefinitions>
+                            <Button x:Name="COMRResetButton" 
+                      Command="{Binding SerialPort.Settings.RefreshPortsCommand, Mode=OneTime}"
+                      Content="Обновить порты" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                      />
+                            <Button x:Name="COMRefreshButton" 
+                      Command="{Binding SerialPort.Settings.RefreshPortsCommand, Mode=OneTime}"
+                      Content="Сбросить порт" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                      />
+                            <Button  x:Name="COMOpenClosePortButton" 
+                      Command="{Binding SerialPort.AutoConnectDisconnectCommand, Mode=OneTime}"
+                      Content="{Binding SerialPort.IsConnected, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToIsConnectedConverter}}" 
+                      VerticalAlignment="Stretch" Grid.Row="5" HorizontalAlignment="Stretch"
+                      />
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="95*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel>
+                        <TextBlock Text="Выбор модели ИКЗ" FontSize="30" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                        <Separator Margin="0 5"/>
+                    </StackPanel>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="300"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="150*"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="150*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25*"/>
+                                <RowDefinition Height="25*"/>
+                                <RowDefinition Height="25*"/>
+                                <RowDefinition Height="25*"/>
+                                <RowDefinition Height="25*"/>
+                                <RowDefinition Height="25*"/>
+                                <RowDefinition Height="25*"/>
+                                <RowDefinition Height="25*"/>
+                                <RowDefinition Height="25*"/>
+                                <RowDefinition Height="25*"/>
+                                <RowDefinition Height="25*"/>
+                                <RowDefinition Height="25*"/>
+                                <RowDefinition Height="25*"/>
+                                <RowDefinition Height="25*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Тип устройства" Padding="5" HorizontalAlignment="Center"/>
+                            <RadioButton Content="JYL-FF-FI" Grid.Row="1"/>
+                            <RadioButton Content="JYL-FF-CN-HP" Grid.Row="2"/>
+                            <RadioButton Content="JYZ(W)-FF-FI V1.0" Grid.Row="3"/>
+                            <RadioButton Content="JYZ(W)-FF-FI V2.0 (JYZ-HW-FI V1.0)" Grid.Row="4"/>
+                            <RadioButton Content="DYZ-FF-FI (КЗ обычное)" Grid.Row="5"/>
+                            <RadioButton Content="DYZ-FF-FI (Третья гармоника)" Grid.Row="6"/>
+                            <RadioButton Content="JYZ-HW-FI V2.0 (Передача через 2,4 ГГц)" Grid.Row="7"/>
+                            <RadioButton Content="JYZ-LB" Grid.Row="8"/>
+                            <RadioButton Content="F-LTS100" Grid.Row="9"/>
+                            <RadioButton Content="JYZ(W)-FF-FI V2.0 (LoRa_10S)" Grid.Row="10"/>
+                            <RadioButton Content="JYZ-HW-LoRa" Grid.Row="11"/>
+                            <RadioButton Content="JYZ-HW(FF)-Lora-С" Grid.Row="12"/>
+                            <RadioButton Content="JYZ-LH-LoRa" Grid.Row="13"/>
+                        </Grid>
+                        <Grid Grid.Column="4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="60*"/>
+                                <RowDefinition Height="150*"/>
+                            </Grid.RowDefinitions>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25*"/>
+                                    <RowDefinition Height="25*"/>
+                                    <RowDefinition Height="25*"/>
+                                    <RowDefinition Height="25*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Протокол общения" Padding="5" HorizontalAlignment="Center"/>
+                                <RadioButton Content="XY-Old" Grid.Row="1"/>
+                                <RadioButton Content="XY-New" Grid.Row="2"/>
+                                <RadioButton Content="LB-FF" Grid.Row="3"/>
+                            </Grid>
+                            <Grid Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25"/>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="150*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Выбор семейства устройства" Padding="5" HorizontalAlignment="Center"/>
+                                <RadioButton Content="FP (JYZ-FF)" Grid.Row="1"/>
+                                <RadioButton Content="LED (JYZ-HW)" Grid.Row="2"/>
+                                <RadioButton Content="LED_7 (JYZ-HW V2.0 ?)" Grid.Row="3"/>
+                                <Button Content="Выход из конфигурации" Margin="0" VerticalAlignment="Stretch"  Click="Button_Click" Grid.Row="13" Cursor="Hand"/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

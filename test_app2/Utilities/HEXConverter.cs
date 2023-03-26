@@ -23,14 +23,16 @@ namespace test_app2.Utilities
             set => _outputString = value;
         }
 
-        public void StringToByteArray(String hex)
+        public byte[] StringToByteArray(String hex)
         {
+            
             InputString = hex.Split(' ');
             OutputSting = new byte[InputString.Length];
             for (var i = 0; i < InputString.Length; i++)
             {
                 OutputSting[i] = Convert.ToByte(InputString[i], 16);
             }
+            return OutputSting;
         }
     }
 }

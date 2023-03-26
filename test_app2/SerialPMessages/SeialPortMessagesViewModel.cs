@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using TheRFramework.Utilities;
 
 namespace test_app2.SerialPMessages
@@ -14,6 +17,7 @@ namespace test_app2.SerialPMessages
         private string _toBeSentText;
         private bool _isHEX;
         private bool _isRepeat; //тест репетативной отправки
+        private bool _addNewLine;
 
         public string MessagesText
         {
@@ -33,6 +37,12 @@ namespace test_app2.SerialPMessages
             set => RaisePropertyChanged(ref _isHEX, value);
         }
 
+        public bool AddNewLine
+        {
+            get => _addNewLine;
+            set => RaisePropertyChanged(ref _addNewLine, value);
+        }
+
         public bool Repeat
         {
             get => _isRepeat;
@@ -50,6 +60,7 @@ namespace test_app2.SerialPMessages
             MessagesText = "";
             ToBeSentText = "";
             IsHEX = false;
+            AddNewLine = false;
 
             ClearMessagesCommand = new Command(ClearMessages);
             SendMessageCommand = new Command(SendMessage);
@@ -57,28 +68,47 @@ namespace test_app2.SerialPMessages
 
         private void SendMessage()
         {
-            if (Sender.Port.IsOpen)
+            if (!Sender.Port.IsOpen)
             {
-                if (!string.IsNullOrEmpty(ToBeSentText))
+                AddMessage("Порт не открыт, не удалось отправить сообщение");
+                return;
+            }
+            if (!string.IsNullOrEmpty(ToBeSentText))
+            {
+                try
                 {
-                    try
+                    if (IsHEX)
                     {
-                        Sender.SendMessage(ToBeSentText);
+                        string HEXpattern = @"^[0-9A-Fa-f]{2}( [0-9A-Fa-f]{2})*$";
+                        if (!Regex.IsMatch(ToBeSentText, HEXpattern))
+                        {
+                            AddMessage("Сообщение не соотвествует формату\r\nФормат: 6A 80 BC 73");
+                        }
+                        else
+                        {
+                            Sender.SendHEXMessage(ToBeSentText, AddNewLine);
+                            AddSentMessage(ToBeSentText);
+                        }
+                    }
+                    else
+                    {
+                        Sender.SendMessage(ToBeSentText, AddNewLine);
                         AddSentMessage(ToBeSentText);
-                        ToBeSentText = "";
                     }
-                    catch (TimeoutException timeout)
-                    {
-                        AddMessage("Время ожидания отправки истекло. Не удалось отаправить сообщение");
-                    }
-                    catch (Exception e)
-                    {
-                        AddMessage("Ошибка: " + e.ToString());
-                    }
-
+                    ToBeSentText = "";
                 }
+                catch (TimeoutException timeout)
+                {
+                    AddMessage("Время ожидания отправки истекло. Не удалось отаправить сообщение");
+                }
+                catch (Exception e)
+                {
+                    AddMessage("Ошибка: " + e.ToString());
+                }
+
             }
         }
+
         private void ClearMessages()
         {
             MessagesText = "";
@@ -88,14 +118,9 @@ namespace test_app2.SerialPMessages
         public void AddSentMessage(string message)
         {
             // (Date) | TX> hello there
-            if (_isHEX)
-            {
-
-            }
-            else
-            {
-                AddMessage($"{DateTime.Now} | TX> {message}");
-            } 
+            // byte[] bytes = Encoding.UTF8.GetBytes(message);
+            // AddMessage($"{DateTime.Now} | TX> {bytes}");
+            AddMessage($"{DateTime.Now} | TX> {message}"); 
         }
 
         public void AddReceivedMessage(string message)
@@ -107,7 +132,6 @@ namespace test_app2.SerialPMessages
         public void AddMessage(string message)
         {
             WriteLine(message);
-            //MessagesCount++;
         }
 
         public void WriteLine(string text)

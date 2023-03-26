@@ -2,7 +2,7 @@
 using System.IO.Ports;
 using test_app2.SerialPortDevice;
 using test_app2.ViewModels;
-
+using test_app2.Config;
 
 namespace test_app2
 {
@@ -11,7 +11,6 @@ namespace test_app2
     /// </summary>
     public partial class MainWindow : Window
     {
-        public SerialPort kek;
         public MainWindow()
         {
             InitializeComponent();
@@ -20,6 +19,7 @@ namespace test_app2
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             ((MainViewModel)DataContext).SerialPort.CloseAll();
+            Application.Current.Shutdown();
         }
     }
 
