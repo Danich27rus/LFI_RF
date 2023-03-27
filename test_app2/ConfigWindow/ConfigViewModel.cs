@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO.Ports;
-using TheRFramework.Utilities;
-using System.Collections.ObjectModel;
+﻿using TheRFramework.Utilities;
+using test_app2.SerialPortDevice;
 
 namespace test_app2.Config
 {
@@ -14,18 +7,21 @@ namespace test_app2.Config
     {
         public Command ConfigCommand { get; }
 
-        public ConfigWindow Config { get; set; }
+        public SerialPortViewModel SerialPort { get; set; }
 
-        public SerialPort Port { get; set; }
-
-        public ConfigViewModel()
+        public ConfigViewModel(SerialPortViewModel serialPort)
         {
-            Config = new ConfigWindow();
+            SerialPort = serialPort;
             ConfigCommand = new Command(ShowConfigWindow);
         }
+
         private void ShowConfigWindow()
         {
-            Config.Show();
+            var configWindow = new ConfigWindow
+            {
+                DataContext = this
+            };
+            configWindow.Show();
         }
     }
 }

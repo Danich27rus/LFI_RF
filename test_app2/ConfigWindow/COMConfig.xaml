@@ -5,7 +5,10 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:custom="clr-namespace:System.IO.Ports;assembly=System"
       xmlns:System="clr-namespace:System;assembly=mscorlib"
-      xmlns:Converters="clr-namespace:test_app2.Converters"
+      xmlns:settings="clr-namespace:test_app2.SerialPortDevice"
+      xmlns:Converters="clr-namespace:test_app2.Converters" 
+      xmlns:config="clr-namespace:test_app2.Config" 
+      d:DataContext="{d:DesignInstance Type=config:ConfigViewModel}"
       mc:Ignorable="d" 
       Height="700" Width="800"
       Title="Конфигурация COM"
@@ -28,7 +31,7 @@
         </ObjectDataProvider>
         <Converters:BoolToIsConnectedConverter x:Key="BoolToIsConnectedConverter"/>
     </Window.Resources>
-    <Grid Margin="5">
+    <Grid Margin="5" DataContext="{Binding}">
         <Grid>
             <Grid>
                 <Grid.RowDefinitions>
@@ -48,7 +51,50 @@
                             <Separator Margin="0 5"/>
                         </StackPanel>
                     </Grid>
-                    <Grid Grid.Row="2">
+                    <Grid DataContext="{Binding}"
+                        Grid.Row="2">
+                        <Grid.Resources>
+                            <x:Array x:Key="baudRates" Type="{x:Type System:String}">
+                                <System:String>110</System:String>
+                                <System:String>330</System:String>
+                                <System:String>600</System:String>
+                                <System:String>1200</System:String>
+                                <System:String>2400</System:String>
+                                <System:String>4800</System:String>
+                                <System:String>9600</System:String>
+                                <System:String>19200</System:String>
+                                <System:String>38400</System:String>
+                                <System:String>57600</System:String>
+                                <System:String>74800</System:String>
+                                <System:String>115200</System:String>
+                                <System:String>128000</System:String>
+                                <System:String>256000</System:String>
+                            </x:Array>
+                            <x:Array x:Key="dataBits" Type="{x:Type System:String}">
+                                <System:String>5</System:String>
+                                <System:String>6</System:String>
+                                <System:String>7</System:String>
+                                <System:String>8</System:String>
+                            </x:Array>
+                            <x:Array x:Key="stopBits" Type="{x:Type settings:SettingsItemViewModel}">
+                                <settings:SettingsItemViewModel PreviewName="1" RealName="One"/>
+                                <settings:SettingsItemViewModel PreviewName="1.5" RealName="OnePointFive"/>
+                                <settings:SettingsItemViewModel PreviewName="2" RealName="Two"/>
+                            </x:Array>
+                            <x:Array x:Key="parities" Type="{x:Type System:String}">
+                                <System:String>None</System:String>
+                                <System:String>Odd</System:String>
+                                <System:String>Even</System:String>
+                                <System:String>Mark</System:String>
+                                <System:String>Space</System:String>
+                            </x:Array>
+                            <x:Array x:Key="handshakes" Type="{x:Type settings:SettingsItemViewModel}">
+                                <settings:SettingsItemViewModel PreviewName="None" RealName="None"/>
+                                <settings:SettingsItemViewModel PreviewName="X On/Off" RealName="XOnXOff"/>
+                                <settings:SettingsItemViewModel PreviewName="R.T.S" RealName="RequestToSend"/>
+                                <settings:SettingsItemViewModel PreviewName="R.T.S X On/Off" RealName="RequestToSendXOnXOff"/>
+                            </x:Array>
+                        </Grid.Resources>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="5"/>
@@ -58,7 +104,11 @@
                             <ColumnDefinition Width="5"/>
                             <ColumnDefinition Width="80"/>
                             <ColumnDefinition Width="5"/>
-                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="80*"/>
                         </Grid.ColumnDefinitions>
                         <Grid>
                             <Grid.RowDefinitions>
@@ -70,7 +120,7 @@
                             </Grid.RowDefinitions>
                             <Button x:Name="COMRResetButton" 
                       Command="{Binding SerialPort.Settings.RefreshPortsCommand, Mode=OneTime}"
-                      Content="Обновить порты" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                      Content="Обновить порты" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Cursor="Hand"
                       />
                             <Button x:Name="COMRefreshButton" 
                       Command="{Binding SerialPort.Settings.RefreshPortsCommand, Mode=OneTime}"
@@ -81,6 +131,56 @@
                       Content="{Binding SerialPort.IsConnected, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToIsConnectedConverter}}" 
                       VerticalAlignment="Stretch" Grid.Row="5" HorizontalAlignment="Stretch"
                       />
+                        </Grid>
+                        <Grid Grid.Column="2">
+                            <TextBlock Text="COM Порт" Padding="2 5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                            <ListBox x:Name="SelectedCOM" 
+                                     Margin="0,25,0,0"
+                                     ItemsSource="{Binding SerialPort.Settings.AvaliablePorts, Mode=OneTime}"
+                                     SelectedItem="{Binding SerialPort.Settings.SelectedCOMPort, UpdateSourceTrigger=PropertyChanged}"
+                                     />
+                        </Grid>
+                        <Grid Grid.Column="4">
+                            <TextBlock Text="Скорость" Padding="2 5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                            <ListBox x:Name="COMBaudRate" Margin="0,25,0,0" SelectedIndex="0"
+                            ItemsSource="{StaticResource baudRates}"
+                                     SelectedItem="{Binding SerialPort.Settings.SelectedBaudRate, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+                        <Grid Grid.Column="6">
+                            <TextBlock Text="Биты данных" Padding="2 5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                            <ListBox x:Name="COMDataBits" Margin="0,25,0,0"
+                                     ItemsSource="{StaticResource dataBits}"
+                                     SelectedItem="{Binding SerialPort.Settings.SelectedDataBits, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+                        <Grid Grid.Column="8">
+                            <TextBlock Text="Стоповые биты" Padding="2 5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                            <ListBox x:Name="COMStopBits" Margin="0,25,0,0"
+                                     ItemsSource="{StaticResource stopBits}"
+                                     SelectedItem="{Binding SerialPort.Settings.SelectedStopBits, UpdateSourceTrigger=PropertyChanged}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <config:SettingsItem DataContext="{Binding}" Padding="2,1"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+                        <Grid Grid.Column="10">
+                            <TextBlock Text="Биты паритета" Padding="2 5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                            <ListBox x:Name="COMParityBits" Margin="0,25,0,0"
+                                     ItemsSource="{StaticResource parities}"
+                                     SelectedItem="{Binding SerialPort.Settings.SelectedParityBits, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+                        <Grid Grid.Column="12">
+                            <TextBlock Text="Рукопожатие" Padding="2 5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                            <ListBox x:Name="COMHandshake" Margin="0,25,0,0"
+                                      ItemsSource="{StaticResource handshakes}"
+                                     SelectedItem="{Binding SerialPort.Settings.SelectedHandshake, UpdateSourceTrigger=PropertyChanged}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <config:SettingsItem DataContext="{Binding}" Padding="2,1"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
                         </Grid>
                     </Grid>
                 </Grid>

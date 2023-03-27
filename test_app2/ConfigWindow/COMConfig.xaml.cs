@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using test_app2.ViewModels;
+using test_app2.Config;
 using TheRFramework.Utilities;
 
 namespace test_app2.Config

@@ -61,35 +61,6 @@
                     <TextBlock x:Name="COMDataRateTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Биты данных :" VerticalAlignment="Top"/>
                     <TextBlock x:Name="COMStopBitsTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="3" TextWrapping="Wrap" Text="Стоп-биты :" VerticalAlignment="Top"/>
                     <TextBlock x:Name="COMParityBitsTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="4" TextWrapping="Wrap" Text="Биты чётности :" VerticalAlignment="Top"/>
-                    <ComboBox x:Name="COMPortsComboBox"
-                      ItemsSource="{Binding SerialPort.Settings.AvaliablePorts, Mode=OneTime}"
-                      SelectedItem="{Binding SerialPort.Settings.SelectedCOMPort, UpdateSourceTrigger=PropertyChanged}"
-                      HorizontalAlignment="Left" Margin="135,7,0,0" VerticalAlignment="Top" Width="90"/>
-                    <ComboBox x:Name="COMBaudRatesComboBox" 
-                      ItemsSource="{Binding SerialPort.Settings.BaudRates, Mode=OneTime}"
-                      SelectedValue="{Binding SerialPort.Settings.SelectedBaudRate, UpdateSourceTrigger=PropertyChanged}"
-                      HorizontalAlignment="Left" Margin="135,7,0,0" Grid.Row="1"  VerticalAlignment="Top" Width="90"/>
-                    <ComboBox x:Name="COMDataRatesComboBox" 
-                      ItemsSource="{Binding SerialPort.Settings.DataBits, Mode=OneTime}"
-                      SelectedValue="{Binding SerialPort.Settings.SelectedDataBits, UpdateSourceTrigger=PropertyChanged}"
-                      HorizontalAlignment="Left" Margin="135,7,0,0" Grid.Row="2" VerticalAlignment="Top" Width="90"/>
-                    <ComboBox x:Name="COMStopBitsComboBox" 
-                      ItemsSource="{Binding Source={StaticResource PortStopSettingsViewModel}, Mode=OneTime}"
-                      SelectedValue="{Binding SerialPort.Settings.SelectedStopBits, UpdateSourceTrigger=PropertyChanged}"
-                      HorizontalAlignment="Left" Margin="135,7,0,0" Grid.Row="3" VerticalAlignment="Top" Width="90"/>
-                    <ComboBox x:Name="COMStartBitsComboBox" 
-                      ItemsSource="{Binding Source={StaticResource PortParitySettingsViewModel}, Mode=OneTime}"
-                      SelectedValue="{Binding SerialPort.Settings.SelectedParityBits, UpdateSourceTrigger=PropertyChanged}"
-                      HorizontalAlignment="Left" Margin="135,7,0,0" Grid.Row="4" VerticalAlignment="Top" Width="90"/>
-                    <Button  x:Name="COMOpenClosePortButton" 
-                      Command="{Binding SerialPort.AutoConnectDisconnectCommand, Mode=OneTime}"
-                      Content="{Binding SerialPort.IsConnected, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToIsConnectedConverter}}" 
-                      HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="5" Margin="135,10,0,0" Height="30" Width='90'
-                      />
-                    <Button x:Name="COMRefreshButton" 
-                      Command="{Binding SerialPort.Settings.RefreshPortsCommand, Mode=OneTime}"
-                      Content="Обновить" HorizontalAlignment="Left" Margin="15,10,0,0" VerticalAlignment="Top" Grid.Row="5" Height="30" Width='90'
-                      />
                     <Button x:Name="COMConfButton" 
                       Command="{Binding Config.ConfigCommand, Mode=OneTime}"
                       Content="Конфигурация" HorizontalAlignment="Left" Margin="245,10,0,0" VerticalAlignment="Top" Grid.Row="5" Height="30" Width='90'
