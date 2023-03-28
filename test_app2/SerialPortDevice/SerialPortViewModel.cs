@@ -93,8 +93,6 @@ namespace test_app2.SerialPortDevice
                 return;
             }
             if (string.IsNullOrEmpty(Settings.SelectedCOMPort))
-            //TODO: исправить проблему с null/0
-            //TODO: добавить конфигурацию всех настроек в основную форму
             {
                 Messages.AddMessage("Ошибка с конфигурацией COM порта. Проверьте, выбрали ли все пункты в настройках");
                 return;

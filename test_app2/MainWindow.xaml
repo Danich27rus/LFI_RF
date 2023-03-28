@@ -48,22 +48,29 @@
                 </Grid.RowDefinitions>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="40"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition Height="50.58"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <!--Grid HorizontalAlignment="Left" VerticalAlignment="Top" Width="320" Height="210" Margin="0,0,0,480"-->
                     <TextBlock x:Name="COMConnectionTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="COM-порт:" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="COMName" HorizontalAlignment="Right" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SerialPort.Settings.SelectedCOMPort}" VerticalAlignment="Top"/>
                     <TextBlock x:Name="COMBaudRateTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Скорость, бод/c:" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="COMDataRateTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Биты данных :" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="COMStopBitsTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="3" TextWrapping="Wrap" Text="Стоп-биты :" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="COMParityBitsTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="4" TextWrapping="Wrap" Text="Биты чётности :" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="COMBaudRate" HorizontalAlignment="Right" Margin="10,10,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding SerialPort.Settings.SelectedBaudRate}" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="LFIDeviceType" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Тип устройства:" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="LFIDeviceTypeModel" HorizontalAlignment="Right" Margin="10,10,0,0" Grid.Row="2" TextWrapping="Wrap" Text="{Binding FaultIndicator.DeviceModel}" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="LFIDeviceFamily" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="3" TextWrapping="Wrap" Text="Семейство устройства:" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="LFIDeviceFamilyModel" HorizontalAlignment="Right" Margin="10,10,0,0" Grid.Row="3" TextWrapping="Wrap" Text="{Binding FaultIndicator.DeviceFamily}" VerticalAlignment="Top"/>
+                    <Button  x:Name="COMOpenClosePortMainButton" 
+                      Command="{Binding SerialPort.AutoConnectDisconnectCommand, Mode=OneTime}"
+                      Content="{Binding SerialPort.IsConnected, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToIsConnectedConverter}}" 
+                      VerticalAlignment="Stretch" Margin="163,0,0,0" Grid.Row="5" HorizontalAlignment="Stretch"
+                      />
                     <Button x:Name="COMConfButton" 
                       Command="{Binding Config.ConfigCommand, Mode=OneTime}"
-                      Content="Конфигурация" HorizontalAlignment="Left" Margin="245,10,0,0" VerticalAlignment="Top" Grid.Row="5" Height="30" Width='90'
+                      Content="Конфигурация" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,300,0" Grid.Row="5"
                       />
                     <!--Для кнопок
                     Width="83" Background="#FFA5D6A7"
@@ -83,26 +90,6 @@
                         </Grid>
                     </GroupBox>
                 </Grid>
-
-                <!--Menu x:Name="menu">
-                <MenuItem Header="File">
-                    <MenuItem Header="New"></MenuItem>
-                    <MenuItem Header="Open"></MenuItem>
-                    <MenuItem Header="Save"></MenuItem>
-                    <MenuItem Header="SaveAs..."></MenuItem>
-                    <Separator></Separator>
-                    <MenuItem Header="Exit"></MenuItem>
-                </MenuItem>
-                <MenuItem Header="Edit">
-                    <MenuItem Header="Undo"></MenuItem>
-                    <MenuItem Header="Redo"></MenuItem>
-                    <Separator></Separator>
-                    <MenuItem Header="Cut"></MenuItem>
-                    <MenuItem Header="Copy"></MenuItem>
-                    <MenuItem Header="Paste"></MenuItem>
-                </MenuItem>
-                </Menu-->
-                <!--/Grid-->
                 <Grid Grid.Row="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="225"/>

@@ -1,5 +1,6 @@
 ﻿using TheRFramework.Utilities;
 using test_app2.SerialPortDevice;
+using test_app2.FaultIndicators;
 
 namespace test_app2.Config
 {
@@ -9,9 +10,12 @@ namespace test_app2.Config
 
         public SerialPortViewModel SerialPort { get; set; }
 
-        public ConfigViewModel(SerialPortViewModel serialPort)
+        public FaultIndicatorViewModel FaultIndicator { get; set; }
+
+        public ConfigViewModel(SerialPortViewModel serialPort, FaultIndicatorViewModel faultIndicator)
         {
             SerialPort = serialPort;
+            FaultIndicator = faultIndicator;
             ConfigCommand = new Command(ShowConfigWindow);
         }
 

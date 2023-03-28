@@ -7,6 +7,7 @@ using test_app2.SerialPMessages;
 using test_app2.SerialPortDevice;
 using test_app2.Config;
 using test_app2.UI;
+using test_app2.FaultIndicators;
 
 namespace test_app2.ViewModels
 {
@@ -15,6 +16,8 @@ namespace test_app2.ViewModels
         //19 00 00 04 08 00 00 00 00 00 00 F4 8B
         //тест для последовательного порта через КДТН
         public SerialPortMessagesViewModel Messages { get; set; }
+
+        public FaultIndicatorViewModel FaultIndicator { get; set; }
 
         public SerialPortMessagesReceive Receiver { get; set; }
 
@@ -30,6 +33,7 @@ namespace test_app2.ViewModels
             Receiver = new SerialPortMessagesReceive();
             Sender = new SerialPortMessagesSend();
             Messages = new SerialPortMessagesViewModel();
+            FaultIndicator = new FaultIndicatorViewModel();
 
             // hmm
             Receiver.Messages = Messages;
@@ -43,7 +47,7 @@ namespace test_app2.ViewModels
             Receiver.Port = SerialPort.Port;
             Sender.Port = SerialPort.Port;
 
-            Config = new ConfigViewModel(SerialPort);
+            Config = new ConfigViewModel(SerialPort, FaultIndicator);
             //Config.SerialPort = SerialPort;
             //Config.Port = SerialPort.Port;
             //Config.Messages = SerialPort.Messages;

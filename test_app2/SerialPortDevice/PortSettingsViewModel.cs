@@ -80,7 +80,8 @@ namespace test_app2.SerialPortDevice
             else
             {
                 // default to COM1 just in case
-                SelectedCOMPort = "COM1";
+                // нет, он знаят по дефолту
+                SelectedCOMPort = "";
             }
         }
 

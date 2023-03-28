@@ -30,6 +30,7 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
         <Converters:BoolToIsConnectedConverter x:Key="BoolToIsConnectedConverter"/>
+        <Converters:RadioBoolToIntConverter x:Key="RadioBoolToIntConverter"/>
     </Window.Resources>
     <Grid Margin="5" DataContext="{Binding}">
         <Grid>
@@ -220,19 +221,45 @@
                                 <RowDefinition Height="25*"/>
                             </Grid.RowDefinitions>
                             <TextBlock Text="Тип устройства" Padding="5" HorizontalAlignment="Center"/>
-                            <RadioButton Content="JYL-FF-FI" Grid.Row="1"/>
-                            <RadioButton Content="JYL-FF-CN-HP" Grid.Row="2"/>
-                            <RadioButton Content="JYZ(W)-FF-FI V1.0" Grid.Row="3"/>
-                            <RadioButton Content="JYZ(W)-FF-FI V2.0 (JYZ-HW-FI V1.0)" Grid.Row="4"/>
-                            <RadioButton Content="DYZ-FF-FI (КЗ обычное)" Grid.Row="5"/>
-                            <RadioButton Content="DYZ-FF-FI (Третья гармоника)" Grid.Row="6"/>
-                            <RadioButton Content="JYZ-HW-FI V2.0 (Передача через 2,4 ГГц)" Grid.Row="7"/>
-                            <RadioButton Content="JYZ-LB" Grid.Row="8"/>
-                            <RadioButton Content="F-LTS100" Grid.Row="9"/>
-                            <RadioButton Content="JYZ(W)-FF-FI V2.0 (LoRa_10S)" Grid.Row="10"/>
-                            <RadioButton Content="JYZ-HW-LoRa" Grid.Row="11"/>
-                            <RadioButton Content="JYZ-HW(FF)-Lora-С" Grid.Row="12"/>
-                            <RadioButton Content="JYZ-LH-LoRa" Grid.Row="13"/>
+                            <RadioButton Content="JYL-FF-FI" Grid.Row="1"
+                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=1}"
+                            Command="{Binding FaultIndicator.UpdateContentCommand, Mode=OneTime}"/>
+                            <RadioButton Content="JYL-FF-CN-HP" Grid.Row="2"
+                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=2}"
+                            Command="{Binding FaultIndicator.UpdateContentCommand, Mode=OneTime}"/>
+                            <RadioButton Content="JYZ(W)-FF-FI V1.0" Grid.Row="3"
+                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=3}"
+                            Command="{Binding FaultIndicator.UpdateContentCommand, Mode=OneTime}"/>
+                            <RadioButton Content="JYZ(W)-FF-FI V2.0 (JYZ-HW-FI V1.0)" Grid.Row="4"
+                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=4}"
+                            Command="{Binding FaultIndicator.UpdateContentCommand, Mode=OneTime}"/>
+                            <RadioButton Content="DYZ-FF-FI (КЗ обычное)" Grid.Row="5"
+                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=5}"
+                            Command="{Binding FaultIndicator.UpdateContentCommand, Mode=OneTime}"/>
+                            <RadioButton Content="DYZ-FF-FI (Третья гармоника)" Grid.Row="6"
+                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=6}"
+                            Command="{Binding FaultIndicator.UpdateContentCommand}"/>
+                            <RadioButton Content="JYZ-HW-FI V2.0 (Передача через 2,4 ГГц)" Grid.Row="7"
+                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=7}"
+                            Command="{Binding FaultIndicator.UpdateContentCommand}"/>
+                            <RadioButton Content="JYZ-LB" Grid.Row="8"
+                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=8}"
+                            Command="{Binding FaultIndicator.UpdateContentCommand}"/>
+                            <RadioButton Content="F-LTS100" Grid.Row="9"
+                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=9}"
+                            Command="{Binding FaultIndicator.UpdateContentCommand}"/>
+                            <RadioButton Content="JYZ(W)-FF-FI V2.0 (LoRa_10S)" Grid.Row="10"
+                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=10}"
+                            Command="{Binding FaultIndicator.UpdateContentCommand}"/>
+                            <RadioButton Content="JYZ-HW-LoRa" Grid.Row="11"
+                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=11}"
+                            Command="{Binding FaultIndicator.UpdateContentCommand}"/>
+                            <RadioButton Content="JYZ-HW(FF)-Lora-С" Grid.Row="12"
+                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=12}"
+                            Command="{Binding FaultIndicator.UpdateContentCommand}"/>
+                            <RadioButton Content="JYZ-LH-LoRa" Grid.Row="13"
+                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=13}"
+                            Command="{Binding FaultIndicator.UpdateContentCommand}"/>
                         </Grid>
                         <Grid Grid.Column="4">
                             <Grid.RowDefinitions>
