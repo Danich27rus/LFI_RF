@@ -16,6 +16,7 @@ namespace test_app2.Config
         {
             SerialPort = serialPort;
             FaultIndicator = faultIndicator;
+            //Selected
             ConfigCommand = new Command(ShowConfigWindow);
         }
 

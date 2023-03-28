@@ -8,31 +8,44 @@ namespace test_app2.Utilities
 {
     internal class HEXConverter
     {
-        private string[]? _inputString;
-        private byte[]? _outputString;
+        private string[]? _lettersString;
+        private byte[]? _hexString;
 
-        public string[] InputString
+        public string[] LettersString
         { 
-            get => _inputString;  
-            set => _inputString = value;
+            get => _lettersString;  
+            set => _lettersString = value;
         }
 
-        public byte[] OutputSting
+        public byte[] HEXString
         {
-            get => _outputString;
-            set => _outputString = value;
+            get => _hexString;
+            set => _hexString = value;
         }
 
         public byte[] StringToByteArray(String hex)
         {
-            
-            InputString = hex.Split(' ');
-            OutputSting = new byte[InputString.Length];
-            for (var i = 0; i < InputString.Length; i++)
+            LettersString = hex.Split(' ');
+            HEXString = new byte[LettersString.Length];
+            for (var i = 0; i < LettersString.Length; i++)
             {
-                OutputSting[i] = Convert.ToByte(InputString[i], 16);
+                HEXString[i] = Convert.ToByte(LettersString[i], 16);
             }
-            return OutputSting;
+            return HEXString;
+        }
+
+        public string ToHexString(String str)
+        {
+            int value, i = 0;
+            char[] charValues = str.ToCharArray();
+            LettersString = new string[charValues.Length];
+            foreach (var _char in charValues)
+            {
+                value = Convert.ToInt32(_char);
+                LettersString[i] = String.Format("{0:X}", value);
+                i += 1;
+            }
+            return string.Join(" ", LettersString); // returns: "48656C6C6F20776F726C64" for "Hello world"
         }
     }
 }

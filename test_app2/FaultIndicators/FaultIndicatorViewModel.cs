@@ -6,10 +6,19 @@ namespace test_app2.FaultIndicators
     public class FaultIndicatorViewModel : BaseViewModel
     {
         private string[] _naming = { 
-            "JYL - FF - FI",
-            "JYL - FF - CN - HP",
-            "JYZ(W) - FF - FI V1.0",
-            "JYZ(W) - FF - FI V2.0 (JYZ - HW - FI V1.0)",
+            "JYL-FF-FI",
+            "JYL-FF-CN-HP",
+            "JYZ(W)-FF-FI V1.0",
+            "JYZ(W)-FF-FI V2.0 (JYZ-HW-FI V1.0)",
+            "DYZ-FF-FI",
+            "DYZ-FF-FI",
+            "JYZ-HW-FI V2.0",
+            "JYZ-LB",
+            "F-LTS100",
+            "JYZ(W)-FF-FI V2.0",
+            "JYZ-HW-LoRa",
+            "JYZ-LH-LoRa",
+            ""
         };
 
         private int _deviceModelNum;
@@ -20,7 +29,7 @@ namespace test_app2.FaultIndicators
         private int _callFrequency;
         private int _callTime;
         private int _waitTime;
-        private string _MACAddr;
+        //private string _MACAddr;
 
         public int DeviceModelNum
         {

@@ -82,7 +82,7 @@ namespace test_app2.SerialPMessages
                         string HEXpattern = @"^[0-9A-Fa-f]{2}( [0-9A-Fa-f]{2})*$";
                         if (!Regex.IsMatch(ToBeSentText, HEXpattern))
                         {
-                            AddMessage("Сообщение не соотвествует формату\r\nФормат: 6A 80 BC 73");
+                            AddMessage("Сообщение не соотвествует формату\r\nФормат: 6A 80 BC 73 70 E2");
                         }
                         else
                         {
@@ -99,7 +99,7 @@ namespace test_app2.SerialPMessages
                 }
                 catch (TimeoutException timeout)
                 {
-                    AddMessage("Время ожидания отправки истекло. Не удалось отаправить сообщение");
+                    AddMessage("Время ожидания отправки истекло. Не удалось отправить сообщение");
                 }
                 catch (Exception e)
                 {

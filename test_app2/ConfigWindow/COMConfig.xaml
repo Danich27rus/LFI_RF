@@ -138,26 +138,28 @@
                             <ListBox x:Name="SelectedCOM" 
                                      Margin="0,25,0,0"
                                      ItemsSource="{Binding SerialPort.Settings.AvaliablePorts, Mode=OneTime}"
-                                     SelectedItem="{Binding SerialPort.Settings.SelectedCOMPort, UpdateSourceTrigger=PropertyChanged}"
+                                     SelectedItem="{Binding SerialPort.Settings.SelectedCOMPort, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"
                                      />
                         </Grid>
                         <Grid Grid.Column="4">
                             <TextBlock Text="Скорость" Padding="2 5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                            <ListBox x:Name="COMBaudRate" Margin="0,25,0,0" SelectedIndex="0"
+                            <ListBox x:Name="COMBaudRate" Margin="0,25,0,0" SelectedIndex="6"
                             ItemsSource="{StaticResource baudRates}"
-                                     SelectedItem="{Binding SerialPort.Settings.SelectedBaudRate, UpdateSourceTrigger=PropertyChanged}"/>
+                            SelectedItem="{Binding SerialPort.Settings.SelectedBaudRate, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"/>
                         </Grid>
                         <Grid Grid.Column="6">
                             <TextBlock Text="Биты данных" Padding="2 5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                            <ListBox x:Name="COMDataBits" Margin="0,25,0,0"
+                            <ListBox x:Name="COMDataBits" Margin="0,25,0,0" HorizontalAlignment="Stretch" FontSize="20"
+                                     SelectedIndex="3"
                                      ItemsSource="{StaticResource dataBits}"
-                                     SelectedItem="{Binding SerialPort.Settings.SelectedDataBits, UpdateSourceTrigger=PropertyChanged}"/>
+                                     SelectedItem="{Binding SerialPort.Settings.SelectedDataBits, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"/>
                         </Grid>
                         <Grid Grid.Column="8">
                             <TextBlock Text="Стоповые биты" Padding="2 5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                             <ListBox x:Name="COMStopBits" Margin="0,25,0,0"
+                                     SelectedIndex="0"
                                      ItemsSource="{StaticResource stopBits}"
-                                     SelectedItem="{Binding SerialPort.Settings.SelectedStopBits, UpdateSourceTrigger=PropertyChanged}">
+                                     SelectedItem="{Binding SerialPort.Settings.SelectedStopBits, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <config:SettingsItem DataContext="{Binding}" Padding="2,1"/>
@@ -167,15 +169,17 @@
                         </Grid>
                         <Grid Grid.Column="10">
                             <TextBlock Text="Биты паритета" Padding="2 5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                            <ListBox x:Name="COMParityBits" Margin="0,25,0,0"
+                            <ListBox x:Name="COMParityBits" Margin="0,25,0,0" HorizontalAlignment="Stretch" FontSize="16"
+                                     SelectedIndex="0"
                                      ItemsSource="{StaticResource parities}"
-                                     SelectedItem="{Binding SerialPort.Settings.SelectedParityBits, UpdateSourceTrigger=PropertyChanged}"/>
+                                     SelectedItem="{Binding SerialPort.Settings.SelectedParityBits, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"/>
                         </Grid>
                         <Grid Grid.Column="12">
                             <TextBlock Text="Рукопожатие" Padding="2 5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                             <ListBox x:Name="COMHandshake" Margin="0,25,0,0"
+                                      SelectedIndex="0"
                                       ItemsSource="{StaticResource handshakes}"
-                                     SelectedItem="{Binding SerialPort.Settings.SelectedHandshake, UpdateSourceTrigger=PropertyChanged}">
+                                     SelectedItem="{Binding SerialPort.Settings.SelectedHandshake, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <config:SettingsItem DataContext="{Binding}" Padding="2,1"/>

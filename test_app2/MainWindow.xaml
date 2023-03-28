@@ -29,6 +29,64 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
         <Converters:BoolToIsConnectedConverter x:Key="BoolToIsConnectedConverter"/>
+        <Style x:Key="GreyDataGrid" TargetType="DataGrid">
+            <Setter Property="Foreground" Value="#FF2F2F2F">
+            </Setter>
+        </Style>
+        <Style x:Key="{ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle, TypeInTargetAssembly={x:Type DataGrid}}" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type DataGridCell}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border x:Name="border"
+                BorderBrush="Transparent"
+                BorderThickness="1"
+                Background="Transparent"
+                SnapsToDevicePixels="True">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="FocusStates">
+                                    <VisualState x:Name="Unfocused" />
+                                    <VisualState x:Name="Focused" />
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CurrentStates">
+                                    <VisualState x:Name="Regular" />
+                                    <VisualState x:Name="Current">
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="border"
+                                                Storyboard.TargetProperty="(Border.BorderBrush).
+                      (SolidColorBrush.Color)">
+                                                <EasingColorKeyFrame KeyTime="0"
+                                         Value="White" />
+                                            </ColorAnimationUsingKeyFrames
+                                                >
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="VerticalContentAlignment"
+          Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="Red"/>
+        </Style>
     </Window.Resources>
     <Window.DataContext>
         <viewmodels:MainViewModel/>
@@ -42,36 +100,42 @@
             </Grid.ColumnDefinitions>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="240*"/>
+                    <RowDefinition Height="180*"/>
                     <RowDefinition Height="170*"/>
-                    <RowDefinition Height="260"/>
+                    <RowDefinition Height="340"/>
                 </Grid.RowDefinitions>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
-                        <RowDefinition Height="50.58"/>
+                        <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <!--Grid HorizontalAlignment="Left" VerticalAlignment="Top" Width="320" Height="210" Margin="0,0,0,480"-->
                     <TextBlock x:Name="COMConnectionTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="COM-порт:" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="COMName" HorizontalAlignment="Right" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SerialPort.Settings.SelectedCOMPort}" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="COMName" HorizontalAlignment="Right" Margin="10,10,30,0" TextWrapping="Wrap" Text="{Binding SerialPort.Settings.SelectedCOMPort}" VerticalAlignment="Top"/>
                     <TextBlock x:Name="COMBaudRateTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Скорость, бод/c:" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="COMBaudRate" HorizontalAlignment="Right" Margin="10,10,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding SerialPort.Settings.SelectedBaudRate}" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="COMBaudRate" HorizontalAlignment="Right" Margin="10,10,30,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding SerialPort.Settings.SelectedBaudRate}" VerticalAlignment="Top"/>
                     <TextBlock x:Name="LFIDeviceType" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Тип устройства:" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="LFIDeviceTypeModel" HorizontalAlignment="Right" Margin="10,10,0,0" Grid.Row="2" TextWrapping="Wrap" Text="{Binding FaultIndicator.DeviceModel}" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="LFIDeviceTypeModel" HorizontalAlignment="Right" Margin="10,10,30,0" Grid.Row="2" TextWrapping="Wrap" Text="{Binding FaultIndicator.DeviceModel}" VerticalAlignment="Top"/>
                     <TextBlock x:Name="LFIDeviceFamily" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="3" TextWrapping="Wrap" Text="Семейство устройства:" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="LFIDeviceFamilyModel" HorizontalAlignment="Right" Margin="10,10,0,0" Grid.Row="3" TextWrapping="Wrap" Text="{Binding FaultIndicator.DeviceFamily}" VerticalAlignment="Top"/>
-                    <Button  x:Name="COMOpenClosePortMainButton" 
+                    <TextBlock x:Name="LFIDeviceFamilyModel" HorizontalAlignment="Right" Margin="10,10,30,0" Grid.Row="3" TextWrapping="Wrap" Text="{Binding FaultIndicator.DeviceFamily}" VerticalAlignment="Top"/>
+                    <Grid Grid.Row="5" Cursor="">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button  x:Name="COMOpenClosePortMainButton" 
                       Command="{Binding SerialPort.AutoConnectDisconnectCommand, Mode=OneTime}"
                       Content="{Binding SerialPort.IsConnected, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToIsConnectedConverter}}" 
-                      VerticalAlignment="Stretch" Margin="163,0,0,0" Grid.Row="5" HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Cursor="Hand"
                       />
-                    <Button x:Name="COMConfButton" 
+                        <Button x:Name="COMConfButton" Grid.Column="1"
                       Command="{Binding Config.ConfigCommand, Mode=OneTime}"
-                      Content="Конфигурация" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,300,0" Grid.Row="5"
+                      Content="Конфигурация" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="5"
                       />
+                    </Grid>
                     <!--Для кнопок
                     Width="83" Background="#FFA5D6A7"
                       BorderBrush="#FF388E3C" Foreground="#FF1B5E20" BorderThickness="0,0,0,0"/-->
@@ -83,17 +147,17 @@
                             <TextBlock x:Name="CallAddrtextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Частота вызова" VerticalAlignment="Top" Margin="5,40,0,0"/>
                             <TextBlock x:Name="CallTimetextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Время вызова" VerticalAlignment="Top" Margin="5,70,0,0"/>
                             <TextBlock x:Name="WaitTimetextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Время ожидания ответа" VerticalAlignment="Top" Margin="5,100,0,0"/>
-                            <TextBox x:Name="CallFreqtextBox" HorizontalAlignment="Left" Margin="176,8,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="100"/>
-                            <TextBox x:Name="CallAddrtextBox" HorizontalAlignment="Left" Margin="176,38,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="100"/>
-                            <TextBox x:Name="CallTimetextBox" HorizontalAlignment="Left" Margin="176,68,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="100"/>
-                            <TextBox x:Name="WaitTimetextBox" HorizontalAlignment="Left" Margin="176,98,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="100"/>
+                            <TextBox x:Name="CallFreqtextBox" HorizontalAlignment="Center" Margin="175,8,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="100"/>
+                            <TextBox x:Name="CallAddrtextBox" HorizontalAlignment="Center" Margin="175,38,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="100"/>
+                            <TextBox x:Name="CallTimetextBox" HorizontalAlignment="Center" Margin="175,68,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="100"/>
+                            <TextBox x:Name="WaitTimetextBox" HorizontalAlignment="Center" Margin="175,98,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="100"/>
                         </Grid>
                     </GroupBox>
                 </Grid>
                 <Grid Grid.Row="2">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="225"/>
-                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="275*"/>
+                        <RowDefinition Height="55*"/>
                     </Grid.RowDefinitions>
                     <GroupBox Header="Сообщения">
                         <Grid>
@@ -107,16 +171,19 @@
                          Margin="0,0,0,0"/>
                         </Grid>
                     </GroupBox>
-                    <Grid VerticalAlignment="Bottom" Height="40" Grid.Row="1">
+                    <Grid Grid.Row="1">
                         <Button x:Name="SendButton" Margin="5,0,0,0" Command="{Binding Messages.SendMessageCommand, Mode=OneTime}"
-                         Content="Отправить" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="137"/>
+                         Content="Отправить" HorizontalAlignment="Left" VerticalAlignment="Center" Height="45" Width="137"/>
                         <CheckBox x:Name="HEXCheckBox"
-                         Margin="340,5,10,10"
+                         Margin="320,0,10,5" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                          IsChecked="{Binding Messages.IsHEX, UpdateSourceTrigger=PropertyChanged}"
-                         Content="Отправка HEX"/>
+                         Content="Отправка HEX" Cursor=""/>
+                        <CheckBox x:Name="CRLFCheckBox"
+                         Margin="320,5,10,10" HorizontalAlignment="Right"
+                         Content="+\n в конце строки" VerticalAlignment="Top"/>
                         <TextBox x:Name="COMInputTextBox"
                          Text="{Binding Messages.ToBeSentText, UpdateSourceTrigger=PropertyChanged}"   
-                         Margin="150,0,150,0" TextWrapping="Wrap" VerticalAlignment="Center" Height="30">
+                         Margin="150,0,150,0" TextWrapping="Wrap" VerticalAlignment="Center" Height="45">
                         </TextBox>
                     </Grid>
                 </Grid>
@@ -128,16 +195,51 @@
                     <RowDefinition Height="150*"/>
                 </Grid.RowDefinitions>
                 <Grid>
+                    <Grid.Resources>
+                        <x:Array x:Key="BaseParameters" Type="{x:Type System:String}">
+                            <System:String>Величина электрического поля (в В/м)</System:String>
+                            <System:String>Минимальное значение тока в линии (в А)</System:String>
+                            <System:String>Интервал отправки телеизмерений №1 (в с)</System:String>
+                            <System:String>Интервал отправки телеизмерений №2 (в с)</System:String>
+                            <System:String>Период отключения датчиков (в мин)</System:String>
+                            <System:String>Порог значения тока отправки телеизмерений (в А)</System:String>
+                            <System:String>Относительное значение тока (в %)</System:String>
+                            <System:String>Абсолютное значение изменения тока (в А)</System:String>
+                        </x:Array>
+                        <x:Array x:Key="InterphaseShortCircuitParameters" Type="{x:Type System:String}">
+                            <System:String>Величина электрического поля (в В/м)</System:String>
+                            <System:String>Минимальное значение тока в линии (в А)</System:String>
+                            <System:String>Интервал отправки телеизмерений №1 (в с)</System:String>
+                            <System:String>Интервал отправки телеизмерений №2 (в с)</System:String>
+                            <System:String>Период отключения датчиков (в мин)</System:String>
+                            <System:String>Порог значения тока отправки телеизмерений (в А)</System:String>
+                            <System:String>Относительное значение тока (в %)</System:String>
+                            <System:String>Абсолютное значение изменения тока (в А)</System:String>
+                        </x:Array>
+                    </Grid.Resources>
                     <!--ScrollViewer/-->
                     <!--DataGrid x:Name="dataGrid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,0,0,97"/-->
                     <GroupBox x:Name="IndicatorParamsGroupBox" Header="Значения в памяти индикатора">
-                        <TabControl x:Name="IndicatorParamsTabControl" Margin="0,0,0,0">
+                        <TabControl x:Name="IndicatorParamsTabControl">
                             <TabItem Header="Общие параметры индикатора" Width="190" Height="30">
-                                <Grid Background="#FF2F2F2F">
+                                <Grid>
+                                    <DataGrid x:Name="IndicatorBaseDataGrid" Style="{StaticResource GreyDataGrid}" Foreground="#FF2F2F2F" ItemsSource="{Binding Source={StaticResource BaseParameters}}">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Params" Binding="{Binding}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="Params" Width="100"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
                                 </Grid>
                             </TabItem>
                             <TabItem Header="Параметры определения межфазного замыкания" Width="300" Height="30">
                                 <Grid Background="#FF2F2F2F">
+                                    <DataGrid x:Name="IndicatorBasokDataGrid" Style="{StaticResource GreyDataGrid}">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Params" Binding="{Binding BaseParameters[0]}" />
+                                            <DataGridTemplateColumn Header="Birthday">
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
                                 </Grid>
                             </TabItem>
                             <TabItem Header="Параметры определения замыкания на землю" Width="280" Height="30">
