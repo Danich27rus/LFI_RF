@@ -17,7 +17,6 @@ namespace test_app2.SerialPMessages
     public class SerialPortMessagesReceive
     {
         public static CancellationTokenSource cancelSource = new CancellationTokenSource();
-        private Thread ReceiverThread { get; set; }
         private HEXConverter hexConverter { get; set; }
         public bool CanReceive { get; set; }
         public bool ShouldShutDownPermanently { get; set; }

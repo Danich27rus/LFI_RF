@@ -8,22 +8,6 @@ namespace test_app2.FaultIndicators
 {
     public class FaultIndicatorViewModel : BaseViewModel, IEditableObject
     {
-        private string[] _naming = {
-            "JYL-FF-FI",
-            "JYL-FF-CN-HP",
-            "JYZ(W)-FF-FI V1.0",
-            "JYZ(W)-FF-FI V2.0 (JYZ-HW-FI V1.0)",
-            "DYZ-FF-FI",
-            "DYZ-FF-FI",
-            "JYZ-HW-FI V2.0",
-            "JYZ-LB",
-            "F-LTS100",
-            "JYZ(W)-FF-FI V2.0",
-            "JYZ-HW-LoRa",
-            "JYZ-LH-LoRa",
-            ""
-        };
-
         private int _deviceModelNum;
         private int _deviceFamilyNum;
         private string _deviceModel;
@@ -98,7 +82,7 @@ namespace test_app2.FaultIndicators
 
         public void UpdateContent()
         {
-            DeviceModel = _naming[DeviceModelNum];
+            //DeviceModel = _naming[DeviceModelNum];
         }
     }
 }

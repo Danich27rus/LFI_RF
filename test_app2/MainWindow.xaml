@@ -116,16 +116,16 @@
                     <TextBlock x:Name="COMName" HorizontalAlignment="Right" Margin="10,10,30,0" TextWrapping="Wrap" Text="{Binding SerialPort.Settings.SelectedCOMPort}" VerticalAlignment="Top"/>
                     <TextBlock x:Name="COMBaudRateTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Скорость, бод/c:" VerticalAlignment="Top"/>
                     <TextBlock x:Name="COMBaudRate" HorizontalAlignment="Right" Margin="10,10,30,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding SerialPort.Settings.SelectedBaudRate}" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="LFIDeviceType" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Тип устройства:" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="LFIDeviceTypeModel" HorizontalAlignment="Right" Margin="10,10,30,0" Grid.Row="2" TextWrapping="Wrap" Text="{Binding FaultIndicator.DeviceModel}" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="LFIDeviceFamily" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="3" TextWrapping="Wrap" Text="Семейство устройства:" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="LFIDeviceFamilyModel" HorizontalAlignment="Right" Margin="10,10,30,0" Grid.Row="3" TextWrapping="Wrap" Text="{Binding FaultIndicator.DeviceFamily}" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="LFIDeviceTypeTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Тип устройства:" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="LFIDeviceTypeModel" HorizontalAlignment="Right" Margin="10,10,30,0" Grid.Row="2" TextWrapping="Wrap" Text="{Binding IndicatorData.DeviceModel}" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="LFIDeviceFamilyTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="3" TextWrapping="Wrap" Text="Семейство устройства:" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="LFIDeviceFamilyModel" HorizontalAlignment="Right" Margin="10,10,30,0" Grid.Row="3" TextWrapping="Wrap" Text="{Binding IndicatorData.DeviceFamily}" VerticalAlignment="Top"/>
                     <Grid Grid.Row="5" Cursor="">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Button  x:Name="COMOpenClosePortMainButton" 
+                        <Button x:Name="COMOpenClosePortMainButton" 
                       Command="{Binding SerialPort.AutoConnectDisconnectCommand, Mode=OneTime}"
                       Content="{Binding SerialPort.IsConnected, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToIsConnectedConverter}}" 
                       VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Cursor="Hand"
@@ -243,7 +243,14 @@
                                             </Style-->
                                         </DataGrid.Resources>
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="{Binding Source={StaticResource BaseParameters}, Path=[0]}" Binding="{Binding CallAdress, StringFormat=d}"/>
+                                            <DataGridTextColumn Header="{Binding Source={StaticResource BaseParameters}, Path=[0]}" Binding="{Binding CallAdress, StringFormat=d}" Width="105"/>
+                                            <DataGridTextColumn Header="{Binding Source={StaticResource BaseParameters}, Path=[1]}" Binding="{Binding CallAdress, StringFormat=d}" Width="100"/>
+                                            <DataGridTextColumn Header="{Binding Source={StaticResource BaseParameters}, Path=[2]}" Binding="{Binding CallAdress, StringFormat=d}" Width="105"/>
+                                            <DataGridTextColumn Header="{Binding Source={StaticResource BaseParameters}, Path=[3]}" Binding="{Binding CallAdress, StringFormat=d}" Width="105"/>
+                                            <DataGridTextColumn Header="{Binding Source={StaticResource BaseParameters}, Path=[4]}" Binding="{Binding CallAdress, StringFormat=d}" Width="90"/>
+                                            <DataGridTextColumn Header="{Binding Source={StaticResource BaseParameters}, Path=[5]}" Binding="{Binding CallAdress, StringFormat=d}" Width="110"/>
+                                            <DataGridTextColumn Header="{Binding Source={StaticResource BaseParameters}, Path=[7]}" Binding="{Binding CallAdress, StringFormat=d}" Width="110"/>
+
                                         </DataGrid.Columns>
                                         <DataGrid.ColumnHeaderStyle>
                                             <Style TargetType="{x:Type DataGridColumnHeader}">
@@ -253,6 +260,13 @@
                                                 <Setter Property="FontWeight" Value="SemiBold"/>
                                                 <Setter Property="HorizontalContentAlignment" Value="Center"/>
                                                 <Setter Property="Padding" Value="5"/>
+                                                <Setter Property="ContentTemplate">
+                                                    <Setter.Value>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                                        </DataTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
                                             </Style>
                                         </DataGrid.ColumnHeaderStyle>
                                         <DataGrid.RowStyle>

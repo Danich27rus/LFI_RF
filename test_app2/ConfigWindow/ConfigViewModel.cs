@@ -10,12 +10,12 @@ namespace test_app2.Config
 
         public SerialPortViewModel SerialPort { get; set; }
 
-        public FaultIndicatorViewModel FaultIndicator { get; set; }
+        public IndicatorDataViewModel IndicatorData { get; set; }
 
-        public ConfigViewModel(SerialPortViewModel serialPort, FaultIndicatorViewModel faultIndicator)
+        public ConfigViewModel(SerialPortViewModel serialPort, IndicatorDataViewModel indicatorData)
         {
             SerialPort = serialPort;
-            FaultIndicator = faultIndicator;
+            IndicatorData = indicatorData;
             //Selected
             ConfigCommand = new Command(ShowConfigWindow);
         }

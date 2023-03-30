@@ -21,6 +21,8 @@ namespace test_app2.ViewModels
 
         public FaultIndicatorViewModel FaultIndicator { get; set; }
 
+        public IndicatorDataViewModel IndicatorData { get; set; }
+
         public SerialPortMessagesReceive Receiver { get; set; }
 
         public SerialPortMessagesSend Sender { get; set; }
@@ -37,6 +39,7 @@ namespace test_app2.ViewModels
             Receiver = new SerialPortMessagesReceive();
             Sender = new SerialPortMessagesSend();
             Messages = new SerialPortMessagesViewModel();
+            IndicatorData = new IndicatorDataViewModel();
             FaultIndicator = new FaultIndicatorViewModel();
             Indicators = new ObservableCollection<FaultIndicatorViewModel>
             {
@@ -56,7 +59,7 @@ namespace test_app2.ViewModels
             Receiver.Port = SerialPort.Port;
             Sender.Port = SerialPort.Port;
 
-            Config = new ConfigViewModel(SerialPort, FaultIndicator);
+            Config = new ConfigViewModel(SerialPort, IndicatorData);
             //Config.SerialPort = SerialPort;
             //Config.Port = SerialPort.Port;
             //Config.Messages = SerialPort.Messages;

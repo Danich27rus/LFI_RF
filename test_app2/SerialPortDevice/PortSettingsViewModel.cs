@@ -73,16 +73,17 @@ namespace test_app2.SerialPortDevice
                 AvaliablePorts.Add(comPort);
             }
 
-            if (AvaliablePorts.Count > 0)
-            {
-                SelectedCOMPort = AvaliablePorts[0];
-            }
-            else
-            {
+            //TODO: разщбор COM порта
+            //if (AvaliablePorts.Count > 0)
+            //{
+                //SelectedCOMPort = AvaliablePorts[0];
+            //}
+            //else
+            //{
                 // default to COM1 just in case
                 // нет, он знаят по дефолту
-                SelectedCOMPort = "";
-            }
+            SelectedCOMPort = "";
+            //}
         }
 
         public StopBits GetStopBits()

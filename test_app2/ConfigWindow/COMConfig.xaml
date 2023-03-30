@@ -226,44 +226,44 @@
                             </Grid.RowDefinitions>
                             <TextBlock Text="Тип устройства" Padding="5" HorizontalAlignment="Center"/>
                             <RadioButton Content="JYL-FF-FI" Grid.Row="1"
-                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=1}"
-                            Command="{Binding FaultIndicator.UpdateContentCommand, Mode=OneTime}"/>
+                            IsChecked="{Binding IndicatorData.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=1}"
+                            Command="{Binding IndicatorData.UpdateModelContentCommand, Mode=OneTime}"/>
                             <RadioButton Content="JYL-FF-CN-HP" Grid.Row="2"
-                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=2}"
-                            Command="{Binding FaultIndicator.UpdateContentCommand, Mode=OneTime}"/>
+                            IsChecked="{Binding IndicatorData.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=2}"
+                            Command="{Binding IndicatorData.UpdateModelContentCommand, Mode=OneTime}"/>
                             <RadioButton Content="JYZ(W)-FF-FI V1.0" Grid.Row="3"
-                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=3}"
-                            Command="{Binding FaultIndicator.UpdateContentCommand, Mode=OneTime}"/>
+                            IsChecked="{Binding IndicatorData.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=3}"
+                            Command="{Binding IndicatorData.UpdateModelContentCommand, Mode=OneTime}"/>
                             <RadioButton Content="JYZ(W)-FF-FI V2.0 (JYZ-HW-FI V1.0)" Grid.Row="4"
-                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=4}"
-                            Command="{Binding FaultIndicator.UpdateContentCommand, Mode=OneTime}"/>
+                            IsChecked="{Binding IndicatorData.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=4}"
+                            Command="{Binding IndicatorData.UpdateModelContentCommand, Mode=OneTime}"/>
                             <RadioButton Content="DYZ-FF-FI (КЗ обычное)" Grid.Row="5"
-                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=5}"
-                            Command="{Binding FaultIndicator.UpdateContentCommand, Mode=OneTime}"/>
+                            IsChecked="{Binding IndicatorData.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=5}"
+                            Command="{Binding IndicatorData.UpdateModelContentCommand, Mode=OneTime}"/>
                             <RadioButton Content="DYZ-FF-FI (Третья гармоника)" Grid.Row="6"
-                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=6}"
-                            Command="{Binding FaultIndicator.UpdateContentCommand}"/>
+                            IsChecked="{Binding IndicatorData.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=6}"
+                            Command="{Binding IndicatorData.UpdateModelContentCommand}"/>
                             <RadioButton Content="JYZ-HW-FI V2.0 (Передача через 2,4 ГГц)" Grid.Row="7"
-                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=7}"
-                            Command="{Binding FaultIndicator.UpdateContentCommand}"/>
+                            IsChecked="{Binding IndicatorData.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=7}"
+                            Command="{Binding IndicatorData.UpdateModelContentCommand}"/>
                             <RadioButton Content="JYZ-LB" Grid.Row="8"
-                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=8}"
-                            Command="{Binding FaultIndicator.UpdateContentCommand}"/>
+                            IsChecked="{Binding IndicatorData.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=8}"
+                            Command="{Binding IndicatorData.UpdateModelContentCommand}"/>
                             <RadioButton Content="F-LTS100" Grid.Row="9"
-                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=9}"
-                            Command="{Binding FaultIndicator.UpdateContentCommand}"/>
+                            IsChecked="{Binding IndicatorData.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=9}"
+                            Command="{Binding IndicatorData.UpdateModelContentCommand}"/>
                             <RadioButton Content="JYZ(W)-FF-FI V2.0 (LoRa_10S)" Grid.Row="10"
-                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=10}"
-                            Command="{Binding FaultIndicator.UpdateContentCommand}"/>
+                            IsChecked="{Binding IndicatorData.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=10}"
+                            Command="{Binding IndicatorData.UpdateModelContentCommand}"/>
                             <RadioButton Content="JYZ-HW-LoRa" Grid.Row="11"
-                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=11}"
-                            Command="{Binding FaultIndicator.UpdateContentCommand}"/>
+                            IsChecked="{Binding IndicatorData.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=11}"
+                            Command="{Binding IndicatorData.UpdateModelContentCommand}"/>
                             <RadioButton Content="JYZ-HW(FF)-Lora-С" Grid.Row="12"
-                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=12}"
-                            Command="{Binding FaultIndicator.UpdateContentCommand}"/>
+                            IsChecked="{Binding IndicatorData.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=12}"
+                            Command="{Binding IndicatorData.UpdateModelContentCommand}" />
                             <RadioButton Content="JYZ-LH-LoRa" Grid.Row="13"
-                            IsChecked="{Binding FaultIndicator.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=13}"
-                            Command="{Binding FaultIndicator.UpdateContentCommand}"/>
+                            IsChecked="{Binding IndicatorData.DeviceModelNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=13}"
+                            Command="{Binding IndicatorData.UpdateModelContentCommand}"/>
                         </Grid>
                         <Grid Grid.Column="4">
                             <Grid.RowDefinitions>
@@ -288,13 +288,23 @@
                                     <RowDefinition Height="30"/>
                                     <RowDefinition Height="30"/>
                                     <RowDefinition Height="30"/>
-                                    <RowDefinition Height="150*"/>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="50*"/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Text="Выбор семейства устройства" Padding="5" HorizontalAlignment="Center"/>
-                                <RadioButton Content="FP (JYZ-FF)" Grid.Row="1"/>
-                                <RadioButton Content="LED (JYZ-HW)" Grid.Row="2"/>
-                                <RadioButton Content="LED_7 (JYZ-HW V2.0 ?)" Grid.Row="3"/>
-                                <Button Content="Выход из конфигурации" Margin="0" VerticalAlignment="Stretch"  Click="Button_Click" Grid.Row="13" Cursor="Hand"/>
+                                <RadioButton Content="FP (JYZ-FF)" Grid.Row="1"
+                                 IsChecked="{Binding IndicatorData.DeviceFamilyNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=1}"
+                                 Command="{Binding IndicatorData.UpdateFamilyContentCommand}"/>
+                                <RadioButton Content="LED (JYZ-HW)" Grid.Row="2"
+                                 IsChecked="{Binding IndicatorData.DeviceFamilyNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=2}"
+                                 Command="{Binding IndicatorData.UpdateFamilyContentCommand}"/>
+                                <RadioButton Content="LED_7 (JYZ-HW V2.0 ?)" Grid.Row="3"
+                                 IsChecked="{Binding IndicatorData.DeviceFamilyNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=3}"
+                                 Command="{Binding IndicatorData.UpdateFamilyContentCommand}" Cursor=""/>
+                                <Button  VerticalAlignment="Stretch" Grid.Row="4" Cursor="Hand" Command="{Binding IndicatorData.ClearAllContentCommand}">
+                                    <TextBlock Text="Сброс настроек конфигурации" TextWrapping="Wrap"/>
+                                </Button>
+                                <Button Content="Выход из конфигурации" Margin="0" VerticalAlignment="Stretch" Click="Button_Click" Grid.Row="5" Cursor="Hand"/>
                             </Grid>
                         </Grid>
                     </Grid>
