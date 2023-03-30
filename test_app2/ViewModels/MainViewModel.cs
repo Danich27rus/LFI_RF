@@ -8,6 +8,8 @@ using test_app2.SerialPortDevice;
 using test_app2.Config;
 using test_app2.UI;
 using test_app2.FaultIndicators;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace test_app2.ViewModels
 {
@@ -27,6 +29,8 @@ namespace test_app2.ViewModels
 
         public ConfigViewModel Config { get; set; }
 
+        public ObservableCollection<FaultIndicatorViewModel> Indicators { get; set; }
+
         public MainViewModel()
         {
             SerialPort = new SerialPortViewModel();
@@ -34,6 +38,11 @@ namespace test_app2.ViewModels
             Sender = new SerialPortMessagesSend();
             Messages = new SerialPortMessagesViewModel();
             FaultIndicator = new FaultIndicatorViewModel();
+            Indicators = new ObservableCollection<FaultIndicatorViewModel>
+            {
+                new FaultIndicatorViewModel() { CallAdress = 25, _callFrequency = 30 }
+            };
+            //Indicators.CollectionChanged += Indicators_CollectionChanged;
 
             // hmm
             Receiver.Messages = Messages;

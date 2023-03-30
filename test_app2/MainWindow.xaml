@@ -60,8 +60,7 @@
                                     <VisualState x:Name="Current">
                                         <Storyboard>
                                             <ColorAnimationUsingKeyFrames Storyboard.TargetName="border"
-                                                Storyboard.TargetProperty="(Border.BorderBrush).
-                      (SolidColorBrush.Color)">
+                                                Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)">
                                                 <EasingColorKeyFrame KeyTime="0"
                                          Value="White" />
                                             </ColorAnimationUsingKeyFrames
@@ -223,11 +222,64 @@
                         <TabControl x:Name="IndicatorParamsTabControl">
                             <TabItem Header="Общие параметры индикатора" Width="190" Height="30">
                                 <Grid>
-                                    <DataGrid x:Name="IndicatorBaseDataGrid" Style="{StaticResource GreyDataGrid}" Foreground="#FF2F2F2F" ItemsSource="{Binding Source={StaticResource BaseParameters}}">
+                                    <DataGrid x:Name="IndicatorBaseDataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                              AutoGenerateColumns="False" Style="{StaticResource GreyDataGrid}" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding Indicators, Mode=OneWay}"
+                                              RowHeight="45" RowBackground="#FF2F2F2F" AlternatingRowBackground="#FF2F2F2F" GridLinesVisibility="None" BorderBrush="#FF2F2F2F">
+                                        <DataGrid.Resources>
+                                            <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
+                                                <Setter Property="Padding" Value="-2"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="Validation.HasError" Value="True">
+                                                        <Setter Property="Background" Value="Red"/>
+                                                        <Setter Property="ToolTip" 
+                                                        Value="{Binding RelativeSource={RelativeSource Self},
+                                                        Path=(Validation.Errors)[0].ErrorContent}"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                            <!--Style TargetType="DataGridCell">
+                                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                                <Setter Property="VerticalAlignment" Value="Center" />
+                                            </Style-->
+                                        </DataGrid.Resources>
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Params" Binding="{Binding}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="Params" Width="100"/>
+                                            <DataGridTextColumn Header="{Binding Source={StaticResource BaseParameters}, Path=[0]}" Binding="{Binding CallAdress, StringFormat=d}"/>
                                         </DataGrid.Columns>
+                                        <DataGrid.ColumnHeaderStyle>
+                                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                                <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+                                                <Setter Property="BorderThickness" Value="1, 2"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                                <Setter Property="Padding" Value="5"/>
+                                            </Style>
+                                        </DataGrid.ColumnHeaderStyle>
+                                        <DataGrid.RowStyle>
+                                            <Style TargetType="{x:Type DataGridRow}">
+                                                <Setter Property="Height" Value="{x:Static System:Double.NaN}"/>
+                                            </Style>
+                                        </DataGrid.RowStyle>
+                                        <DataGrid.RowHeaderStyle>
+                                            <Style TargetType="{x:Type DataGridRowHeader}">
+                                                <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+                                                <Setter Property="BorderThickness" Value="2, 1"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                                <Setter Property="Padding" Value="5"/>
+                                            </Style>
+                                        </DataGrid.RowHeaderStyle>
+                                        <!--DataGrid.RowHeaderTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Item.Day}"/>
+                                            </DataTemplate>
+                                        </DataGrid.RowHeaderTemplate-->
+                                        <DataGrid.CellStyle>
+                                            <Style TargetType="{x:Type DataGridCell}">
+                                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                                <Setter Property="VerticalAlignment" Value="Center" />
+                                            </Style>
+                                        </DataGrid.CellStyle>
                                     </DataGrid>
                                 </Grid>
                             </TabItem>

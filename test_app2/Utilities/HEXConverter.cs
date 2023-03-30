@@ -34,6 +34,7 @@ namespace test_app2.Utilities
             return HEXString;
         }
 
+        //TODO: Не используется, возможно потребутеся удалить
         public string ToHexString(String str)
         {
             int value, i = 0;
@@ -45,7 +46,7 @@ namespace test_app2.Utilities
                 LettersString[i] = String.Format("{0:X}", value);
                 i += 1;
             }
-            return string.Join(" ", LettersString); // returns: "48656C6C6F20776F726C64" for "Hello world"
+            return string.Join(" ", LettersString);
         }
     }
 }
