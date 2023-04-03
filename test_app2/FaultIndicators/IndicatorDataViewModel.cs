@@ -41,7 +41,7 @@ namespace test_app2.FaultIndicators
         private int _callFrequency;
         private int _callTime;
         private int _waitTime;
-        //TODO: Разбоатиться что снизу
+        //TODO: Разобраться что снизу
         private int _comFrequency;
         private int _callLevel;
 
