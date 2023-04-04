@@ -11,7 +11,7 @@
         xmlns:Config="clr-namespace:test_app2.Config" x:Class="test_app2.MainWindow"
         mc:Ignorable="d"
         Closing="Window_Closing"
-        Title="Aboba" Height="720" Width="1600"
+        Title="Aboba" Height="720" Width="1280"
         MinWidth="1280"
         Style="{DynamicResource CustomWindowStyle}">
     <Window.Resources>
@@ -40,7 +40,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style TargetType="{x:Type DataGridCell}">
+        <!--Style TargetType="{x:Type DataGridCell}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type DataGridCell}">
@@ -72,7 +72,7 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
+        </Style-->
         <Style TargetType="{x:Type DataGridColumnHeader}">
             <Setter Property="VerticalContentAlignment"
           Value="Center" />
@@ -92,7 +92,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150*"/>
                 <ColumnDefinition Width="5"/>
-                <ColumnDefinition Width="980"/>
+                <ColumnDefinition Width="820"/>
             </Grid.ColumnDefinitions>
             <Grid>
                 <Grid.RowDefinitions>
@@ -145,14 +145,14 @@
                                 <RowDefinition Height="33*"/>
                                 <RowDefinition Height="33*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock x:Name="CallFreqtextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Адрес вызова" VerticalAlignment="Center" Grid.Row="0"/>
-                            <TextBlock x:Name="CallAddrtextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Частота вызова" VerticalAlignment="Center" Grid.Row="1"/>
-                            <TextBlock x:Name="CallTimetextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Время вызова" VerticalAlignment="Center" Grid.Row="2"/>
-                            <TextBlock x:Name="WaitTimetextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Время ожидания ответа" VerticalAlignment="Center" Grid.Row="3"/>
-                            <TextBox x:Name="CallFreqtextBox" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.CallAdress}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="0" Margin="0,0,20,0"/>
-                            <TextBox x:Name="CallAddrtextBox" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.CallFrequency}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="1" Margin="0,0,20,0"/>
-                            <TextBox x:Name="CallTimetextBox" HorizontalAlignment="Right" TextWrapping="Wrap" Text="" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="2" Margin="0,0,20,0"/>
-                            <TextBox x:Name="WaitTimetextBox" HorizontalAlignment="Right" TextWrapping="Wrap" Text="" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="3" Margin="0,0,20,0"/>
+                            <TextBlock x:Name="CallFreqtextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5" Text="Адрес вызова" VerticalAlignment="Stretch" Grid.Row="0"/>
+                            <TextBlock x:Name="CallAddrtextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5" Text="Частота вызова" VerticalAlignment="Stretch" Grid.Row="1"/>
+                            <TextBlock x:Name="CallTimetextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5" Text="Время вызова" VerticalAlignment="Stretch" Grid.Row="2"/>
+                            <TextBlock x:Name="WaitTimetextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5" Text="Время ожидания ответа" VerticalAlignment="Stretch" Grid.Row="3"/>
+                            <TextBox x:Name="CallFreqtextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.CallAdress, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="0" Margin="0,0,20,0"/>
+                            <TextBox x:Name="CallAddrtextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.CallFrequency, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="1" Margin="0,0,20,0"/>
+                            <TextBox x:Name="CallTimetextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.CallTime, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="2" Margin="0,0,20,0"/>
+                            <TextBox x:Name="WaitTimetextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.WaitTime, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="3" Margin="0,0,20,0"/>
                         </Grid>
                     </GroupBox>
                 </Grid>
@@ -181,7 +181,7 @@
                          IsChecked="{Binding Messages.IsHEX, UpdateSourceTrigger=PropertyChanged}"
                          Content="Отправка HEX" Cursor=""/>
                         <CheckBox x:Name="CRLFCheckBox"
-                         Margin="320,5,10,10" HorizontalAlignment="Right"
+                         Margin="305,5,10,0" HorizontalAlignment="Right"
                          Content="+\n в конце строки" VerticalAlignment="Top"/>
                         <TextBox x:Name="COMInputTextBox"
                          Text="{Binding Messages.ToBeSentText, UpdateSourceTrigger=PropertyChanged}"   
@@ -230,14 +230,15 @@
                     <GroupBox x:Name="IndicatorParamsGroupBox" Header="Значения в памяти индикатора">
                         <TabControl x:Name="IndicatorParamsTabControl">
                             <TabItem Header="Общая информация проверок" Width="190" Height="30">
-                                
+
                             </TabItem>
                             <TabItem Header="Общие параметры индикатора" Width="190" Height="30">
                                 <Grid>
-                                    <DataGrid x:Name="IndicatorBaseDataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                              AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding Indicators, Mode=OneWay}"
+                                    <DataGrid x:Name="IndicatorBaseDataGrid"
+                                              AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding IndicatorData.Indicators, Mode=OneWay}"
                                               RowHeight="45" RowBackground="#FF2F2F2F" AlternatingRowBackground="#FF2F2F2F" GridLinesVisibility="None" BorderBrush="#FF2F2F2F">
                                         <DataGrid.Resources>
+                                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF2F2F2F"/>
                                             <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
                                                 <Setter Property="Padding" Value="-2"/>
                                                 <Style.Triggers>
@@ -248,10 +249,33 @@
                                                     </Trigger>
                                                 </Style.Triggers>
                                             </Style>
-                                            <!--Style TargetType="DataGridCell">
+                                            <Style TargetType="{x:Type DataGridCell}">
                                                 <Setter Property="HorizontalAlignment" Value="Center" />
                                                 <Setter Property="VerticalAlignment" Value="Center" />
-                                            </Style-->
+                                                <Setter Property="BorderThickness" Value="0"/>
+                                                <!--Style.Triggers>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <!Setter Property="Foreground" Value="#FF2F2F2F"/>
+                                                        <!Setter Property="Background" Value="#FF2F2F2F"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsEditing" Value="True">
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="TextBox">
+                                                                    <TextBox Background="#FF2F2F2F"/>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Setter Property="Foreground" Value="#FF2F2F2F"/>
+                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsFocused" Value="True">
+                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                    </Trigger>
+                                                </Style.Triggers-->
+                                            </Style>
                                         </DataGrid.Resources>
                                         <DataGrid.Style>
                                             <StaticResource ResourceKey="GreyDataGrid"/>
@@ -277,7 +301,7 @@
                                                 <Setter Property="ContentTemplate">
                                                     <Setter.Value>
                                                         <DataTemplate>
-                                                            <TextBlock TextWrapping="Wrap" Text="{Binding}"/>
+                                                            <TextBlock Background="Transparent" TextWrapping="Wrap" Text="{Binding}"/>
                                                         </DataTemplate>
                                                     </Setter.Value>
                                                 </Setter>
@@ -286,6 +310,8 @@
                                         <DataGrid.RowStyle>
                                             <Style TargetType="{x:Type DataGridRow}">
                                                 <Setter Property="Height" Value="{x:Static System:Double.NaN}"/>
+                                                <Setter Property="TextBlock.Background" Value="#FF2F2F2F"/>
+                                                <!--Setter Property="IsHitTestVisible" Value="False"/-->
                                             </Style>
                                         </DataGrid.RowStyle>
                                         <DataGrid.RowHeaderStyle>
@@ -302,20 +328,30 @@
                                                 <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Item.Day}"/>
                                             </DataTemplate>
                                         </DataGrid.RowHeaderTemplate-->
-                                        <DataGrid.CellStyle>
+                                        <!--DataGrid.CellStyle>
                                             <Style TargetType="{x:Type DataGridCell}">
-                                                <Setter Property="HorizontalAlignment" Value="Center" />
-                                                <Setter Property="VerticalAlignment" Value="Center" />
+                                                <Setter Property="BorderThickness" Value="0"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter Property="Background" Value="#FF2F2F2F" />
+                                                        <Setter Property="BorderBrush" Value="{x:Null}" />
+                                                    </Trigger>
+                                                </Style.Triggers>
                                             </Style>
-                                        </DataGrid.CellStyle>
+                                        </DataGrid.CellStyle-->
                                     </DataGrid>
                                 </Grid>
                             </TabItem>
-                            <TabItem Header="Параметры определения межфазного замыкания" Width="300" Height="30">
+                            <TabItem Header="Параметры межфазного замыкания" Width="220" Height="30">
                                 <Grid Background="#FF2F2F2F">
-                                    <DataGrid x:Name="IndicatorSCDataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                    <!--Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="148*"/>
+                                        <ColumnDefinition Width="232*"/>
+                                        <ColumnDefinition Width="101*"/>
+                                    </Grid.ColumnDefinitions-->
+                                    <DataGrid x:Name="IndicatorSCDataGrid"
                                               AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding Indicators, Mode=OneWay}"
-                                              RowHeight="45" RowBackground="#FF2F2F2F" AlternatingRowBackground="#FF2F2F2F" GridLinesVisibility="None" BorderBrush="#FF2F2F2F">
+                                              RowHeight="45" RowBackground="#FF2F2F2F" AlternatingRowBackground="#FF2F2F2F" GridLinesVisibility="None" BorderBrush="#FF2F2F2F" Grid.ColumnSpan="3">
                                         <DataGrid.Resources>
                                             <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
                                                 <Setter Property="Padding" Value="-2"/>
@@ -385,7 +421,7 @@
                                     </DataGrid>
                                 </Grid>
                             </TabItem>
-                            <TabItem Header="Параметры определения замыкания на землю" Width="280" Height="30">
+                            <TabItem Header="Параметры замыкания на землю" Width="200" Height="30">
                                 <Grid Background="#FF2F2F2F">
                                     <DataGrid x:Name="IndicatorGSCDataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                               AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding Indicators, Mode=OneWay}"
@@ -534,7 +570,7 @@
                                     </Grid>
                                 </Grid>
                                 <Grid Grid.Row="2">
-                                    <Button x:Name="IndicatorFirmwareVersionButton" Content="Версия ПО у индикаторов" Cursor="Hand" Margin="40,0,40,0" VerticalAlignment="Stretch" Grid.Row="6"/>
+                                    <Button x:Name="IndicatorFirmwareVersionButton" Content="Версия ПО у индикаторов" Cursor="Hand" VerticalAlignment="Stretch" Grid.Row="6"/>
                                 </Grid>
                             </Grid>
                         </Grid>

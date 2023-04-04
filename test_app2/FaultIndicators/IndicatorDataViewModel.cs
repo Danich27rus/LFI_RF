@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,13 @@ namespace test_app2.FaultIndicators
             ""
         };
 
+        private string[] _namingProtocol =
+        {
+            "JYZ-FF",
+            "JYZ-HW",
+            "JYZ-HW V2.0"
+        };
+
         private string[] _namingFamily =
         {
             "JYZ-FF",
@@ -34,9 +42,10 @@ namespace test_app2.FaultIndicators
 
         private int _deviceModelNum;
         private int _deviceFamilyNum;
-        private int _deviceCommunicationProtocol;
+        private int _deviceCommunicationProtocolNum;
         private string _deviceModel;
         private string _deviceFamily;
+        private string _deviceCommunicationProtocol;
         private int _callAdress;
         private int _callFrequency;
         private int _callTime;
@@ -65,6 +74,11 @@ namespace test_app2.FaultIndicators
             get => _deviceFamily;
             set => RaisePropertyChanged(ref _deviceFamily, value);
         }
+        public string DeviceCommunicationProtocol
+        {
+            get => _deviceCommunicationProtocol;
+            set => RaisePropertyChanged(ref _deviceCommunicationProtocol, value);
+        }
         public int CallAdress
         {
             get => _callAdress;
@@ -75,6 +89,16 @@ namespace test_app2.FaultIndicators
             get => _callFrequency;
             set => RaisePropertyChanged(ref _callFrequency, value);
         }
+        public int CallTime
+        {
+            get => _callTime;
+            set => RaisePropertyChanged(ref _callTime, value);
+        }
+        public int WaitTime
+        {
+            get => _waitTime;
+            set => RaisePropertyChanged(ref _waitTime, value);
+        }
 
         public Command UpdateModelContentCommand { get; }
 
@@ -84,8 +108,15 @@ namespace test_app2.FaultIndicators
 
         public Command ClearAllContentCommand { get; }
 
+        public ObservableCollection<FaultIndicatorViewModel> Indicators { get; set; }
+
         public IndicatorDataViewModel()
         {
+            Indicators = new ObservableCollection<FaultIndicatorViewModel>
+            {
+                new FaultIndicatorViewModel() { CallAdress = 25, _callFrequency = 30 }
+            };
+
             UpdateModelContentCommand = new Command(UpdateModelContent);
             UpdateFamilyContentCommand = new Command(UpdateFamilyContent);
             ClearAllContentCommand = new Command(ClearAllContent);
