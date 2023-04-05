@@ -8,19 +8,82 @@ namespace test_app2.FaultIndicators
 {
     public class FaultIndicatorViewModel : BaseViewModel, IEditableObject
     {
-        private string _deviceModel;
-        private string _deviceFamily;
+        private string _macAdress;
+        private string _information;
+        private string _status;
+        private int _fieldThreshold;
+        private int _currentThreshold;
+        private int _uploadT1;
+        private int _uploadT2;
+        private int _heartBeat;
+        private int _currentRelativeValue;
+        private int _currentAbsoluteValue;
         //ВРЕМЕННО ДЛЯ ТЕСТА ВАЛИДАЦИИ
-        private int _callAdress;
-        public int _callFrequency;
+        //private int _callAdress;
+        //public int _callFrequency;
         //----------------------------
-        private int _callTime;
-        private int _waitTime;
+        //private int _callTime;
+        //private int _waitTime;
         //private string _MACAddr;
-        public int CallAdress
+
+        public string MACAdress
         {
-            get => _callAdress;
-            set => RaisePropertyChanged(ref _callAdress, value);
+            get => _macAdress;
+            set => RaisePropertyChanged(ref _macAdress, value);
+        }
+
+        public string Information
+        {
+            get => _information;
+            set => RaisePropertyChanged(ref _information, value);
+        }
+
+        public string Status
+        {
+            get => _status;
+            set => RaisePropertyChanged(ref _status, value);
+        }
+
+        public int FieldThreshold
+        {
+            get => _fieldThreshold;
+            set => RaisePropertyChanged(ref _fieldThreshold, value);
+        }
+
+        public int CurrentThreshold
+        {
+            get => _currentThreshold;
+            set => RaisePropertyChanged(ref _currentThreshold, value);
+        }
+
+        public int UploadT1
+        {
+            get => _uploadT1;
+            set => RaisePropertyChanged(ref _uploadT1, value);
+        }
+
+        public int UploadT2
+        {
+            get => _uploadT2;
+            set => RaisePropertyChanged(ref _uploadT2, value);
+        }
+
+        public int HeartBeat
+        {
+            get => _heartBeat;
+            set => RaisePropertyChanged(ref _heartBeat, value);
+        }
+
+        public int CurrentRelativeValue
+        {
+            get => _currentRelativeValue; 
+            set => RaisePropertyChanged(ref _currentRelativeValue, value);
+        }
+
+        public int CurrentAbsoluteValue
+        {
+            get => _currentAbsoluteValue; 
+            set => RaisePropertyChanged(ref _currentAbsoluteValue, value);
         }
 
         #region IEditableObject
@@ -38,8 +101,8 @@ namespace test_app2.FaultIndicators
         {
             if (!_inEdit) return;
             _inEdit = false;
-            this._callAdress = backupCopy._callAdress;
-            this._callFrequency = backupCopy._callFrequency;
+            //this._callAdress = backupCopy._callAdress;
+            //this._callFrequency = backupCopy._callFrequency;
         }
 
         void IEditableObject.EndEdit()

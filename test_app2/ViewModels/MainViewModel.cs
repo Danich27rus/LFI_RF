@@ -40,16 +40,16 @@ namespace test_app2.ViewModels
             Sender = new SerialPortMessagesSend();
             Messages = new SerialPortMessagesViewModel();
             IndicatorData = new IndicatorDataViewModel();
-            FaultIndicator = new FaultIndicatorViewModel();
-            Indicators = new ObservableCollection<FaultIndicatorViewModel>
+            //FaultIndicator = new FaultIndicatorViewModel();
+            /*Indicators = new ObservableCollection<FaultIndicatorViewModel>
             {
                 new FaultIndicatorViewModel() { CallAdress = 25, _callFrequency = 30 }
-            };
+            };*/
             //Indicators.CollectionChanged += Indicators_CollectionChanged;
 
             // hmm
-            Receiver.Messages = Messages;
             Messages.Sender = Sender;
+            Receiver.Messages = Messages;
             Sender.Messages = Messages;
 
             SerialPort.Receiver = Receiver;
@@ -60,6 +60,13 @@ namespace test_app2.ViewModels
             Sender.Port = SerialPort.Port;
 
             Config = new ConfigViewModel(SerialPort, IndicatorData);
+
+            IndicatorData.Messages = Messages;
+            IndicatorData.Sender = Sender;
+            IndicatorData.Receiver = Receiver;
+            Receiver.IndicatorData = IndicatorData;
+            IndicatorData.Indicators = Messages.Indicators;
+            //IndicatorData.IndicatorConfirm = Receiver.IndicatorConfirm;
             //Config.SerialPort = SerialPort;
             //Config.Port = SerialPort.Port;
             //Config.Messages = SerialPort.Messages;

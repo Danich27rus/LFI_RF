@@ -18,7 +18,7 @@ namespace test_app2.UI
         {
             FaultIndicatorViewModel faultIndicator = (value as BindingGroup).Items[0] as FaultIndicatorViewModel;
             string numbersPattern = @"^\d$";
-            if (!Regex.IsMatch(Convert.ToString(faultIndicator._callFrequency), numbersPattern))
+            /*if (!Regex.IsMatch(Convert.ToString(faultIndicator._callFrequency), numbersPattern))
             {
                 return new ValidationResult(false,
                     "Start Date must be earlier than End Date.");
@@ -26,7 +26,8 @@ namespace test_app2.UI
             else
             {
                 return ValidationResult.ValidResult;
-            }
+            }*/
+            return ValidationResult.ValidResult;
         }
     }
 }

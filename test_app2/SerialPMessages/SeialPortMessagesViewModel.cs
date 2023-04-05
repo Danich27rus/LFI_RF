@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Documents;
+using test_app2.FaultIndicators;
 using TheRFramework.Utilities;
 
 namespace test_app2.SerialPMessages
@@ -51,12 +53,17 @@ namespace test_app2.SerialPMessages
 
         public Command ClearMessagesCommand { get; }
         public Command SendMessageCommand { get; }
+        public Command SendIndicatorMessageCommand { get; }
 
         public SerialPortMessagesSend Sender { get; set; }
+
+        public ObservableCollection<FaultIndicatorViewModel> Indicators { get; set; }
+
 
         public SerialPortMessagesViewModel()
         {
             //MessagesCount = 0;
+            Indicators = new ObservableCollection<FaultIndicatorViewModel>();
             MessagesText = "";
             ToBeSentText = "";
             IsHEX = false;
@@ -64,6 +71,7 @@ namespace test_app2.SerialPMessages
 
             ClearMessagesCommand = new Command(ClearMessages);
             SendMessageCommand = new Command(SendMessage);
+            //SendIndicatorMessageCommand = new Command(SendIndicatorMessage);
         }
 
         private void SendMessage()

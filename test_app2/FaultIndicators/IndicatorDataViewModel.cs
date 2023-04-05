@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using test_app2.SerialPMessages;
 using TheRFramework.Utilities;
 
 namespace test_app2.FaultIndicators
 {
     public class IndicatorDataViewModel : BaseViewModel
     {
+
+        //TODO: Сделать enumы
         private string[] _namingModel = {
+            "РИМ ИКЗ-10",
             "JYL-FF-FI",
             "JYL-FF-CN-HP",
             "JYZ(W)-FF-FI V1.0",
@@ -22,15 +27,14 @@ namespace test_app2.FaultIndicators
             "F-LTS100",
             "JYZ(W)-FF-FI V2.0",
             "JYZ-HW-LoRa",
-            "JYZ-LH-LoRa",
-            ""
+            "JYZ-LH-LoRa"
         };
 
         private string[] _namingProtocol =
         {
-            "JYZ-FF",
-            "JYZ-HW",
-            "JYZ-HW V2.0"
+            "XY-Old",
+            "XY-New",
+            "LB-FF"
         };
 
         private string[] _namingFamily =
@@ -38,6 +42,11 @@ namespace test_app2.FaultIndicators
             "JYZ-FF",
             "JYZ-HW",
             "JYZ-HW V2.0"
+        };
+
+        private string[] _patterns =
+        {
+            "A5 5A 11 84"
         };
 
         private int _deviceModelNum;
@@ -50,6 +59,7 @@ namespace test_app2.FaultIndicators
         private int _callFrequency;
         private int _callTime;
         private int _waitTime;
+        private int _indicatorsAmount;
         //TODO: Разобраться что снизу
         private int _comFrequency;
         private int _callLevel;
@@ -63,6 +73,11 @@ namespace test_app2.FaultIndicators
         {
             get => _deviceFamilyNum;
             set => RaisePropertyChanged(ref _deviceFamilyNum, value);
+        }
+        public int DeviceCommunicationProtocolNum
+        {
+            get => _deviceCommunicationProtocolNum;
+            set => RaisePropertyChanged(ref _deviceCommunicationProtocolNum, value);
         }
         public string DeviceModel
         {
@@ -99,6 +114,13 @@ namespace test_app2.FaultIndicators
             get => _waitTime;
             set => RaisePropertyChanged(ref _waitTime, value);
         }
+        public int IndicatorsAmount
+        {
+            get => _indicatorsAmount;
+            set => RaisePropertyChanged(ref _indicatorsAmount, value);
+        }
+
+        public static CancellationTokenSource cancelSource = new CancellationTokenSource();
 
         public Command UpdateModelContentCommand { get; }
 
@@ -108,20 +130,83 @@ namespace test_app2.FaultIndicators
 
         public Command ClearAllContentCommand { get; }
 
+        public SerialPortMessagesViewModel Messages { get; set; }
+
+        public SerialPortMessagesReceive Receiver { get; set; }
+
+        public SerialPortMessagesSend Sender { get; set; }
+
         public ObservableCollection<FaultIndicatorViewModel> Indicators { get; set; }
+
+        public string IndicatorConfirm { get; set; }
 
         public IndicatorDataViewModel()
         {
+            IndicatorConfirm = "";
+            Messages = new SerialPortMessagesViewModel();
+            Receiver = new SerialPortMessagesReceive();
+            Sender = new SerialPortMessagesSend();
+
             Indicators = new ObservableCollection<FaultIndicatorViewModel>
             {
-                new FaultIndicatorViewModel() { CallAdress = 25, _callFrequency = 30 }
+                //new FaultIndicatorViewModel() { MACAdress="68-04-00-DA" },
+                //new FaultIndicatorViewModel() { MACAdress="68-04-00-DB" },
+                //new FaultIndicatorViewModel() { MACAdress="68-04-00-DC" }
             };
 
             UpdateModelContentCommand = new Command(UpdateModelContent);
             UpdateFamilyContentCommand = new Command(UpdateFamilyContent);
             ClearAllContentCommand = new Command(ClearAllContent);
-            UpdateCommunicationProtocolCommand = new Command(ClearAllContent);
+            UpdateCommunicationProtocolCommand = new Command(UpdateCommunicationContent);
+
+            /*new Thread(() =>
+            {
+                try
+                {
+                    ParseLoop(cancelSource.Token);
+                }
+                catch (OperationCanceledException)
+                {
+                    Messages.AddReceivedMessage("Галя, отмена по токену x2!");
+                }
+            }).Start();*/
+
         }
+
+        public void ParseCommand()
+        {
+            //string message = "";
+            //string byteMessage = "";
+            //char readChar;
+            //int readByte;
+
+            if (string.IsNullOrEmpty(IndicatorConfirm))
+            {
+                return;
+            }
+            if (_patterns.Any(IndicatorConfirm.Contains))
+            {
+                Messages.AddReceivedMessage("Круто!");
+            }
+            IndicatorConfirm = "";
+            //Thread.Sleep(5);
+        }
+        //Dispatcher.Thread.Interrupt();
+
+
+
+        public void StopThreadLoop()//CancellationTokenSource cancelToken)
+        {
+            //CanReceive = false;
+            //ShouldShutDownPermanently = true; //&= ReceiverThread.IsAlive;
+            //cancelSource.Cancel();
+            //if (ReceiverThread != null)
+            //{
+            //ReceiverThread.Interrupt();
+            //}
+        }
+
+
 
         public void UpdateModelContent()
         {
@@ -135,12 +220,20 @@ namespace test_app2.FaultIndicators
             DeviceFamily = _namingFamily[DeviceFamilyNum - 1];
         }
 
+        public void UpdateCommunicationContent()
+        {
+            //TODO: Исправить баг с выбором при отсчёте с 0
+            DeviceCommunicationProtocol = _namingProtocol[DeviceCommunicationProtocolNum - 1];
+        }
+
         public void ClearAllContent()
         {
             DeviceFamily = "";
             DeviceModel = "";
+            DeviceCommunicationProtocol = "";
             DeviceModelNum = 0;
             DeviceFamilyNum = 0;
+            DeviceCommunicationProtocolNum = 0;
         }
     }
 }

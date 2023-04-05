@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using System.Windows.Controls;
 using test_app2.Utilities;
+using test_app2.FaultIndicators;
 
 namespace test_app2.SerialPMessages
 {
@@ -21,11 +22,15 @@ namespace test_app2.SerialPMessages
         public bool CanReceive { get; set; }
         public bool ShouldShutDownPermanently { get; set; }
         public bool IsHEX { get; set; }
+        public string IndicatorConfirm { get; set; }
         //public SerialPortMessagesViewModel SerialPortModel { get; set; }
         public SerialPort Port { get; set; }
         public SerialPortMessagesViewModel Messages { get; set; }
+        public IndicatorDataViewModel IndicatorData { get; set; }
         public SerialPortMessagesReceive() 
         {
+            IndicatorConfirm = "";
+
             hexConverter = new HEXConverter();
             CanReceive = true; 
             ShouldShutDownPermanently = false;
@@ -74,6 +79,8 @@ namespace test_app2.SerialPMessages
                                 {
                                     //message = hexConverter.ToHexString(message);
                                     Messages.AddReceivedMessage(message);
+                                    IndicatorData.IndicatorConfirm = message;
+                                    IndicatorData.ParseCommand();
                                     message = "";
                                 }
                             }

@@ -128,11 +128,11 @@
                         <Button x:Name="COMOpenClosePortMainButton" 
                       Command="{Binding SerialPort.AutoConnectDisconnectCommand, Mode=OneTime}"
                       Content="{Binding SerialPort.IsConnected, Converter={StaticResource BoolToIsConnectedConverter}, UpdateSourceTrigger=PropertyChanged}" 
-                      VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Cursor="Hand"
+                      VerticalAlignment="Stretch" Margin="40,0,40,0" HorizontalAlignment="Stretch" Cursor="Hand"
                       />
                         <Button x:Name="COMConfButton" Grid.Column="1"
                       Command="{Binding Config.ConfigCommand, Mode=OneTime}"
-                      Content="Конфигурация" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="5"
+                      Content="Конфигурация" Margin="40,0,40,0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="5"
                       />
                     </Grid>
                 </Grid>
@@ -230,7 +230,87 @@
                     <GroupBox x:Name="IndicatorParamsGroupBox" Header="Значения в памяти индикатора">
                         <TabControl x:Name="IndicatorParamsTabControl">
                             <TabItem Header="Общая информация проверок" Width="190" Height="30">
-
+                                <Grid>
+                                    <DataGrid x:Name="IndicatorInfoDataGrid"
+                                              AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding IndicatorData.Indicators, Mode=OneWay}"
+                                              RowHeight="45" RowBackground="#FF2F2F2F" AlternatingRowBackground="#FF2F2F2F" GridLinesVisibility="None" BorderBrush="#FF2F2F2F">
+                                        <DataGrid.Resources>
+                                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF2F2F2F"/>
+                                            <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
+                                                <Setter Property="Padding" Value="-2"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="Validation.HasError" Value="True">
+                                                        <Setter Property="Background" Value="Red"/>
+                                                        <Setter Property="ToolTip" 
+                                                        Value="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                            <Style TargetType="{x:Type DataGridCell}">
+                                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                                <Setter Property="VerticalAlignment" Value="Center" />
+                                                <Setter Property="BorderThickness" Value="0"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter Property="Foreground" Value="White"/>
+                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsEditing" Value="True">
+                                                        <Setter Property="Foreground" Value="White"/>
+                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsFocused" Value="True">
+                                                        <Setter Property="Foreground" Value="White"/>
+                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DataGrid.Resources>
+                                        <DataGrid.Style>
+                                            <StaticResource ResourceKey="GreyDataGrid"/>
+                                        </DataGrid.Style>
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="{Binding [0], Source={StaticResource BaseParameters}}" Binding="{Binding MACAdress, StringFormat=d}" Width="105*"/>
+                                            <DataGridTextColumn Header="Информация" Binding="{Binding Information, StringFormat=d}" Width="100*"/>
+                                            <DataGridTextColumn Header="Статус" Binding="{Binding Status, StringFormat=d}" Width="100*"/>
+                                        </DataGrid.Columns>
+                                        <DataGrid.ColumnHeaderStyle>
+                                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                                <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+                                                <Setter Property="BorderThickness" Value="1, 2"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                                <Setter Property="Padding" Value="5"/>
+                                                <Setter Property="ContentTemplate">
+                                                    <Setter.Value>
+                                                        <DataTemplate>
+                                                            <TextBlock Background="Transparent" TextWrapping="Wrap" Text="{Binding}"/>
+                                                        </DataTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </DataGrid.ColumnHeaderStyle>
+                                        <DataGrid.RowStyle>
+                                            <Style TargetType="{x:Type DataGridRow}">
+                                                <Setter Property="Height" Value="{x:Static System:Double.NaN}"/>
+                                                <Setter Property="TextBlock.Background" Value="#FF2F2F2F"/>
+                                                <!--Setter Property="IsHitTestVisible" Value="False"/-->
+                                            </Style>
+                                        </DataGrid.RowStyle>
+                                        <DataGrid.RowHeaderStyle>
+                                            <Style TargetType="{x:Type DataGridRowHeader}">
+                                                <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+                                                <Setter Property="BorderThickness" Value="2, 1"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                                <Setter Property="Padding" Value="5"/>
+                                            </Style>
+                                        </DataGrid.RowHeaderStyle>
+                                    </DataGrid>
+                                </Grid>
                             </TabItem>
                             <TabItem Header="Общие параметры индикатора" Width="190" Height="30">
                                 <Grid>
@@ -253,36 +333,30 @@
                                                 <Setter Property="HorizontalAlignment" Value="Center" />
                                                 <Setter Property="VerticalAlignment" Value="Center" />
                                                 <Setter Property="BorderThickness" Value="0"/>
-                                                <!--Style.Triggers>
+                                                <Style.Triggers>
                                                     <Trigger Property="IsSelected" Value="True">
-                                                        <!Setter Property="Foreground" Value="#FF2F2F2F"/>
-                                                        <!Setter Property="Background" Value="#FF2F2F2F"/>
+                                                        <Setter Property="Foreground" Value="White"/>
+                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
                                                         <Setter Property="BorderThickness" Value="0"/>
                                                     </Trigger>
                                                     <Trigger Property="IsEditing" Value="True">
-                                                        <Setter Property="Template">
-                                                            <Setter.Value>
-                                                                <ControlTemplate TargetType="TextBox">
-                                                                    <TextBox Background="#FF2F2F2F"/>
-                                                                </ControlTemplate>
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                        <Setter Property="Foreground" Value="#FF2F2F2F"/>
+                                                        <Setter Property="Foreground" Value="White"/>
                                                         <Setter Property="Background" Value="#FF2F2F2F"/>
                                                         <Setter Property="BorderThickness" Value="0"/>
                                                     </Trigger>
                                                     <Trigger Property="IsFocused" Value="True">
+                                                        <Setter Property="Foreground" Value="White"/>
                                                         <Setter Property="Background" Value="#FF2F2F2F"/>
                                                     </Trigger>
-                                                </Style.Triggers-->
+                                                </Style.Triggers>
                                             </Style>
                                         </DataGrid.Resources>
                                         <DataGrid.Style>
                                             <StaticResource ResourceKey="GreyDataGrid"/>
                                         </DataGrid.Style>
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="{Binding [0], Source={StaticResource BaseParameters}}" Binding="{Binding CallAdress, StringFormat=d}" Width="105"/>
-                                            <DataGridTextColumn Header="{Binding [1], Source={StaticResource BaseParameters}}" Binding="{Binding CallAdress, StringFormat=d}" Width="100"/>
+                                            <DataGridTextColumn Header="{Binding [0], Source={StaticResource BaseParameters}}" Binding="{Binding MACAdress, StringFormat=d}" Width="100"/>
+                                            <DataGridTextColumn Header="{Binding [1], Source={StaticResource BaseParameters}}" Binding="{Binding CallAdress, StringFormat=d}" Width="105"/>
                                             <DataGridTextColumn Header="{Binding [2], Source={StaticResource BaseParameters}}" Binding="{Binding CallAdress, StringFormat=d}" Width="100"/>
                                             <DataGridTextColumn Header="{Binding [3], Source={StaticResource BaseParameters}}" Binding="{Binding CallAdress, StringFormat=d}" Width="100"/>
                                             <DataGridTextColumn Header="{Binding [4], Source={StaticResource BaseParameters}}" Binding="{Binding CallAdress, StringFormat=d}" Width="90"/>
@@ -323,36 +397,16 @@
                                                 <Setter Property="Padding" Value="5"/>
                                             </Style>
                                         </DataGrid.RowHeaderStyle>
-                                        <!--DataGrid.RowHeaderTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Item.Day}"/>
-                                            </DataTemplate>
-                                        </DataGrid.RowHeaderTemplate-->
-                                        <!--DataGrid.CellStyle>
-                                            <Style TargetType="{x:Type DataGridCell}">
-                                                <Setter Property="BorderThickness" Value="0"/>
-                                                <Style.Triggers>
-                                                    <Trigger Property="IsSelected" Value="True">
-                                                        <Setter Property="Background" Value="#FF2F2F2F" />
-                                                        <Setter Property="BorderBrush" Value="{x:Null}" />
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </DataGrid.CellStyle-->
                                     </DataGrid>
                                 </Grid>
                             </TabItem>
                             <TabItem Header="Параметры межфазного замыкания" Width="220" Height="30">
                                 <Grid Background="#FF2F2F2F">
-                                    <!--Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="148*"/>
-                                        <ColumnDefinition Width="232*"/>
-                                        <ColumnDefinition Width="101*"/>
-                                    </Grid.ColumnDefinitions-->
                                     <DataGrid x:Name="IndicatorSCDataGrid"
                                               AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding Indicators, Mode=OneWay}"
                                               RowHeight="45" RowBackground="#FF2F2F2F" AlternatingRowBackground="#FF2F2F2F" GridLinesVisibility="None" BorderBrush="#FF2F2F2F" Grid.ColumnSpan="3">
                                         <DataGrid.Resources>
+                                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF2F2F2F"/>
                                             <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
                                                 <Setter Property="Padding" Value="-2"/>
                                                 <Style.Triggers>
@@ -363,10 +417,27 @@
                                                     </Trigger>
                                                 </Style.Triggers>
                                             </Style>
-                                            <!--Style TargetType="DataGridCell">
+                                            <Style TargetType="{x:Type DataGridCell}">
                                                 <Setter Property="HorizontalAlignment" Value="Center" />
                                                 <Setter Property="VerticalAlignment" Value="Center" />
-                                            </Style-->
+                                                <Setter Property="BorderThickness" Value="0"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter Property="Foreground" Value="White"/>
+                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsEditing" Value="True">
+                                                        <Setter Property="Foreground" Value="White"/>
+                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsFocused" Value="True">
+                                                        <Setter Property="Foreground" Value="White"/>
+                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
                                         </DataGrid.Resources>
                                         <DataGrid.Style>
                                             <StaticResource ResourceKey="GreyDataGrid"/>
@@ -387,7 +458,7 @@
                                                 <Setter Property="ContentTemplate">
                                                     <Setter.Value>
                                                         <DataTemplate>
-                                                            <TextBlock TextWrapping="Wrap" Text="{Binding}"/>
+                                                            <TextBlock Background="Transparent" TextWrapping="Wrap" Text="{Binding}"/>
                                                         </DataTemplate>
                                                     </Setter.Value>
                                                 </Setter>
@@ -407,17 +478,6 @@
                                                 <Setter Property="Padding" Value="5"/>
                                             </Style>
                                         </DataGrid.RowHeaderStyle>
-                                        <!--DataGrid.RowHeaderTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Item.Day}"/>
-                                            </DataTemplate>
-                                        </DataGrid.RowHeaderTemplate-->
-                                        <DataGrid.CellStyle>
-                                            <Style TargetType="{x:Type DataGridCell}">
-                                                <Setter Property="HorizontalAlignment" Value="Center" />
-                                                <Setter Property="VerticalAlignment" Value="Center" />
-                                            </Style>
-                                        </DataGrid.CellStyle>
                                     </DataGrid>
                                 </Grid>
                             </TabItem>
@@ -427,6 +487,7 @@
                                               AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding Indicators, Mode=OneWay}"
                                               RowHeight="45" RowBackground="#FF2F2F2F" AlternatingRowBackground="#FF2F2F2F" GridLinesVisibility="None" BorderBrush="#FF2F2F2F">
                                         <DataGrid.Resources>
+                                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF2F2F2F"/>
                                             <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
                                                 <Setter Property="Padding" Value="-2"/>
                                                 <Style.Triggers>
@@ -437,10 +498,27 @@
                                                     </Trigger>
                                                 </Style.Triggers>
                                             </Style>
-                                            <!--Style TargetType="DataGridCell">
+                                            <Style TargetType="{x:Type DataGridCell}">
                                                 <Setter Property="HorizontalAlignment" Value="Center" />
                                                 <Setter Property="VerticalAlignment" Value="Center" />
-                                            </Style-->
+                                                <Setter Property="BorderThickness" Value="0"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter Property="Foreground" Value="White"/>
+                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsEditing" Value="True">
+                                                        <Setter Property="Foreground" Value="White"/>
+                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsFocused" Value="True">
+                                                        <Setter Property="Foreground" Value="White"/>
+                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
                                         </DataGrid.Resources>
                                         <DataGrid.Style>
                                             <StaticResource ResourceKey="GreyDataGrid"/>
@@ -460,7 +538,7 @@
                                                 <Setter Property="ContentTemplate">
                                                     <Setter.Value>
                                                         <DataTemplate>
-                                                            <TextBlock TextWrapping="Wrap" Text="{Binding}"/>
+                                                            <TextBlock Background="Transparent" TextWrapping="Wrap" Text="{Binding}"/>
                                                         </DataTemplate>
                                                     </Setter.Value>
                                                 </Setter>
@@ -480,17 +558,6 @@
                                                 <Setter Property="Padding" Value="5"/>
                                             </Style>
                                         </DataGrid.RowHeaderStyle>
-                                        <!--DataGrid.RowHeaderTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Item.Day}"/>
-                                            </DataTemplate>
-                                        </DataGrid.RowHeaderTemplate-->
-                                        <DataGrid.CellStyle>
-                                            <Style TargetType="{x:Type DataGridCell}">
-                                                <Setter Property="HorizontalAlignment" Value="Center" />
-                                                <Setter Property="VerticalAlignment" Value="Center" />
-                                            </Style>
-                                        </DataGrid.CellStyle>
                                     </DataGrid>
                                 </Grid>
                             </TabItem>
@@ -516,7 +583,8 @@
                                 </Grid.RowDefinitions>
                                 <Button x:Name="ReadParametersButton" Content="Чтение данных с индикаторов" Cursor="Hand" Margin="40,0,40,0"/>
                                 <Button x:Name="WriteParametersButton" Content="Запись данных на индикаторы" Cursor="Hand" Margin="40,0,40,0" Grid.Row="2"/>
-                                <Button x:Name="RestartIndicatorsButton" Content="Перезапуск индикаторов" Cursor="Hand" Margin="40,0,40,0" VerticalAlignment="Stretch" Grid.Row="6"/>
+                                <Button x:Name="SearchButton" Content="Поиск индикаторов" Cursor="Hand" Margin="40,0,40,0" Grid.Row="4"/>
+                                <Button x:Name="RestartIndicatorsButton" Content="Перезапуск индикаторов" Cursor="Hand" Margin="40,0,40,0" VerticalAlignment="Stretch" Grid.Row="6" Background="Teal"/>
                             </Grid>
                             <Grid Grid.Column="2">
                                 <Grid.RowDefinitions>
