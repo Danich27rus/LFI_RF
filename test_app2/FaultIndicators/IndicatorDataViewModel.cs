@@ -46,7 +46,9 @@ namespace test_app2.FaultIndicators
 
         private string[] _patterns =
         {
-            "A5 5A 11 84"
+            "E5 E5"
+            "A5 5A 11 84",
+            "A5 5A 18 44"
         };
 
         private int _deviceModelNum;
@@ -59,7 +61,8 @@ namespace test_app2.FaultIndicators
         private int _callFrequency;
         private int _callTime;
         private int _waitTime;
-        private int _indicatorsAmount;
+        private static int _indicatorsAmount;
+        private string _mac;
         //TODO: Разобраться что снизу
         private int _comFrequency;
         private int _callLevel;
@@ -118,6 +121,11 @@ namespace test_app2.FaultIndicators
         {
             get => _indicatorsAmount;
             set => RaisePropertyChanged(ref _indicatorsAmount, value);
+        }
+        public string MAC
+        {
+            get => _mac;
+            set => RaisePropertyChanged(ref _mac, value);
         }
 
         public static CancellationTokenSource cancelSource = new CancellationTokenSource();
@@ -184,16 +192,36 @@ namespace test_app2.FaultIndicators
             {
                 return;
             }
-            if (_patterns.Any(IndicatorConfirm.Contains))
+            if (IndicatorConfirm.Contains(_patterns[0]))
             {
-                Messages.AddReceivedMessage("Круто!");
+                IndicatorsAmount++;
+                return;
+            }
+            if (IndicatorConfirm.Contains(_patterns[1]))
+            {
+                IndicatorsAmount++;
+                return;
+            }
+            if (IndicatorConfirm.Contains(_patterns[2]))
+            {
+                if (IndicatorsAmount == 0)
+                {
+                    Messages.AddMessage("ЭТО НЕВОЗМОЖНО");
+                }
+                string[] msg;
+                IndicatorsAmount--;
+                msg = IndicatorConfirm.Split(' ');
+
+                MAC = $"{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
+                App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
+                {
+                    Indicators.Add(new FaultIndicatorViewModel { MACAdress = MAC });
+                });
             }
             IndicatorConfirm = "";
             //Thread.Sleep(5);
         }
         //Dispatcher.Thread.Interrupt();
-
-
 
         public void StopThreadLoop()//CancellationTokenSource cancelToken)
         {
@@ -205,8 +233,6 @@ namespace test_app2.FaultIndicators
             //ReceiverThread.Interrupt();
             //}
         }
-
-
 
         public void UpdateModelContent()
         {

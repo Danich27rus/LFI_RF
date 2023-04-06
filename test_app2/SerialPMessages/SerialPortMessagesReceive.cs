@@ -78,9 +78,9 @@ namespace test_app2.SerialPMessages
                                 if (Port.BytesToRead == 0 && Messages.IsHEX)
                                 {
                                     //message = hexConverter.ToHexString(message);
-                                    Messages.AddReceivedMessage(message);
                                     IndicatorData.IndicatorConfirm = message;
                                     IndicatorData.ParseCommand();
+                                    Messages.AddReceivedMessage(message);
                                     message = "";
                                 }
                             }
