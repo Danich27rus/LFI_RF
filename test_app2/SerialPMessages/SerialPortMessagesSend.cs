@@ -54,5 +54,21 @@ namespace test_app2.SerialPMessages
                 Port.BaseStream.WriteByte(convertedMessage[i]);
             }
         }
+
+        public void ByteMessage(byte[] message, bool shouldSendNewLine = false)
+        {
+            // Adds a new line if needed
+            //string newMessage = message + (shouldSendNewLine ? "\n" : "");
+            //byte[] convertedMessage = hexConverter.StringToByteArray(newMessage);
+            // Gets the bytes of the message using the serial port's encoding
+            // Will be using a byte buffer because it's faster than sending strings using 
+            // the serial port's build in methods... apparently
+            // byte[] buffer = Port.Encoding.GetBytes(convertedMessage);
+
+            for (int i = 0; i < message.Length; i++)
+            {
+                Port.BaseStream.WriteByte(message[i]);
+            }
+        }
     }
 }

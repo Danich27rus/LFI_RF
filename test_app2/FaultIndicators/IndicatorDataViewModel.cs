@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using test_app2.SerialPMessages;
+using test_app2.Utilities;
 using TheRFramework.Utilities;
 
 namespace test_app2.FaultIndicators
@@ -46,9 +47,9 @@ namespace test_app2.FaultIndicators
 
         private string[] _patterns =
         {
-            "E5 E5"
-            "A5 5A 11 84",
-            "A5 5A 18 44"
+            "E5 E5",        //Подтверждение от RF
+            "A5 5A 11 84",  //Кол-во индикаторов
+            "A5 5A 18 44"   //MAC адреса индикаторов
         };
 
         private int _deviceModelNum;
@@ -57,10 +58,13 @@ namespace test_app2.FaultIndicators
         private string _deviceModel;
         private string _deviceFamily;
         private string _deviceCommunicationProtocol;
+        private string[] _request;
+        private byte[] _requestTest;
         private int _callAdress;
         private int _callFrequency;
         private int _callTime;
         private int _waitTime;
+        private int _trailer;
         private static int _indicatorsAmount;
         private string _mac;
         //TODO: Разобраться что снизу
@@ -122,15 +126,32 @@ namespace test_app2.FaultIndicators
             get => _indicatorsAmount;
             set => RaisePropertyChanged(ref _indicatorsAmount, value);
         }
+        public int Trailer
+        {
+            get => _trailer;
+            set => RaisePropertyChanged(ref _trailer, value);
+        }
         public string MAC
         {
             get => _mac;
             set => RaisePropertyChanged(ref _mac, value);
         }
+        public string[] Request
+        {
+            get => _request;
+            set => RaisePropertyChanged(ref _request, value);
+        }
+        public byte[] RequestTest
+        {
+            get => _requestTest;
+            set => RaisePropertyChanged(ref _requestTest, value);
+        }
 
         public static CancellationTokenSource cancelSource = new CancellationTokenSource();
 
         public Command UpdateModelContentCommand { get; }
+
+        public Command ReadIndicatorParametersCommand { get; }
 
         public Command UpdateFamilyContentCommand { get; }
 
@@ -147,13 +168,18 @@ namespace test_app2.FaultIndicators
         public ObservableCollection<FaultIndicatorViewModel> Indicators { get; set; }
 
         public string IndicatorConfirm { get; set; }
+        
+        public Checksum checksum { get; set; }
 
         public IndicatorDataViewModel()
         {
+            Trailer = 22;
             IndicatorConfirm = "";
+
             Messages = new SerialPortMessagesViewModel();
             Receiver = new SerialPortMessagesReceive();
             Sender = new SerialPortMessagesSend();
+            checksum = new Checksum();
 
             Indicators = new ObservableCollection<FaultIndicatorViewModel>
             {
@@ -166,6 +192,7 @@ namespace test_app2.FaultIndicators
             UpdateFamilyContentCommand = new Command(UpdateFamilyContent);
             ClearAllContentCommand = new Command(ClearAllContent);
             UpdateCommunicationProtocolCommand = new Command(UpdateCommunicationContent);
+            ReadIndicatorParametersCommand = new Command(ReadIndicatorsParameters);
 
             /*new Thread(() =>
             {
@@ -194,7 +221,7 @@ namespace test_app2.FaultIndicators
             }
             if (IndicatorConfirm.Contains(_patterns[0]))
             {
-                IndicatorsAmount++;
+                Messages.AddMessage("Пришел ответ от RF конвертора...");
                 return;
             }
             if (IndicatorConfirm.Contains(_patterns[1]))
@@ -206,7 +233,7 @@ namespace test_app2.FaultIndicators
             {
                 if (IndicatorsAmount == 0)
                 {
-                    Messages.AddMessage("ЭТО НЕВОЗМОЖНО");
+                    Messages.AddMessage("НЕ МОЖЕТ БЫТЬ!");
                 }
                 string[] msg;
                 IndicatorsAmount--;
@@ -215,6 +242,10 @@ namespace test_app2.FaultIndicators
                 MAC = $"{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
                 App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
                 {
+                    if (Indicators.Any(x => x.MACAdress == MAC))
+                    {
+                        return;
+                    }
                     Indicators.Add(new FaultIndicatorViewModel { MACAdress = MAC });
                 });
             }
@@ -222,6 +253,26 @@ namespace test_app2.FaultIndicators
             //Thread.Sleep(5);
         }
         //Dispatcher.Thread.Interrupt();
+
+        public void ReadIndicatorsParameters()
+        {
+            ushort crc;
+
+            if (!Sender.Port.IsOpen)
+            {
+                Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
+                return;
+            }
+
+            Request = new string[] { "A5", "5A", "15", "24", "0A", "1E", "00", "0B", "00", "00", "00", "00", "00", "00", $"{CallAdress.ToString("X2")}", "00", "01", "00", "8E", "0E", $"{Trailer}" };
+
+            crc = checksum.CheckSum_CRC(Request, 2, Request.Length);
+            Request[^2] = string.Join("", (crc & 255).ToString("X2"));
+            Request[^3] = string.Join("", (crc >> 8).ToString("X2"));
+
+            Sender.SendHEXMessage(string.Join(" ", Request));
+            Messages.AddSentMessage(string.Join(" ", Request));
+        }
 
         public void StopThreadLoop()//CancellationTokenSource cancelToken)
         {
