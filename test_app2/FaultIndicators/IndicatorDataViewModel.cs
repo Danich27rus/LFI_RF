@@ -31,25 +31,26 @@ namespace test_app2.FaultIndicators
             "JYZ-LH-LoRa"
         };
 
-        private string[] _namingProtocol =
+        private Dictionary<string, int> _namingProtocol = new()
         {
-            "XY-Old",
-            "XY-New",
-            "LB-FF"
+            { "XY-Old", 85 },
+            { "XY-New", 165 },
+            { "LB-FF", 165 }
         };
 
-        private string[] _namingFamily =
+        private Dictionary<string, int> _namingFamily = new()
         {
-            "JYZ-FF",
-            "JYZ-HW",
-            "JYZ-HW V2.0"
+            { "JYZ-FF", 90 },
+            { "JYZ-HW", 90 },
+            { "JYZ-HW V2.0", 90 }
         };
 
         private string[] _patterns =
         {
             "E5 E5",        //Подтверждение от RF
-            "A5 5A 11 84",  //Кол-во индикаторов
-            "A5 5A 18 44"   //MAC адреса индикаторов
+            "11 84",        //Кол-во индикаторов
+            "18 44",        //MAC адреса индикаторов
+            "2F 45"
         };
 
         private int _deviceModelNum;
@@ -64,12 +65,19 @@ namespace test_app2.FaultIndicators
         private int _callFrequency;
         private int _callTime;
         private int _waitTime;
-        private int _trailer;
-        private static int _indicatorsAmount;
-        private string _mac;
         //TODO: Разобраться что снизу
         private int _comFrequency;
         private int _callLevel;
+        /////////////////////////////
+        private int _trailer;
+        private static int _indicatorsAmount;
+        private int _functionCallNumStart;
+        private int _functionCallNumEnd;
+        //Всё что ниже - относится к индикатору
+        private string _mac;
+        private string _macShortened;
+
+        private bool _buttonCheckAnyIndicators = false;
 
         public int DeviceModelNum
         {
@@ -136,6 +144,11 @@ namespace test_app2.FaultIndicators
             get => _mac;
             set => RaisePropertyChanged(ref _mac, value);
         }
+        public string MACShoertened
+        {
+            get => _macShortened;
+            set => RaisePropertyChanged(ref _macShortened, value);
+        }
         public string[] Request
         {
             get => _request;
@@ -146,18 +159,36 @@ namespace test_app2.FaultIndicators
             get => _requestTest;
             set => RaisePropertyChanged(ref _requestTest, value);
         }
+        public bool ButtonCheckAnyIndicators
+        {
+            get => _buttonCheckAnyIndicators;
+            set => RaisePropertyChanged(ref _buttonCheckAnyIndicators, value);
+        }
+        public int FunctionCallNumStart
+        {
+            get => _functionCallNumStart;
+            set => RaisePropertyChanged(ref _functionCallNumStart, value);
+        }
+        public int FunctionCallNumEnd
+        {
+            get => _functionCallNumEnd;
+            set => RaisePropertyChanged(ref _functionCallNumEnd, value);
+        }
+
 
         public static CancellationTokenSource cancelSource = new CancellationTokenSource();
 
         public Command UpdateModelContentCommand { get; }
 
-        public Command ReadIndicatorParametersCommand { get; }
+        public Command CheckAvailibleIndicatorsCommand { get; }
 
         public Command UpdateFamilyContentCommand { get; }
 
         public Command UpdateCommunicationProtocolCommand { get; }
 
         public Command ClearAllContentCommand { get; }
+
+        public Command ReadIndicatorsBaseParametersCommand { get; }
 
         public SerialPortMessagesViewModel Messages { get; set; }
 
@@ -174,6 +205,8 @@ namespace test_app2.FaultIndicators
         public IndicatorDataViewModel()
         {
             Trailer = 22;
+            CallTime = 10;
+            WaitTime = 30;
             IndicatorConfirm = "";
 
             Messages = new SerialPortMessagesViewModel();
@@ -192,7 +225,8 @@ namespace test_app2.FaultIndicators
             UpdateFamilyContentCommand = new Command(UpdateFamilyContent);
             ClearAllContentCommand = new Command(ClearAllContent);
             UpdateCommunicationProtocolCommand = new Command(UpdateCommunicationContent);
-            ReadIndicatorParametersCommand = new Command(ReadIndicatorsParameters);
+            CheckAvailibleIndicatorsCommand = new Command(CheckAvailibleIndicators);
+            ReadIndicatorsBaseParametersCommand = new Command(ReadIndicatorsBaseParameters);
 
             /*new Thread(() =>
             {
@@ -234,37 +268,83 @@ namespace test_app2.FaultIndicators
                 if (IndicatorsAmount == 0)
                 {
                     Messages.AddMessage("НЕ МОЖЕТ БЫТЬ!");
+                    return;
                 }
+                ButtonCheckAnyIndicators = true;
                 string[] msg;
                 IndicatorsAmount--;
                 msg = IndicatorConfirm.Split(' ');
 
-                MAC = $"{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
+                MACShoertened = $"{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
+                MAC = $"{msg[9]}-{msg[8]}-{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
+                
                 App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
                 {
                     if (Indicators.Any(x => x.MACAdress == MAC))
                     {
+                        Messages.AddMessage("Индикатор уже есть в списке проверяемых");
                         return;
                     }
-                    Indicators.Add(new FaultIndicatorViewModel { MACAdress = MAC });
+                    Indicators.Add(new FaultIndicatorViewModel { MACAdress = MAC, MACAdressShow = MACShoertened });
                 });
+            }
+            if (IndicatorConfirm.Contains(_patterns[3]))
+            {
+                if (Indicators.Count == 0)
+                {
+                    Messages.AddMessage("НЕ МОЖЕТ БЫТЬ!");
+                    return;
+                }
+                string[] msg;
+                msg = IndicatorConfirm.Split(' ');
             }
             IndicatorConfirm = "";
             //Thread.Sleep(5);
         }
         //Dispatcher.Thread.Interrupt();
 
-        public void ReadIndicatorsParameters()
+        public void CheckAvailibleIndicators()
         {
             ushort crc;
+            int oldFunc;
+
+            oldFunc = FunctionCallNumStart;
+            FunctionCallNumStart = 1;
+            FunctionCallNumEnd = 0;
 
             if (!Sender.Port.IsOpen)
             {
                 Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
                 return;
             }
+            if (DeviceCommunicationProtocolNum == 0 && DeviceFamilyNum == 0)
+            {
+                Messages.AddMessage("Для ИКЗ не выбран протокол общения или семейство устройств");
+                return;
+            }
 
-            Request = new string[] { "A5", "5A", "15", "24", "0A", "1E", "00", "0B", "00", "00", "00", "00", "00", "00", $"{CallAdress.ToString("X2")}", "00", "01", "00", "8E", "0E", $"{Trailer}" };
+            Request = 
+                new string[] { $"{_namingProtocol.ElementAt(DeviceCommunicationProtocolNum - 1).Value:X2}", 
+                    $"{_namingFamily.ElementAt(DeviceFamilyNum - 1).Value:X2}", 
+                    "15", 
+                    "24", 
+                    $"{CallTime:X2}", 
+                    $"{WaitTime:X2}", 
+                    "00", 
+                    $"{CallFrequency:X2}", 
+                    "00", 
+                    "00", 
+                    "00", 
+                    "00", 
+                    "00", 
+                    "00", 
+                    $"{CallAdress.ToString("X2")}", 
+                    "00", 
+                    $"{FunctionCallNumStart:X2}", 
+                    $"{FunctionCallNumEnd:X2}", 
+                    "00", 
+                    "00", 
+                    $"{Trailer:X2}" };
 
             crc = checksum.CheckSum_CRC(Request, 2, Request.Length);
             Request[^2] = string.Join("", (crc & 255).ToString("X2"));
@@ -272,17 +352,68 @@ namespace test_app2.FaultIndicators
 
             Sender.SendHEXMessage(string.Join(" ", Request));
             Messages.AddSentMessage(string.Join(" ", Request));
+
+            FunctionCallNumStart = oldFunc;
         }
 
-        public void StopThreadLoop()//CancellationTokenSource cancelToken)
+        public void ReadIndicatorsBaseParameters()
         {
-            //CanReceive = false;
-            //ShouldShutDownPermanently = true; //&= ReceiverThread.IsAlive;
-            //cancelSource.Cancel();
-            //if (ReceiverThread != null)
-            //{
-            //ReceiverThread.Interrupt();
-            //}
+            ushort crc, orderNumber;
+
+            //_functionCallNumStart = 2;
+            //_functionCallNumEnd = 0;
+            orderNumber = 5;
+
+            if (!Sender.Port.IsOpen)
+            {
+                Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
+                return;
+            }
+            if (DeviceCommunicationProtocolNum == 0 && DeviceFamilyNum == 0)
+            {
+                Messages.AddMessage("Для ИКЗ не выбран протокол общения или семейство устройств");
+                return;
+            }
+            //TODO: вынести в отдельный поток
+            foreach(var indicator in Indicators)
+            {
+                //MAC = indicator.MACAdress;
+
+                var splittedMac = indicator.MACAdress.Split('-');
+                //MAC = $"{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
+                Request =
+                new string[] { $"{_namingProtocol.ElementAt(DeviceCommunicationProtocolNum - 1).Value:X2}", 
+                    $"{_namingFamily.ElementAt(DeviceFamilyNum - 1).Value:X2}", 
+                    "15", 
+                    "25", 
+                    $"{CallTime:X2}", 
+                    $"{WaitTime:X2}", 
+                    "00", 
+                    $"{CallFrequency:X2}", 
+                    "00",
+                    $"{splittedMac[5]:X2}",
+                    $"{splittedMac[4]:X2}",
+                    $"{splittedMac[3]:X2}",
+                    $"{splittedMac[2]:X2}", 
+                    $"{splittedMac[1]:X2}", 
+                    $"{splittedMac[0]:X2}", 
+                    "00", 
+                    $"{_functionCallNumStart:X2}", 
+                    $"{_functionCallNumEnd:X2}", 
+                    "00", 
+                    "00", 
+                    $"{Trailer:X2}" };
+
+                crc = checksum.CheckSum_CRC(Request, 2, Request.Length);
+                Request[^2] = string.Join("", (crc & 255).ToString("X2"));
+                Request[^3] = string.Join("", (crc >> 8).ToString("X2"));
+                orderNumber++;
+
+                Sender.SendHEXMessage(string.Join(" ", Request));
+                Messages.AddSentMessage(string.Join(" ", Request));
+
+                Thread.Sleep(200);
+            }
         }
 
         public void UpdateModelContent()
@@ -294,13 +425,13 @@ namespace test_app2.FaultIndicators
         public void UpdateFamilyContent()
         {
             //TODO: Исправить баг с выбором при отсчёте с 0
-            DeviceFamily = _namingFamily[DeviceFamilyNum - 1];
+            DeviceFamily = _namingFamily.ElementAt(DeviceFamilyNum - 1).Key;
         }
 
         public void UpdateCommunicationContent()
         {
             //TODO: Исправить баг с выбором при отсчёте с 0
-            DeviceCommunicationProtocol = _namingProtocol[DeviceCommunicationProtocolNum - 1];
+            DeviceCommunicationProtocol = _namingProtocol.ElementAt(DeviceCommunicationProtocolNum - 1).Key;
         }
 
         public void ClearAllContent()

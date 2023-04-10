@@ -19,7 +19,6 @@ namespace test_app2
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             ((MainViewModel)DataContext).SerialPort.CloseAll();
-            ((MainViewModel)DataContext).IndicatorData.StopThreadLoop();
             Application.Current.Shutdown();
         }
     }

@@ -8,6 +8,7 @@
         xmlns:Converters="clr-namespace:test_app2.Converters"
         xmlns:UI="clr-namespace:test_app2.UI"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:interact="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:Config="clr-namespace:test_app2.Config" x:Class="test_app2.MainWindow"
         mc:Ignorable="d"
         Closing="Window_Closing"
@@ -30,6 +31,7 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
         <Converters:BoolToIsConnectedConverter x:Key="BoolToIsConnectedConverter"/>
+        <Converters:ZeroToEmptyStringConverter x:Key="ZeroToEmptyStringConverter"/>
         <Style x:Key="GreyDataGrid" TargetType="{x:Type DataGrid}">
             <Setter Property="Foreground" Value="#FF2F2F2F"/>
         </Style>
@@ -149,10 +151,10 @@
                             <TextBlock x:Name="CallAddrtextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5" Text="Частота вызова" VerticalAlignment="Stretch" Grid.Row="1"/>
                             <TextBlock x:Name="CallTimetextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5" Text="Время вызова" VerticalAlignment="Stretch" Grid.Row="2"/>
                             <TextBlock x:Name="WaitTimetextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5" Text="Время ожидания ответа" VerticalAlignment="Stretch" Grid.Row="3"/>
-                            <TextBox x:Name="CallFreqtextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.CallAdress, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="0" Margin="0,0,20,0"/>
-                            <TextBox x:Name="CallAddrtextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.CallFrequency, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="1" Margin="0,0,20,0"/>
-                            <TextBox x:Name="CallTimetextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.CallTime, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="2" Margin="0,0,20,0"/>
-                            <TextBox x:Name="WaitTimetextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.WaitTime, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="3" Margin="0,0,20,0"/>
+                            <TextBox x:Name="CallFreqtextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.CallAdress, TargetNullValue='', StringFormat=d, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="0" Margin="0,0,20,0"/>
+                            <TextBox x:Name="CallAddrtextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.CallFrequency, TargetNullValue='', StringFormat=d, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="1" Margin="0,0,20,0"/>
+                            <TextBox x:Name="CallTimetextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.CallTime, TargetNullValue='', StringFormat=d, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="2" Margin="0,0,20,0"/>
+                            <TextBox x:Name="WaitTimetextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.WaitTime, TargetNullValue='', StringFormat=d, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="3" Margin="0,0,20,0"/>
                         </Grid>
                     </GroupBox>
                 </Grid>
@@ -228,7 +230,8 @@
                     <!--ScrollViewer/-->
                     <!--DataGrid x:Name="dataGrid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,0,0,97"/-->
                     <GroupBox x:Name="IndicatorParamsGroupBox" Header="Значения в памяти индикатора">
-                        <TabControl x:Name="IndicatorParamsTabControl">
+                        <TabControl x:Name="IndicatorParamsTabControl"
+                                    >
                             <TabItem Header="Общая информация проверок" Width="190" Height="30">
                                 <Grid>
                                     <DataGrid x:Name="IndicatorInfoDataGrid"
@@ -272,7 +275,7 @@
                                             <StaticResource ResourceKey="GreyDataGrid"/>
                                         </DataGrid.Style>
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="{Binding [0], Source={StaticResource BaseParameters}}" Binding="{Binding MACAdress, StringFormat=d}" Width="105*"/>
+                                            <DataGridTextColumn Header="{Binding [0], Source={StaticResource BaseParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="105*"/>
                                             <DataGridTextColumn Header="Информация" Binding="{Binding Information, StringFormat=d}" Width="100*"/>
                                             <DataGridTextColumn Header="Статус" Binding="{Binding Status, StringFormat=d}" Width="100*"/>
                                         </DataGrid.Columns>
@@ -355,14 +358,14 @@
                                             <StaticResource ResourceKey="GreyDataGrid"/>
                                         </DataGrid.Style>
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="{Binding [0], Source={StaticResource BaseParameters}}" Binding="{Binding MACAdress, StringFormat=d}" Width="100"/>
-                                            <DataGridTextColumn Header="{Binding [1], Source={StaticResource BaseParameters}}" Binding="{Binding CallAdress, StringFormat=d}" Width="105"/>
-                                            <DataGridTextColumn Header="{Binding [2], Source={StaticResource BaseParameters}}" Binding="{Binding CallAdress, StringFormat=d}" Width="100"/>
-                                            <DataGridTextColumn Header="{Binding [3], Source={StaticResource BaseParameters}}" Binding="{Binding CallAdress, StringFormat=d}" Width="100"/>
-                                            <DataGridTextColumn Header="{Binding [4], Source={StaticResource BaseParameters}}" Binding="{Binding CallAdress, StringFormat=d}" Width="90"/>
-                                            <DataGridTextColumn Header="{Binding [5], Source={StaticResource BaseParameters}}" Binding="{Binding CallAdress, StringFormat=d}" Width="90"/>
-                                            <DataGridTextColumn Header="{Binding [6], Source={StaticResource BaseParameters}}" Binding="{Binding CallAdress, StringFormat=d}" Width="90"/>
-                                            <DataGridTextColumn Header="{Binding [7], Source={StaticResource BaseParameters}}" Binding="{Binding CallAdress, StringFormat=d}" Width="90"/>
+                                            <DataGridTextColumn Header="{Binding [0], Source={StaticResource BaseParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="100"/>
+                                            <DataGridTextColumn Header="{Binding [1], Source={StaticResource BaseParameters}}" Binding="{Binding FieldThreshold, StringFormat=d, Converter={StaticResource ZeroToEmptyStringConverter}}" Width="105"/>
+                                            <DataGridTextColumn Header="{Binding [2], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentThreshold, StringFormat=d}" Width="100"/>
+                                            <DataGridTextColumn Header="{Binding [3], Source={StaticResource BaseParameters}}" Binding="{Binding UploadT1, StringFormat=d}" Width="100"/>
+                                            <DataGridTextColumn Header="{Binding [4], Source={StaticResource BaseParameters}}" Binding="{Binding UploadT2, StringFormat=d}" Width="90"/>
+                                            <DataGridTextColumn Header="{Binding [5], Source={StaticResource BaseParameters}}" Binding="{Binding HeartBeat, StringFormat=d}" Width="90"/>
+                                            <DataGridTextColumn Header="{Binding [6], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentAbsoluteValue, StringFormat=d}" Width="90"/>
+                                            <DataGridTextColumn Header="{Binding [7], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentRelativeValue, StringFormat=d}" Width="90"/>
                                         </DataGrid.Columns>
                                         <DataGrid.ColumnHeaderStyle>
                                             <Style TargetType="{x:Type DataGridColumnHeader}">
@@ -402,9 +405,13 @@
                             </TabItem>
                             <TabItem Header="Параметры межфазного замыкания" Width="220" Height="30">
                                 <Grid Background="#FF2F2F2F">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="169*"/>
+                                        <ColumnDefinition Width="232*"/>
+                                    </Grid.ColumnDefinitions>
                                     <DataGrid x:Name="IndicatorSCDataGrid"
-                                              AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding Indicators, Mode=OneWay}"
-                                              RowHeight="45" RowBackground="#FF2F2F2F" AlternatingRowBackground="#FF2F2F2F" GridLinesVisibility="None" BorderBrush="#FF2F2F2F" Grid.ColumnSpan="3">
+                                              AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding IndicatorData.Indicators, Mode=OneWay}"
+                                              RowHeight="45" RowBackground="#FF2F2F2F" AlternatingRowBackground="#FF2F2F2F" GridLinesVisibility="None" BorderBrush="#FF2F2F2F" Grid.ColumnSpan="2">
                                         <DataGrid.Resources>
                                             <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF2F2F2F"/>
                                             <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
@@ -443,9 +450,10 @@
                                             <StaticResource ResourceKey="GreyDataGrid"/>
                                         </DataGrid.Style>
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="{Binding [0], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding CallAdress, StringFormat=d}" Width="255"/>
-                                            <DataGridTextColumn Header="{Binding [1], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding CallAdress, StringFormat=d}" Width="255*"/>
-                                            <DataGridTextColumn Header="{Binding [2], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding CallAdress, StringFormat=d}" Width="255"/>
+                                            <DataGridTextColumn Header="{Binding [0], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="160"/>
+                                            <DataGridTextColumn Header="{Binding [1], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding TimeDelay, StringFormat=d}" Width="205"/>
+                                            <DataGridTextColumn Header="{Binding [2], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding RepowerDelay, StringFormat=d}" Width="205"/>
+                                            <DataGridTextColumn Header="{Binding [3], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding ShortCurrent, StringFormat=d}" Width="205"/>
                                         </DataGrid.Columns>
                                         <DataGrid.ColumnHeaderStyle>
                                             <Style TargetType="{x:Type DataGridColumnHeader}">
@@ -484,7 +492,7 @@
                             <TabItem Header="Параметры замыкания на землю" Width="200" Height="30">
                                 <Grid Background="#FF2F2F2F">
                                     <DataGrid x:Name="IndicatorGSCDataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                              AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding Indicators, Mode=OneWay}"
+                                              AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding IndicatorData.Indicators, Mode=OneWay}"
                                               RowHeight="45" RowBackground="#FF2F2F2F" AlternatingRowBackground="#FF2F2F2F" GridLinesVisibility="None" BorderBrush="#FF2F2F2F">
                                         <DataGrid.Resources>
                                             <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF2F2F2F"/>
@@ -524,8 +532,9 @@
                                             <StaticResource ResourceKey="GreyDataGrid"/>
                                         </DataGrid.Style>
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="{Binding [0], Source={StaticResource InterphaseGroundShortCircuitParameters}}" Binding="{Binding CallAdress, StringFormat=d}" Width="255*"/>
-                                            <DataGridTextColumn Header="{Binding [1], Source={StaticResource InterphaseGroundShortCircuitParameters}}" Binding="{Binding CallAdress, StringFormat=d}" Width="255*"/>
+                                            <DataGridTextColumn Header="{Binding [0], Source={StaticResource InterphaseGroundShortCircuitParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="255*"/>
+                                            <DataGridTextColumn Header="{Binding [1], Source={StaticResource InterphaseGroundShortCircuitParameters}}" Binding="{Binding TransientFieldDrop, StringFormat=d}" Width="255*"/>
+                                            <DataGridTextColumn Header="{Binding [2], Source={StaticResource InterphaseGroundShortCircuitParameters}}" Binding="{Binding FieldDropDelay, StringFormat=d}" Width="255*"/>
                                         </DataGrid.Columns>
                                         <DataGrid.ColumnHeaderStyle>
                                             <Style TargetType="{x:Type DataGridColumnHeader}">
@@ -581,9 +590,9 @@
                                     <RowDefinition Height="5"/>
                                     <RowDefinition Height="40*"/>
                                 </Grid.RowDefinitions>
-                                <Button x:Name="ReadParametersButton" Content="Чтение данных с индикаторов" Command="{Binding IndicatorData.ReadIndicatorParametersCommand, Mode=OneTime}" Cursor="Hand" Margin="40,0,40,0"/>
+                                <Button x:Name="ReadParametersButton" Content="Чтение данных с индикаторов" Command="{Binding IndicatorData.ReadIndicatorsBaseParametersCommand, Mode=OneTime}" Cursor="Hand" Margin="40,0,40,0" IsEnabled="{Binding IndicatorData.ButtonCheckAnyIndicators}"/>
                                 <Button x:Name="WriteParametersButton" Content="Запись данных на индикаторы" Cursor="Hand" Margin="40,0,40,0" Grid.Row="2"/>
-                                <Button x:Name="SearchButton" Content="Поиск индикаторов" Cursor="Hand" Margin="40,0,40,0" Grid.Row="4"/>
+                                <Button x:Name="SearchButton" Content="Поиск индикаторов" Command="{Binding IndicatorData.CheckAvailibleIndicatorsCommand, Mode=OneTime}" Cursor="Hand" Margin="40,0,40,0" Grid.Row="4"/>
                                 <Button x:Name="RestartIndicatorsButton" Content="Перезапуск индикаторов" Cursor="Hand" Margin="40,0,40,0" VerticalAlignment="Stretch" Grid.Row="6" Background="Teal"/>
                             </Grid>
                             <Grid Grid.Column="2">

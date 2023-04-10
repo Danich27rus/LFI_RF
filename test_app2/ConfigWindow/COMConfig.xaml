@@ -235,11 +235,11 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="50*"/>
                                     <RowDefinition Height="90*"/>
-                                    <RowDefinition Height="100*"/>
+                                    <RowDefinition Height="110*"/>
                                 </Grid.RowDefinitions>
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="25"/>
                                         <RowDefinition Height="30"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Text="Тип устройства" Padding="10 5" HorizontalAlignment="Center" Grid.Row="0"/>

@@ -63,7 +63,7 @@ namespace test_app2.ViewModels
 
             IndicatorData.Messages = Messages;
             IndicatorData.Sender = Sender;
-            IndicatorData.Receiver = Receiver;
+            //IndicatorData.Receiver = Receiver;
             Receiver.IndicatorData = IndicatorData;
             IndicatorData.Indicators = Messages.Indicators;
             //IndicatorData.IndicatorConfirm = Receiver.IndicatorConfirm;
