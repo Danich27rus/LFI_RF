@@ -231,7 +231,7 @@
                     <!--DataGrid x:Name="dataGrid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,0,0,97"/-->
                     <GroupBox x:Name="IndicatorParamsGroupBox" Header="Значения в памяти индикатора">
                         <TabControl x:Name="IndicatorParamsTabControl"
-                                    >
+                                    SelectedIndex="{Binding IndicatorData.FunctionCallNumStart, Mode=TwoWay}">
                             <TabItem Header="Общая информация проверок" Width="190" Height="30">
                                 <Grid>
                                     <DataGrid x:Name="IndicatorInfoDataGrid"
@@ -359,7 +359,7 @@
                                         </DataGrid.Style>
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="{Binding [0], Source={StaticResource BaseParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="100"/>
-                                            <DataGridTextColumn Header="{Binding [1], Source={StaticResource BaseParameters}}" Binding="{Binding FieldThreshold, StringFormat=d, Converter={StaticResource ZeroToEmptyStringConverter}}" Width="105"/>
+                                            <DataGridTextColumn Header="{Binding [1], Source={StaticResource BaseParameters}}" Binding="{Binding FieldThreshold, StringFormat=d}" Width="105"/>
                                             <DataGridTextColumn Header="{Binding [2], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentThreshold, StringFormat=d}" Width="100"/>
                                             <DataGridTextColumn Header="{Binding [3], Source={StaticResource BaseParameters}}" Binding="{Binding UploadT1, StringFormat=d}" Width="100"/>
                                             <DataGridTextColumn Header="{Binding [4], Source={StaticResource BaseParameters}}" Binding="{Binding UploadT2, StringFormat=d}" Width="90"/>
@@ -590,8 +590,10 @@
                                     <RowDefinition Height="5"/>
                                     <RowDefinition Height="40*"/>
                                 </Grid.RowDefinitions>
-                                <Button x:Name="ReadParametersButton" Content="Чтение данных с индикаторов" Command="{Binding IndicatorData.ReadIndicatorsBaseParametersCommand, Mode=OneTime}" Cursor="Hand" Margin="40,0,40,0" IsEnabled="{Binding IndicatorData.ButtonCheckAnyIndicators}"/>
-                                <Button x:Name="WriteParametersButton" Content="Запись данных на индикаторы" Cursor="Hand" Margin="40,0,40,0" Grid.Row="2"/>
+                                <Button x:Name="ReadParametersButton" Content="Чтение данных с индикаторов" Command="{Binding IndicatorData.ReadIndicatorsBaseParametersCommand, Mode=OneTime}" 
+                                        Cursor="Hand" Margin="40,0,40,0" IsEnabled="{Binding IndicatorData.ButtonCheckAnyIndicators}"/>
+                                <Button x:Name="WriteParametersButton" Content="Запись данных на индикаторы" Command="{Binding IndicatorData.WriteIndicatorsBaseParametersCommand, Mode=OneTime}"
+                                        Cursor="Hand" Margin="40,0,40,0" Grid.Row="2"/>
                                 <Button x:Name="SearchButton" Content="Поиск индикаторов" Command="{Binding IndicatorData.CheckAvailibleIndicatorsCommand, Mode=OneTime}" Cursor="Hand" Margin="40,0,40,0" Grid.Row="4"/>
                                 <Button x:Name="RestartIndicatorsButton" Content="Перезапуск индикаторов" Cursor="Hand" Margin="40,0,40,0" VerticalAlignment="Stretch" Grid.Row="6" Background="Teal"/>
                             </Grid>

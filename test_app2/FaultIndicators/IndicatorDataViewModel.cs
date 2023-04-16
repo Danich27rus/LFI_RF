@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -50,7 +51,7 @@ namespace test_app2.FaultIndicators
             "E5 E5",        //Подтверждение от RF
             "11 84",        //Кол-во индикаторов
             "18 44",        //MAC адреса индикаторов
-            "2F 45"
+            "2F 45"         //Чтение данных
         };
 
         private int _deviceModelNum;
@@ -190,6 +191,8 @@ namespace test_app2.FaultIndicators
 
         public Command ReadIndicatorsBaseParametersCommand { get; }
 
+        public Command WriteIndicatorsBaseParametersCommand { get; }
+
         public SerialPortMessagesViewModel Messages { get; set; }
 
         public SerialPortMessagesReceive Receiver { get; set; }
@@ -227,6 +230,7 @@ namespace test_app2.FaultIndicators
             UpdateCommunicationProtocolCommand = new Command(UpdateCommunicationContent);
             CheckAvailibleIndicatorsCommand = new Command(CheckAvailibleIndicators);
             ReadIndicatorsBaseParametersCommand = new Command(ReadIndicatorsBaseParameters);
+            WriteIndicatorsBaseParametersCommand = new Command(WriteIndicatorParameters);
 
             /*new Thread(() =>
             {
@@ -239,7 +243,6 @@ namespace test_app2.FaultIndicators
                     Messages.AddReceivedMessage("Галя, отмена по токену x2!");
                 }
             }).Start();*/
-
         }
 
         public void ParseCommand()
@@ -265,18 +268,18 @@ namespace test_app2.FaultIndicators
             }
             if (IndicatorConfirm.Contains(_patterns[2]))
             {
-                if (IndicatorsAmount == 0)
+                /*if (IndicatorsAmount == 0)
                 {
                     Messages.AddMessage("НЕ МОЖЕТ БЫТЬ!");
                     return;
-                }
+                }*/
                 ButtonCheckAnyIndicators = true;
                 string[] msg;
-                IndicatorsAmount--;
+                //IndicatorsAmount--;
                 msg = IndicatorConfirm.Split(' ');
 
                 MACShoertened = $"{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
-                MAC = $"{msg[9]}-{msg[8]}-{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
+                MAC = $"{msg[10]}-{msg[9]}-{msg[8]}-{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
                 
                 App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
                 {
@@ -290,13 +293,52 @@ namespace test_app2.FaultIndicators
             }
             if (IndicatorConfirm.Contains(_patterns[3]))
             {
-                if (Indicators.Count == 0)
+                /*if (Indicators.Count != 0)
+                {
+                    Messages.AddMessage("НЕ МОЖЕТ БЫТЬ!");
+                    return;
+                }*/
+                string[] msg;
+                msg = IndicatorConfirm.Split(' ');
+
+                MAC = $"{msg[10]}-{msg[9]}-{msg[8]}-{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
+                var CollectionIndex = Indicators.IndexOf(Indicators.FirstOrDefault(x => x.MACAdress == MAC));
+
+                if (CollectionIndex == null)
                 {
                     Messages.AddMessage("НЕ МОЖЕТ БЫТЬ!");
                     return;
                 }
-                string[] msg;
-                msg = IndicatorConfirm.Split(' ');
+                else
+                {
+                    switch (Convert.ToInt16(msg[11]))
+                    {
+                        //run
+                        case 2:
+                            Indicators[CollectionIndex].FieldThreshold = Convert.ToInt16(msg[16], 16) + (Convert.ToInt16(msg[17], 16) << 8);
+                            Indicators[CollectionIndex].CurrentThreshold = Convert.ToInt16(msg[18], 16) / 10;
+                            Indicators[CollectionIndex].UploadT1 = Convert.ToInt16(msg[23], 16) + (Convert.ToInt16(msg[24], 16) << 8);
+                            Indicators[CollectionIndex].UploadT2 = Convert.ToInt16(msg[25], 16) + (Convert.ToInt16(msg[26], 16) << 8) + 
+                                                                  (Convert.ToInt16(msg[27], 16) << 16) + (Convert.ToInt16(msg[28], 16) << 24);
+                            Indicators[CollectionIndex].HeartBeat = Convert.ToInt16(msg[29], 16) + (Convert.ToInt16(msg[30], 16) << 8);
+                            Indicators[CollectionIndex].CurrentIValue = Convert.ToInt16(msg[31], 16) / 10;
+                            Indicators[CollectionIndex].CurrentRelativeValue = Convert.ToInt16(msg[32], 16);
+                            Indicators[CollectionIndex].CurrentAbsoluteValue = (Convert.ToInt16(msg[33], 16) + (Convert.ToInt16(msg[34], 16) << 8)) / 10;
+                            break;
+                        //current
+                        case 3:
+                            Indicators[CollectionIndex].TimeDelay = Convert.ToInt16(msg[14], 16) + (Convert.ToInt16(msg[15], 16) << 8) +
+                                                                    (Convert.ToInt16(msg[16], 16) << 16) + (Convert.ToInt16(msg[17], 16) << 24);
+                            Indicators[CollectionIndex].RepowerDelay = Convert.ToInt16(msg[18], 16) + (Convert.ToInt16(msg[19], 16) << 8);
+                            Indicators[CollectionIndex].ShortCurrent = (Convert.ToInt16(msg[20], 16) + (Convert.ToInt16(msg[21], 16) << 8)) / 10;
+                            break;
+                        //ground
+                        case 4:
+                            Indicators[CollectionIndex].TransientFieldDrop = Convert.ToInt16(msg[26], 16);
+                            Indicators[CollectionIndex].FieldDropDelay = Convert.ToInt16(msg[27], 16) + (Convert.ToInt16(msg[28], 16) << 8);
+                            break;
+                    }
+                }
             }
             IndicatorConfirm = "";
             //Thread.Sleep(5);
@@ -338,7 +380,7 @@ namespace test_app2.FaultIndicators
                     "00", 
                     "00", 
                     "00", 
-                    $"{CallAdress.ToString("X2")}", 
+                    $"{CallAdress:X2}", 
                     "00", 
                     $"{FunctionCallNumStart:X2}", 
                     $"{FunctionCallNumEnd:X2}", 
@@ -391,15 +433,15 @@ namespace test_app2.FaultIndicators
                     "00", 
                     $"{CallFrequency:X2}", 
                     "00",
+                    $"{splittedMac[6]:X2}",
                     $"{splittedMac[5]:X2}",
                     $"{splittedMac[4]:X2}",
-                    $"{splittedMac[3]:X2}",
+                    $"{splittedMac[3]:X2}", 
                     $"{splittedMac[2]:X2}", 
-                    $"{splittedMac[1]:X2}", 
-                    $"{splittedMac[0]:X2}", 
-                    "00", 
-                    $"{_functionCallNumStart:X2}", 
-                    $"{_functionCallNumEnd:X2}", 
+                    $"{splittedMac[1]:X2}",
+                    $"{splittedMac[0]:X2}",
+                    $"{FunctionCallNumStart:X2}", 
+                    $"{FunctionCallNumEnd:X2}", 
                     "00", 
                     "00", 
                     $"{Trailer:X2}" };
@@ -407,13 +449,157 @@ namespace test_app2.FaultIndicators
                 crc = checksum.CheckSum_CRC(Request, 2, Request.Length);
                 Request[^2] = string.Join("", (crc & 255).ToString("X2"));
                 Request[^3] = string.Join("", (crc >> 8).ToString("X2"));
-                orderNumber++;
+                //orderNumber++;
 
                 Sender.SendHEXMessage(string.Join(" ", Request));
                 Messages.AddSentMessage(string.Join(" ", Request));
 
                 Thread.Sleep(200);
             }
+        }
+
+        public void WriteIndicatorParameters()
+        {
+            ushort crc;
+            int funcInMemory, subNumber;
+
+            funcInMemory = FunctionCallNumStart;
+            //FunctionCallNumStart = 1;
+            //FunctionCallNumEnd = 0;
+
+            if (!Sender.Port.IsOpen)
+            {
+                Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
+                return;
+            }
+            if (DeviceCommunicationProtocolNum == 0 && DeviceFamilyNum == 0)
+            {
+                Messages.AddMessage("Для ИКЗ не выбран протокол общения или семейство устройств");
+                return;
+            }
+            //TODO: вынести в отдельный поток
+            foreach (var indicator in Indicators)
+            {
+                //MAC = indicator.MACAdress;
+
+                var splittedMac = indicator.MACAdress.Split('-');
+                //MAC = $"{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
+                Request =
+                new string[] { $"{_namingProtocol.ElementAt(DeviceCommunicationProtocolNum - 1).Value:X2}",
+                    $"{_namingFamily.ElementAt(DeviceFamilyNum - 1).Value:X2}",
+                    "34",
+                    "26",
+                    $"{CallTime:X2}",
+                    $"{WaitTime:X2}",
+                    "00",
+                    $"{CallFrequency:X2}",
+                    "00",
+                    $"{splittedMac[6]:X2}",
+                    $"{splittedMac[5]:X2}",
+                    $"{splittedMac[4]:X2}",
+                    $"{splittedMac[3]:X2}",
+                    $"{splittedMac[2]:X2}",
+                    $"{splittedMac[1]:X2}",
+                    $"{splittedMac[0]:X2}",
+                    $"{funcInMemory:X2}",
+                    $"{FunctionCallNumEnd:X2}",
+                    "00", "00", "00", "00",
+                    "00", "00", "00", "00",
+                    "00", "00", "00", "00",
+                    "00", "00", "00", "00",
+                    "00", "00", "00", "00",
+                    "00", "00", "00", "00",
+                    "00", "00", "00", "00", 
+                    "00", "00", "00", "00",
+                    "00",
+                    $"{Trailer:X2}" };
+
+                switch(funcInMemory)
+                {
+                    case 2:
+                        Request[18] = "18";
+                        Request[19] = "F0";
+                        Request[20] = "0A";
+                        Request[21] = $"{indicator.FieldThreshold & 255:X2}";
+                        Request[22] = $"{(indicator.FieldThreshold >> 8) & 255:X2}";
+                        Request[23] = $"{(indicator.CurrentThreshold * 10) & 255:X2}";
+                        Request[24] = "8C";
+                        Request[25] = "00";
+                        Request[26] = "06";
+                        Request[27] = "19";
+                        Request[28] = $"{indicator.UploadT1 & 255:X2}";
+                        Request[29] = $"{(indicator.UploadT1 >> 8) & 255:X2}";
+                        Request[30] = $"{indicator.UploadT2 & 255:X2}";
+                        Request[31] = $"{(indicator.UploadT2 >> 8) & 255:X2}";
+                        Request[32] = $"{(indicator.UploadT2 >> 16) & 255:X2}";
+                        Request[33] = $"{(indicator.UploadT2 >> 24) & 255:X2}";
+                        Request[34] = $"{indicator.HeartBeat & 255:X2}";
+                        Request[35] = $"{(indicator.HeartBeat >> 8) & 255:X2}";
+                        Request[36] = $"{(indicator.CurrentIValue * 10) & 255:X2}";
+                        Request[37] = $"{indicator.CurrentRelativeValue & 255:X2}";
+                        Request[38] = $"{(indicator.CurrentAbsoluteValue * 10) & 255:X2}";
+                        Request[39] = $"{((indicator.CurrentAbsoluteValue * 10) >> 8) & 255:X2}";
+                        Request[40] = "05";
+                        Request[41] = "02";
+                        Request[42] = "02";
+                        Request[43] = "00";
+                        break;
+                    case 3:
+                        Request[18] = "15";
+                        Request[19] = $"{indicator.TimeDelay & 255:X2}";
+                        Request[20] = $"{(indicator.TimeDelay >> 8) & 255:X2}";
+                        Request[21] = $"{(indicator.TimeDelay >> 16) & 255:X2}";
+                        Request[22] = $"{(indicator.TimeDelay >> 24) & 255:X2}";
+                        Request[23] = $"{indicator.RepowerDelay & 255:X2}";
+                        Request[24] = $"{(indicator.RepowerDelay >> 8) & 255:X2}";
+                        Request[25] = $"{(indicator.ShortCurrent * 10) & 255:X2}";
+                        Request[26] = $"{((indicator.ShortCurrent * 10) >> 8) & 255:X2}";
+                        Request[27] = "00";
+                        Request[28] = "00";
+                        Request[29] = "64";
+                        Request[30] = "00";
+                        Request[31] = "0A";
+                        Request[32] = "00";
+                        Request[33] = "DC";
+                        Request[34] = "05";
+                        Request[35] = "96";
+                        Request[36] = "00";
+                        Request[37] = "01";
+                        Request[38] = "00";
+                        Request[39] = "08";
+                        Request[40] = "00";
+                        break;
+                    case 4:
+                        Request[18] = "0F";
+                        Request[19] = "00";
+                        Request[20] = "00";
+                        Request[21] = "00";
+                        Request[22] = "00";
+                        Request[23] = "00";
+                        Request[24] = "00";
+                        Request[25] = "00";
+                        Request[26] = "00";
+                        Request[27] = "00";
+                        Request[28] = "00";
+                        Request[29] = "1E";
+                        Request[30] = "00";
+                        Request[31] = $"{indicator.TransientFieldDrop & 255:X2}";
+                        Request[32] = $"{indicator.FieldDropDelay & 255:X2}";
+                        Request[33] = $"{(indicator.FieldDropDelay >> 8) & 255:X2}";
+                        break;
+                }
+
+                crc = checksum.CheckSum_CRC(Request, 2, Request.Length);
+                Request[^2] = string.Join("", (crc & 255).ToString("X2"));
+                Request[^3] = string.Join("", (crc >> 8).ToString("X2"));
+                //orderNumber++;
+
+                Sender.SendHEXMessage(string.Join(" ", Request));
+                Messages.AddSentMessage(string.Join(" ", Request));
+
+                Thread.Sleep(200);
+            }
+
         }
 
         public void UpdateModelContent()

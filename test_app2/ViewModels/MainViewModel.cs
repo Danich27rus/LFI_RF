@@ -65,7 +65,7 @@ namespace test_app2.ViewModels
             IndicatorData.Sender = Sender;
             //IndicatorData.Receiver = Receiver;
             Receiver.IndicatorData = IndicatorData;
-            IndicatorData.Indicators = Messages.Indicators;
+            //IndicatorData.Indicators = Messages.Indicators;
             //IndicatorData.IndicatorConfirm = Receiver.IndicatorConfirm;
             //Config.SerialPort = SerialPort;
             //Config.Port = SerialPort.Port;

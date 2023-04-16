@@ -57,13 +57,11 @@ namespace test_app2.SerialPMessages
 
         public SerialPortMessagesSend Sender { get; set; }
 
-        public ObservableCollection<FaultIndicatorViewModel> Indicators { get; set; }
-
 
         public SerialPortMessagesViewModel()
         {
             //MessagesCount = 0;
-            Indicators = new ObservableCollection<FaultIndicatorViewModel>();
+            //Indicators = new ObservableCollection<FaultIndicatorViewModel>();
             MessagesText = "";
             ToBeSentText = "";
             IsHEX = false;
