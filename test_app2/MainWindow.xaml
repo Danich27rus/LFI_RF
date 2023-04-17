@@ -91,81 +91,96 @@
     </Window.DataContext>
     <Grid Margin="5">
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150*"/>
-                <ColumnDefinition Width="5"/>
-                <ColumnDefinition Width="820"/>
-            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="170*"/>
+            </Grid.RowDefinitions>
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="180*"/>
-                    <RowDefinition Height="170*"/>
-                    <RowDefinition Height="340"/>
-                </Grid.RowDefinitions>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <!--Для кнопок
-                    Width="83" Background="#FFA5D6A7"
-                      BorderBrush="#FF388E3C" Foreground="#FF1B5E20" BorderThickness="0,0,0,0"/-->
-                    <!--Grid HorizontalAlignment="Left" VerticalAlignment="Top" Width="320" Height="210" Margin="0,0,0,480"-->
-                    <TextBlock x:Name="COMConnectionTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="COM-порт:" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="COMName" HorizontalAlignment="Right" Margin="10,10,30,0" TextWrapping="Wrap" Text="{Binding SerialPort.Settings.SelectedCOMPort}" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="COMBaudRateTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Скорость, бод/c:" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="COMBaudRate" HorizontalAlignment="Right" Margin="10,10,30,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding SerialPort.Settings.SelectedBaudRate}" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="LFIDeviceTypeTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Тип устройства:" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="LFIDeviceTypeModel" HorizontalAlignment="Right" Margin="10,10,30,0" Grid.Row="2" TextWrapping="Wrap" Text="{Binding IndicatorData.DeviceModel}" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="LFIDeviceFamilyTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="3" TextWrapping="Wrap" Text="Семейство устройства:" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="LFIDeviceFamilyModel" HorizontalAlignment="Right" Margin="10,10,30,0" Grid.Row="3" TextWrapping="Wrap" Text="{Binding IndicatorData.DeviceFamily}" VerticalAlignment="Top"/>
-                    <Grid Grid.Row="5" Cursor="">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Button x:Name="COMOpenClosePortMainButton" 
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="210"/>
+                    <ColumnDefinition Width="270"/>
+                    <ColumnDefinition Width="210"/>
+                    <ColumnDefinition Width="210"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="COMConnectionTextBlock" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" Text="COM-порт:" VerticalAlignment="Center"/>
+                <TextBlock x:Name="COMName" HorizontalAlignment="Right" Margin="10,0,30,0" TextWrapping="Wrap" Text="{Binding SerialPort.Settings.SelectedCOMPort}" VerticalAlignment="Center"/>
+                <TextBlock x:Name="COMBaudRateTextBlock" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Column="1" TextWrapping="Wrap" Text="Скорость, бод/c:" VerticalAlignment="Center"/>
+                <TextBlock x:Name="COMBaudRate" HorizontalAlignment="Right" Margin="10,0,30,0" Grid.Column="1" TextWrapping="Wrap" Text="{Binding SerialPort.Settings.SelectedBaudRate}" VerticalAlignment="Center"/>
+                <TextBlock x:Name="LFIDeviceTypeTextBlock" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Column="2" TextWrapping="Wrap" Text="Тип устройства:" VerticalAlignment="Center"/>
+                <TextBlock x:Name="LFIDeviceTypeModel" HorizontalAlignment="Right" Margin="10,0,30,0" Grid.Column="2" TextWrapping="Wrap" Text="{Binding IndicatorData.DeviceModel}" VerticalAlignment="Center"/>
+                <TextBlock x:Name="LFIDeviceFamilyTextBlock" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Column="3" TextWrapping="Wrap" Text="Семейство устройства:" VerticalAlignment="Center"/>
+                <TextBlock x:Name="LFIDeviceFamilyModel" HorizontalAlignment="Right" Margin="10,0,30,0" Grid.Column="3" TextWrapping="Wrap" Text="{Binding IndicatorData.DeviceFamily}" VerticalAlignment="Center"/>
+                <!--Grid Grid.Row="5" Cursor="">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions-->
+                <Button x:Name="COMOpenClosePortMainButton" Grid.Column="4"
                       Command="{Binding SerialPort.AutoConnectDisconnectCommand, Mode=OneTime}"
                       Content="{Binding SerialPort.IsConnected, Converter={StaticResource BoolToIsConnectedConverter}, UpdateSourceTrigger=PropertyChanged}" 
-                      VerticalAlignment="Stretch" Margin="20,0,20,0" HorizontalAlignment="Stretch" Cursor="Hand"
+                      VerticalAlignment="Stretch" Margin="20,10,20,10" HorizontalAlignment="Stretch" Cursor="Hand"
                       />
-                        <Button x:Name="COMConfButton" Grid.Column="1"
+                <Button x:Name="COMConfButton" Grid.Column="5"
                       Command="{Binding Config.ConfigCommand, Mode=OneTime}"
-                      Content="Конфигурация" Margin="20,0,20,0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="5"
+                      Content="Конфигурация" Margin="20,10,20,10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="5"
                       />
-                    </Grid>
-                </Grid>
-                <Grid Grid.Row="1">
-                    <GroupBox Header="Параметры для связи с индикаторами">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="32.498"/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <TextBlock x:Name="CallFreqtextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5" Text="Адрес вызова" VerticalAlignment="Stretch" Grid.Row="0"/>
-                            <TextBlock x:Name="CallAddrtextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5" Text="Частота вызова" VerticalAlignment="Stretch" Grid.Row="1"/>
-                            <TextBlock x:Name="CallTimetextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5" Text="Время вызова" VerticalAlignment="Stretch" Grid.Row="2"/>
-                            <TextBlock x:Name="WaitTimetextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5" Text="Время ожидания ответа" VerticalAlignment="Stretch" Grid.Row="3"/>
-                            <TextBox x:Name="CallFreqtextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.CallAdress, TargetNullValue='', StringFormat=d, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="0" Margin="0,0,20,0"/>
-                            <TextBox x:Name="CallAddrtextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.CallFrequency, TargetNullValue='', StringFormat=d, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="1" Margin="0,0,20,0"/>
-                            <TextBox x:Name="CallTimetextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.CallTime, TargetNullValue='', StringFormat=d, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="2" Margin="0,0,20,0"/>
-                            <TextBox x:Name="WaitTimetextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.WaitTime, TargetNullValue='', StringFormat=d, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="3" Margin="0,0,20,0"/>
-                        </Grid>
-                    </GroupBox>
-                </Grid>
-                <Grid Grid.Row="2">
+                <!--/Grid-->
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150*"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="820"/>
+                </Grid.ColumnDefinitions>
+                <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="275*"/>
-                        <RowDefinition Height="55*"/>
+                        <!--RowDefinition Height="180*"/-->
+                        <RowDefinition Height="170*"/>
+                        <RowDefinition Height="340"/>
                     </Grid.RowDefinitions>
-                    <GroupBox Header="Сообщения">
-                        <Grid>
-                            <TextBox
+                    <!--Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions-->
+                        <!--Для кнопок
+                    Width="83" Background="#FFA5D6A7"
+                      BorderBrush="#FF388E3C" Foreground="#FF1B5E20" BorderThickness="0,0,0,0"/-->
+                        <!--Grid HorizontalAlignment="Left" VerticalAlignment="Top" Width="320" Height="210" Margin="0,0,0,480"-->
+                    <!--/Grid-->
+                    <Grid Grid.Row="0">
+                        <GroupBox Header="Параметры для связи с индикаторами">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock x:Name="CallFreqtextBlock" HorizontalAlignment="Left" FontFamily="Verdana" FontSize="15" TextWrapping="Wrap" Margin="5" Text="Адрес вызова" VerticalAlignment="Center" Grid.Row="0"/>
+                                <TextBlock x:Name="CallAddrtextBlock" HorizontalAlignment="Left" FontFamily="Verdana" FontSize="15" TextWrapping="Wrap" Margin="5" Text="Частота вызова" VerticalAlignment="Center" Grid.Row="1"/>
+                                <TextBlock x:Name="CallTimetextBlock" HorizontalAlignment="Left" FontFamily="Verdana" FontSize="15" TextWrapping="Wrap" Margin="5" Text="Время вызова" VerticalAlignment="Center" Grid.Row="2"/>
+                                <TextBlock x:Name="WaitTimetextBlock" HorizontalAlignment="Left" FontFamily="Verdana" FontSize="15" TextWrapping="Wrap" Margin="5" Text="Время ожидания ответа" VerticalAlignment="Center" Grid.Row="3"/>
+                                <TextBox x:Name="CallFreqtextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" FontSize="15" Text="{Binding IndicatorData.CallAdress, TargetNullValue='', StringFormat=d, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="0" Margin="0,0,20,0"/>
+                                <TextBox x:Name="CallAddrtextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" FontSize="15" Text="{Binding IndicatorData.CallFrequency, TargetNullValue='', StringFormat=d, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="1" Margin="0,0,20,0"/>
+                                <TextBox x:Name="CallTimetextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" FontSize="15" Text="{Binding IndicatorData.CallTime, TargetNullValue='', StringFormat=d, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="2" Margin="0,0,20,0"/>
+                                <TextBox x:Name="WaitTimetextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" FontSize="15" Text="{Binding IndicatorData.WaitTime, TargetNullValue='', StringFormat=d, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="3" Margin="0,0,20,0"/>
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="275*"/>
+                            <RowDefinition Height="55*"/>
+                        </Grid.RowDefinitions>
+                        <GroupBox Header="Сообщения">
+                            <Grid>
+                                <TextBox
                          TextWrapping="Wrap" 
                          VerticalScrollBarVisibility="Auto" 
                          AcceptsReturn="True"
@@ -173,487 +188,488 @@
                          FontSize="12"
                          IsReadOnly="true"
                          Margin="0,0,0,0"/>
-                        </Grid>
-                    </GroupBox>
-                    <Grid Grid.Row="1">
-                        <Button x:Name="SendButton" Margin="5,0,0,0" Command="{Binding Messages.SendMessageCommand, Mode=OneTime}"
+                            </Grid>
+                        </GroupBox>
+                        <Grid Grid.Row="1">
+                            <Button x:Name="SendButton" Margin="5,0,0,0" Command="{Binding Messages.SendMessageCommand, Mode=OneTime}"
                          Content="Отправить" HorizontalAlignment="Left" VerticalAlignment="Center" Height="45" Width="137"/>
-                        <CheckBox x:Name="HEXCheckBox"
+                            <CheckBox x:Name="HEXCheckBox"
                          Margin="320,0,10,5" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                          IsChecked="{Binding Messages.IsHEX, UpdateSourceTrigger=PropertyChanged}"
                          Content="Отправка HEX" Cursor=""/>
-                        <CheckBox x:Name="CRLFCheckBox"
+                            <CheckBox x:Name="CRLFCheckBox"
                          Margin="305,5,10,0" HorizontalAlignment="Right"
                          Content="+\n в конце строки" VerticalAlignment="Top"/>
-                        <TextBox x:Name="COMInputTextBox"
+                            <TextBox x:Name="COMInputTextBox"
                          Text="{Binding Messages.ToBeSentText, UpdateSourceTrigger=PropertyChanged}"   
                          Margin="150,0,150,0" TextWrapping="Wrap" VerticalAlignment="Center" Height="45"/>
+                        </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
-            <Grid Grid.Column="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="450"/>
-                    <RowDefinition Height="5"/>
-                    <RowDefinition Height="150*"/>
-                </Grid.RowDefinitions>
-                <Grid>
-                    <Grid.Resources>
-                        <x:Array x:Key="IndicatorInformation" Type="{x:Type System:String}">
-                            <System:String>MAC-Адрес, фаза</System:String>
-                            <System:String>Информация о параметре</System:String>
-                            <System:String>Статус</System:String>
-                        </x:Array>
-                        <x:Array x:Key="BaseParameters" Type="{x:Type System:String}">
-                            <System:String>MAC-Адрес, фаза</System:String>
-                            <System:String>Величина электрического поля (в В/м)</System:String>
-                            <System:String>Минимальное значение тока в линии (в А)</System:String>
-                            <System:String>Интервал отправки телеизмерений №1 (в с)</System:String>
-                            <System:String>Интервал отправки телеизмерений №2 (в с)</System:String>
-                            <System:String>Период отключения датчиков (в мин)</System:String>
-                            <System:String>Порог значения тока отправки телеизмерений (в А)</System:String>
-                            <System:String>Относительное значение тока (в %)</System:String>
-                            <System:String>Абсолютное значение изменения тока (в А)</System:String>
-                        </x:Array>
-                        <x:Array x:Key="InterphaseShortCircuitParameters" Type="{x:Type System:String}">
-                            <System:String>MAC-Адрес, фаза</System:String>
-                            <System:String>Время перезапуска индикаторов после КЗ на линии(в c)</System:String>
-                            <System:String>Время перезапуска индикаторов после КЗ после перезапуска линии (в с)</System:String>
-                            <System:String>Минимальное значение тока КЗ на линии (в А)</System:String>
-                        </x:Array>
-                        <x:Array x:Key="InterphaseGroundShortCircuitParameters" Type="{x:Type System:String}">
-                            <System:String>MAC-Адрес, фаза</System:String>
-                            <System:String>Падение напряжения в линии (в %)</System:String>
-                            <System:String>Время засечки падения напряжения (в с)</System:String>
-                        </x:Array>
-                    </Grid.Resources>
-                    <!--ScrollViewer/-->
-                    <!--DataGrid x:Name="dataGrid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,0,0,97"/-->
-                    <GroupBox x:Name="IndicatorParamsGroupBox" Header="Значения в памяти индикатора">
-                        <TabControl x:Name="IndicatorParamsTabControl"
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="380"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="150*"/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.Resources>
+                            <x:Array x:Key="IndicatorInformation" Type="{x:Type System:String}">
+                                <System:String>MAC-Адрес, фаза</System:String>
+                                <System:String>Информация о параметре</System:String>
+                                <System:String>Статус</System:String>
+                            </x:Array>
+                            <x:Array x:Key="BaseParameters" Type="{x:Type System:String}">
+                                <System:String>MAC-Адрес, фаза</System:String>
+                                <System:String>Величина электрического поля (в В/м)</System:String>
+                                <System:String>Минимальное значение тока в линии (в А)</System:String>
+                                <System:String>Интервал отправки телеизмерений №1 (в с)</System:String>
+                                <System:String>Интервал отправки телеизмерений №2 (в с)</System:String>
+                                <System:String>Период отключения датчиков (в мин)</System:String>
+                                <System:String>Порог значения тока отправки телеизмерений (в А)</System:String>
+                                <System:String>Относительное значение тока (в %)</System:String>
+                                <System:String>Абсолютное значение изменения тока (в А)</System:String>
+                            </x:Array>
+                            <x:Array x:Key="InterphaseShortCircuitParameters" Type="{x:Type System:String}">
+                                <System:String>MAC-Адрес, фаза</System:String>
+                                <System:String>Время перезапуска индикаторов после КЗ на линии(в c)</System:String>
+                                <System:String>Время перезапуска индикаторов после КЗ после перезапуска линии (в с)</System:String>
+                                <System:String>Минимальное значение тока КЗ на линии (в А)</System:String>
+                            </x:Array>
+                            <x:Array x:Key="InterphaseGroundShortCircuitParameters" Type="{x:Type System:String}">
+                                <System:String>MAC-Адрес, фаза</System:String>
+                                <System:String>Падение напряжения в линии (в %)</System:String>
+                                <System:String>Время засечки падения напряжения (в с)</System:String>
+                            </x:Array>
+                        </Grid.Resources>
+                        <!--ScrollViewer/-->
+                        <!--DataGrid x:Name="dataGrid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,0,0,97"/-->
+                        <GroupBox x:Name="IndicatorParamsGroupBox" Header="Значения в памяти индикатора">
+                            <TabControl x:Name="IndicatorParamsTabControl"
                                     SelectedIndex="{Binding IndicatorData.FunctionCallNumStart, Mode=TwoWay}">
-                            <TabItem Header="Общая информация проверок" Width="190" Height="30">
-                                <Grid>
-                                    <DataGrid x:Name="IndicatorInfoDataGrid"
+                                <TabItem Header="Общая информация проверок" Width="190" Height="30">
+                                    <Grid>
+                                        <DataGrid x:Name="IndicatorInfoDataGrid"
                                               AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding IndicatorData.Indicators, Mode=OneWay}"
                                               RowHeight="45" RowBackground="#FF2F2F2F" AlternatingRowBackground="#FF2F2F2F" GridLinesVisibility="None" BorderBrush="#FF2F2F2F">
-                                        <DataGrid.Resources>
-                                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF2F2F2F"/>
-                                            <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
-                                                <Setter Property="Padding" Value="-2"/>
-                                                <Style.Triggers>
-                                                    <Trigger Property="Validation.HasError" Value="True">
-                                                        <Setter Property="Background" Value="Red"/>
-                                                        <Setter Property="ToolTip" 
+                                            <DataGrid.Resources>
+                                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF2F2F2F"/>
+                                                <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
+                                                    <Setter Property="Padding" Value="-2"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="Validation.HasError" Value="True">
+                                                            <Setter Property="Background" Value="Red"/>
+                                                            <Setter Property="ToolTip" 
                                                         Value="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}"/>
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                            <Style TargetType="{x:Type DataGridCell}">
-                                                <Setter Property="HorizontalAlignment" Value="Center" />
-                                                <Setter Property="VerticalAlignment" Value="Center" />
-                                                <Setter Property="BorderThickness" Value="0"/>
-                                                <Style.Triggers>
-                                                    <Trigger Property="IsSelected" Value="True">
-                                                        <Setter Property="Foreground" Value="White"/>
-                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
-                                                        <Setter Property="BorderThickness" Value="0"/>
-                                                    </Trigger>
-                                                    <Trigger Property="IsEditing" Value="True">
-                                                        <Setter Property="Foreground" Value="White"/>
-                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
-                                                        <Setter Property="BorderThickness" Value="0"/>
-                                                    </Trigger>
-                                                    <Trigger Property="IsFocused" Value="True">
-                                                        <Setter Property="Foreground" Value="White"/>
-                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </DataGrid.Resources>
-                                        <DataGrid.Style>
-                                            <StaticResource ResourceKey="GreyDataGrid"/>
-                                        </DataGrid.Style>
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn Header="{Binding [0], Source={StaticResource BaseParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="105*"/>
-                                            <DataGridTextColumn Header="Информация" Binding="{Binding Information, StringFormat=d}" Width="100*"/>
-                                            <DataGridTextColumn Header="Статус" Binding="{Binding Status, StringFormat=d}" Width="100*"/>
-                                        </DataGrid.Columns>
-                                        <DataGrid.ColumnHeaderStyle>
-                                            <Style TargetType="{x:Type DataGridColumnHeader}">
-                                                <Setter Property="Background" Value="#FF2F2F2F"/>
-                                                <Setter Property="BorderBrush" Value="DarkSlateGray"/>
-                                                <Setter Property="BorderThickness" Value="1, 2"/>
-                                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                                <Setter Property="Padding" Value="5"/>
-                                                <Setter Property="ContentTemplate">
-                                                    <Setter.Value>
-                                                        <DataTemplate>
-                                                            <TextBlock Background="Transparent" TextWrapping="Wrap" Text="{Binding}"/>
-                                                        </DataTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </DataGrid.ColumnHeaderStyle>
-                                        <DataGrid.RowStyle>
-                                            <Style TargetType="{x:Type DataGridRow}">
-                                                <Setter Property="Height" Value="{x:Static System:Double.NaN}"/>
-                                                <Setter Property="TextBlock.Background" Value="#FF2F2F2F"/>
-                                                <!--Setter Property="IsHitTestVisible" Value="False"/-->
-                                            </Style>
-                                        </DataGrid.RowStyle>
-                                        <DataGrid.RowHeaderStyle>
-                                            <Style TargetType="{x:Type DataGridRowHeader}">
-                                                <Setter Property="Background" Value="#FF2F2F2F"/>
-                                                <Setter Property="BorderBrush" Value="DarkSlateGray"/>
-                                                <Setter Property="BorderThickness" Value="2, 2"/>
-                                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                                <Setter Property="Padding" Value="5"/>
-                                            </Style>
-                                        </DataGrid.RowHeaderStyle>
-                                    </DataGrid>
-                                </Grid>
-                            </TabItem>
-                            <TabItem Header="Общие параметры индикатора" Width="190" Height="30">
-                                <Grid>
-                                    <DataGrid x:Name="IndicatorBaseDataGrid"
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                                <Style TargetType="{x:Type DataGridCell}">
+                                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsSelected" Value="True">
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                            <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                            <Setter Property="BorderThickness" Value="0"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsEditing" Value="True">
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                            <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                            <Setter Property="BorderThickness" Value="0"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsFocused" Value="True">
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                            <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </DataGrid.Resources>
+                                            <DataGrid.Style>
+                                                <StaticResource ResourceKey="GreyDataGrid"/>
+                                            </DataGrid.Style>
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="{Binding [0], Source={StaticResource BaseParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="105*"/>
+                                                <DataGridTextColumn Header="Информация" Binding="{Binding Information, StringFormat=d}" Width="100*"/>
+                                                <DataGridTextColumn Header="Статус" Binding="{Binding Status, StringFormat=d}" Width="100*"/>
+                                            </DataGrid.Columns>
+                                            <DataGrid.ColumnHeaderStyle>
+                                                <Style TargetType="{x:Type DataGridColumnHeader}">
+                                                    <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                    <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+                                                    <Setter Property="BorderThickness" Value="1, 2"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                                    <Setter Property="Padding" Value="5"/>
+                                                    <Setter Property="ContentTemplate">
+                                                        <Setter.Value>
+                                                            <DataTemplate>
+                                                                <TextBlock Background="Transparent" TextWrapping="Wrap" Text="{Binding}"/>
+                                                            </DataTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </DataGrid.ColumnHeaderStyle>
+                                            <DataGrid.RowStyle>
+                                                <Style TargetType="{x:Type DataGridRow}">
+                                                    <Setter Property="Height" Value="{x:Static System:Double.NaN}"/>
+                                                    <Setter Property="TextBlock.Background" Value="#FF2F2F2F"/>
+                                                    <!--Setter Property="IsHitTestVisible" Value="False"/-->
+                                                </Style>
+                                            </DataGrid.RowStyle>
+                                            <DataGrid.RowHeaderStyle>
+                                                <Style TargetType="{x:Type DataGridRowHeader}">
+                                                    <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                    <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+                                                    <Setter Property="BorderThickness" Value="2, 2"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                    <Setter Property="Padding" Value="5"/>
+                                                </Style>
+                                            </DataGrid.RowHeaderStyle>
+                                        </DataGrid>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="Общие параметры индикатора" Width="190" Height="30">
+                                    <Grid>
+                                        <DataGrid x:Name="IndicatorBaseDataGrid"
                                               AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding IndicatorData.Indicators, Mode=OneWay}"
                                               RowHeight="45" RowBackground="#FF2F2F2F" AlternatingRowBackground="#FF2F2F2F" GridLinesVisibility="None" BorderBrush="#FF2F2F2F">
-                                        <DataGrid.Resources>
-                                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF2F2F2F"/>
-                                            <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
-                                                <Setter Property="Padding" Value="-2"/>
-                                                <Style.Triggers>
-                                                    <Trigger Property="Validation.HasError" Value="True">
-                                                        <Setter Property="Background" Value="Red"/>
-                                                        <Setter Property="ToolTip" 
+                                            <DataGrid.Resources>
+                                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF2F2F2F"/>
+                                                <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
+                                                    <Setter Property="Padding" Value="-2"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="Validation.HasError" Value="True">
+                                                            <Setter Property="Background" Value="Red"/>
+                                                            <Setter Property="ToolTip" 
                                                         Value="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}"/>
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                            <Style TargetType="{x:Type DataGridCell}">
-                                                <Setter Property="HorizontalAlignment" Value="Center" />
-                                                <Setter Property="VerticalAlignment" Value="Center" />
-                                                <Setter Property="BorderThickness" Value="0"/>
-                                                <Style.Triggers>
-                                                    <Trigger Property="IsSelected" Value="True">
-                                                        <Setter Property="Foreground" Value="White"/>
-                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
-                                                        <Setter Property="BorderThickness" Value="0"/>
-                                                    </Trigger>
-                                                    <Trigger Property="IsEditing" Value="True">
-                                                        <Setter Property="Foreground" Value="White"/>
-                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
-                                                        <Setter Property="BorderThickness" Value="0"/>
-                                                    </Trigger>
-                                                    <Trigger Property="IsFocused" Value="True">
-                                                        <Setter Property="Foreground" Value="White"/>
-                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </DataGrid.Resources>
-                                        <DataGrid.Style>
-                                            <StaticResource ResourceKey="GreyDataGrid"/>
-                                        </DataGrid.Style>
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn Header="{Binding [0], Source={StaticResource BaseParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="100"/>
-                                            <DataGridTextColumn Header="{Binding [1], Source={StaticResource BaseParameters}}" Binding="{Binding FieldThreshold, StringFormat=d}" Width="105"/>
-                                            <DataGridTextColumn Header="{Binding [2], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentThreshold, StringFormat=d}" Width="100"/>
-                                            <DataGridTextColumn Header="{Binding [3], Source={StaticResource BaseParameters}}" Binding="{Binding UploadT1, StringFormat=d}" Width="100"/>
-                                            <DataGridTextColumn Header="{Binding [4], Source={StaticResource BaseParameters}}" Binding="{Binding UploadT2, StringFormat=d}" Width="90"/>
-                                            <DataGridTextColumn Header="{Binding [5], Source={StaticResource BaseParameters}}" Binding="{Binding HeartBeat, StringFormat=d}" Width="90"/>
-                                            <DataGridTextColumn Header="{Binding [6], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentAbsoluteValue, StringFormat=d}" Width="90"/>
-                                            <DataGridTextColumn Header="{Binding [7], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentRelativeValue, StringFormat=d}" Width="90"/>
-                                        </DataGrid.Columns>
-                                        <DataGrid.ColumnHeaderStyle>
-                                            <Style TargetType="{x:Type DataGridColumnHeader}">
-                                                <Setter Property="Background" Value="#FF2F2F2F"/>
-                                                <Setter Property="BorderBrush" Value="DarkSlateGray"/>
-                                                <Setter Property="BorderThickness" Value="1, 2"/>
-                                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                                <Setter Property="Padding" Value="5"/>
-                                                <Setter Property="ContentTemplate">
-                                                    <Setter.Value>
-                                                        <DataTemplate>
-                                                            <TextBlock Background="Transparent" TextWrapping="Wrap" Text="{Binding}"/>
-                                                        </DataTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </DataGrid.ColumnHeaderStyle>
-                                        <DataGrid.RowStyle>
-                                            <Style TargetType="{x:Type DataGridRow}">
-                                                <Setter Property="Height" Value="{x:Static System:Double.NaN}"/>
-                                                <Setter Property="TextBlock.Background" Value="#FF2F2F2F"/>
-                                                <!--Setter Property="IsHitTestVisible" Value="False"/-->
-                                            </Style>
-                                        </DataGrid.RowStyle>
-                                        <DataGrid.RowHeaderStyle>
-                                            <Style TargetType="{x:Type DataGridRowHeader}">
-                                                <Setter Property="Background" Value="#FF2F2F2F"/>
-                                                <Setter Property="BorderBrush" Value="DarkSlateGray"/>
-                                                <Setter Property="BorderThickness" Value="2, 1"/>
-                                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                                <Setter Property="Padding" Value="5"/>
-                                            </Style>
-                                        </DataGrid.RowHeaderStyle>
-                                    </DataGrid>
-                                </Grid>
-                            </TabItem>
-                            <TabItem Header="Параметры межфазного замыкания" Width="220" Height="30">
-                                <Grid Background="#FF2F2F2F">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="169*"/>
-                                        <ColumnDefinition Width="232*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <DataGrid x:Name="IndicatorSCDataGrid"
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                                <Style TargetType="{x:Type DataGridCell}">
+                                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsSelected" Value="True">
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                            <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                            <Setter Property="BorderThickness" Value="0"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsEditing" Value="True">
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                            <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                            <Setter Property="BorderThickness" Value="0"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsFocused" Value="True">
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                            <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </DataGrid.Resources>
+                                            <DataGrid.Style>
+                                                <StaticResource ResourceKey="GreyDataGrid"/>
+                                            </DataGrid.Style>
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="{Binding [0], Source={StaticResource BaseParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="100"/>
+                                                <DataGridTextColumn Header="{Binding [1], Source={StaticResource BaseParameters}}" Binding="{Binding FieldThreshold, StringFormat=d}" Width="105"/>
+                                                <DataGridTextColumn Header="{Binding [2], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentThreshold, StringFormat=d}" Width="100"/>
+                                                <DataGridTextColumn Header="{Binding [3], Source={StaticResource BaseParameters}}" Binding="{Binding UploadT1, StringFormat=d}" Width="100"/>
+                                                <DataGridTextColumn Header="{Binding [4], Source={StaticResource BaseParameters}}" Binding="{Binding UploadT2, StringFormat=d}" Width="90"/>
+                                                <DataGridTextColumn Header="{Binding [5], Source={StaticResource BaseParameters}}" Binding="{Binding HeartBeat, StringFormat=d}" Width="90"/>
+                                                <DataGridTextColumn Header="{Binding [6], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentAbsoluteValue, StringFormat=d}" Width="90"/>
+                                                <DataGridTextColumn Header="{Binding [7], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentRelativeValue, StringFormat=d}" Width="90"/>
+                                            </DataGrid.Columns>
+                                            <DataGrid.ColumnHeaderStyle>
+                                                <Style TargetType="{x:Type DataGridColumnHeader}">
+                                                    <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                    <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+                                                    <Setter Property="BorderThickness" Value="1, 2"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                                    <Setter Property="Padding" Value="5"/>
+                                                    <Setter Property="ContentTemplate">
+                                                        <Setter.Value>
+                                                            <DataTemplate>
+                                                                <TextBlock Background="Transparent" TextWrapping="Wrap" Text="{Binding}"/>
+                                                            </DataTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </DataGrid.ColumnHeaderStyle>
+                                            <DataGrid.RowStyle>
+                                                <Style TargetType="{x:Type DataGridRow}">
+                                                    <Setter Property="Height" Value="{x:Static System:Double.NaN}"/>
+                                                    <Setter Property="TextBlock.Background" Value="#FF2F2F2F"/>
+                                                    <!--Setter Property="IsHitTestVisible" Value="False"/-->
+                                                </Style>
+                                            </DataGrid.RowStyle>
+                                            <DataGrid.RowHeaderStyle>
+                                                <Style TargetType="{x:Type DataGridRowHeader}">
+                                                    <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                    <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+                                                    <Setter Property="BorderThickness" Value="2, 1"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                    <Setter Property="Padding" Value="5"/>
+                                                </Style>
+                                            </DataGrid.RowHeaderStyle>
+                                        </DataGrid>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="Параметры межфазного замыкания" Width="220" Height="30">
+                                    <Grid Background="#FF2F2F2F">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="169*"/>
+                                            <ColumnDefinition Width="232*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <DataGrid x:Name="IndicatorSCDataGrid"
                                               AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding IndicatorData.Indicators, Mode=OneWay}"
                                               RowHeight="45" RowBackground="#FF2F2F2F" AlternatingRowBackground="#FF2F2F2F" GridLinesVisibility="None" BorderBrush="#FF2F2F2F" Grid.ColumnSpan="2">
-                                        <DataGrid.Resources>
-                                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF2F2F2F"/>
-                                            <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
-                                                <Setter Property="Padding" Value="-2"/>
-                                                <Style.Triggers>
-                                                    <Trigger Property="Validation.HasError" Value="True">
-                                                        <Setter Property="Background" Value="Red"/>
-                                                        <Setter Property="ToolTip" 
+                                            <DataGrid.Resources>
+                                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF2F2F2F"/>
+                                                <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
+                                                    <Setter Property="Padding" Value="-2"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="Validation.HasError" Value="True">
+                                                            <Setter Property="Background" Value="Red"/>
+                                                            <Setter Property="ToolTip" 
                                                         Value="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}"/>
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                            <Style TargetType="{x:Type DataGridCell}">
-                                                <Setter Property="HorizontalAlignment" Value="Center" />
-                                                <Setter Property="VerticalAlignment" Value="Center" />
-                                                <Setter Property="BorderThickness" Value="0"/>
-                                                <Style.Triggers>
-                                                    <Trigger Property="IsSelected" Value="True">
-                                                        <Setter Property="Foreground" Value="White"/>
-                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
-                                                        <Setter Property="BorderThickness" Value="0"/>
-                                                    </Trigger>
-                                                    <Trigger Property="IsEditing" Value="True">
-                                                        <Setter Property="Foreground" Value="White"/>
-                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
-                                                        <Setter Property="BorderThickness" Value="0"/>
-                                                    </Trigger>
-                                                    <Trigger Property="IsFocused" Value="True">
-                                                        <Setter Property="Foreground" Value="White"/>
-                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </DataGrid.Resources>
-                                        <DataGrid.Style>
-                                            <StaticResource ResourceKey="GreyDataGrid"/>
-                                        </DataGrid.Style>
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn Header="{Binding [0], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="160"/>
-                                            <DataGridTextColumn Header="{Binding [1], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding TimeDelay, StringFormat=d}" Width="205"/>
-                                            <DataGridTextColumn Header="{Binding [2], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding RepowerDelay, StringFormat=d}" Width="205"/>
-                                            <DataGridTextColumn Header="{Binding [3], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding ShortCurrent, StringFormat=d}" Width="205"/>
-                                        </DataGrid.Columns>
-                                        <DataGrid.ColumnHeaderStyle>
-                                            <Style TargetType="{x:Type DataGridColumnHeader}">
-                                                <Setter Property="Background" Value="#FF2F2F2F"/>
-                                                <Setter Property="BorderBrush" Value="DarkSlateGray"/>
-                                                <Setter Property="BorderThickness" Value="1, 2"/>
-                                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                                <Setter Property="Padding" Value="5"/>
-                                                <Setter Property="ContentTemplate">
-                                                    <Setter.Value>
-                                                        <DataTemplate>
-                                                            <TextBlock Background="Transparent" TextWrapping="Wrap" Text="{Binding}"/>
-                                                        </DataTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </DataGrid.ColumnHeaderStyle>
-                                        <DataGrid.RowStyle>
-                                            <Style TargetType="{x:Type DataGridRow}">
-                                                <Setter Property="Height" Value="{x:Static System:Double.NaN}"/>
-                                            </Style>
-                                        </DataGrid.RowStyle>
-                                        <DataGrid.RowHeaderStyle>
-                                            <Style TargetType="{x:Type DataGridRowHeader}">
-                                                <Setter Property="Background" Value="#FF2F2F2F"/>
-                                                <Setter Property="BorderBrush" Value="DarkSlateGray"/>
-                                                <Setter Property="BorderThickness" Value="2, 1"/>
-                                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                                <Setter Property="Padding" Value="5"/>
-                                            </Style>
-                                        </DataGrid.RowHeaderStyle>
-                                    </DataGrid>
-                                </Grid>
-                            </TabItem>
-                            <TabItem Header="Параметры замыкания на землю" Width="200" Height="30">
-                                <Grid Background="#FF2F2F2F">
-                                    <DataGrid x:Name="IndicatorGSCDataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                                <Style TargetType="{x:Type DataGridCell}">
+                                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsSelected" Value="True">
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                            <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                            <Setter Property="BorderThickness" Value="0"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsEditing" Value="True">
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                            <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                            <Setter Property="BorderThickness" Value="0"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsFocused" Value="True">
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                            <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </DataGrid.Resources>
+                                            <DataGrid.Style>
+                                                <StaticResource ResourceKey="GreyDataGrid"/>
+                                            </DataGrid.Style>
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="{Binding [0], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="160"/>
+                                                <DataGridTextColumn Header="{Binding [1], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding TimeDelay, StringFormat=d}" Width="205"/>
+                                                <DataGridTextColumn Header="{Binding [2], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding RepowerDelay, StringFormat=d}" Width="205"/>
+                                                <DataGridTextColumn Header="{Binding [3], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding ShortCurrent, StringFormat=d}" Width="205"/>
+                                            </DataGrid.Columns>
+                                            <DataGrid.ColumnHeaderStyle>
+                                                <Style TargetType="{x:Type DataGridColumnHeader}">
+                                                    <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                    <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+                                                    <Setter Property="BorderThickness" Value="1, 2"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                                    <Setter Property="Padding" Value="5"/>
+                                                    <Setter Property="ContentTemplate">
+                                                        <Setter.Value>
+                                                            <DataTemplate>
+                                                                <TextBlock Background="Transparent" TextWrapping="Wrap" Text="{Binding}"/>
+                                                            </DataTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </DataGrid.ColumnHeaderStyle>
+                                            <DataGrid.RowStyle>
+                                                <Style TargetType="{x:Type DataGridRow}">
+                                                    <Setter Property="Height" Value="{x:Static System:Double.NaN}"/>
+                                                </Style>
+                                            </DataGrid.RowStyle>
+                                            <DataGrid.RowHeaderStyle>
+                                                <Style TargetType="{x:Type DataGridRowHeader}">
+                                                    <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                    <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+                                                    <Setter Property="BorderThickness" Value="2, 1"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                    <Setter Property="Padding" Value="5"/>
+                                                </Style>
+                                            </DataGrid.RowHeaderStyle>
+                                        </DataGrid>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="Параметры замыкания на землю" Width="200" Height="30">
+                                    <Grid Background="#FF2F2F2F">
+                                        <DataGrid x:Name="IndicatorGSCDataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                               AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding IndicatorData.Indicators, Mode=OneWay}"
                                               RowHeight="45" RowBackground="#FF2F2F2F" AlternatingRowBackground="#FF2F2F2F" GridLinesVisibility="None" BorderBrush="#FF2F2F2F">
-                                        <DataGrid.Resources>
-                                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF2F2F2F"/>
-                                            <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
-                                                <Setter Property="Padding" Value="-2"/>
-                                                <Style.Triggers>
-                                                    <Trigger Property="Validation.HasError" Value="True">
-                                                        <Setter Property="Background" Value="Red"/>
-                                                        <Setter Property="ToolTip" 
+                                            <DataGrid.Resources>
+                                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF2F2F2F"/>
+                                                <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
+                                                    <Setter Property="Padding" Value="-2"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="Validation.HasError" Value="True">
+                                                            <Setter Property="Background" Value="Red"/>
+                                                            <Setter Property="ToolTip" 
                                                         Value="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}"/>
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                            <Style TargetType="{x:Type DataGridCell}">
-                                                <Setter Property="HorizontalAlignment" Value="Center" />
-                                                <Setter Property="VerticalAlignment" Value="Center" />
-                                                <Setter Property="BorderThickness" Value="0"/>
-                                                <Style.Triggers>
-                                                    <Trigger Property="IsSelected" Value="True">
-                                                        <Setter Property="Foreground" Value="White"/>
-                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
-                                                        <Setter Property="BorderThickness" Value="0"/>
-                                                    </Trigger>
-                                                    <Trigger Property="IsEditing" Value="True">
-                                                        <Setter Property="Foreground" Value="White"/>
-                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
-                                                        <Setter Property="BorderThickness" Value="0"/>
-                                                    </Trigger>
-                                                    <Trigger Property="IsFocused" Value="True">
-                                                        <Setter Property="Foreground" Value="White"/>
-                                                        <Setter Property="Background" Value="#FF2F2F2F"/>
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </DataGrid.Resources>
-                                        <DataGrid.Style>
-                                            <StaticResource ResourceKey="GreyDataGrid"/>
-                                        </DataGrid.Style>
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn Header="{Binding [0], Source={StaticResource InterphaseGroundShortCircuitParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="255*"/>
-                                            <DataGridTextColumn Header="{Binding [1], Source={StaticResource InterphaseGroundShortCircuitParameters}}" Binding="{Binding TransientFieldDrop, StringFormat=d}" Width="255*"/>
-                                            <DataGridTextColumn Header="{Binding [2], Source={StaticResource InterphaseGroundShortCircuitParameters}}" Binding="{Binding FieldDropDelay, StringFormat=d}" Width="255*"/>
-                                        </DataGrid.Columns>
-                                        <DataGrid.ColumnHeaderStyle>
-                                            <Style TargetType="{x:Type DataGridColumnHeader}">
-                                                <Setter Property="Background" Value="#FF2F2F2F"/>
-                                                <Setter Property="BorderBrush" Value="DarkSlateGray"/>
-                                                <Setter Property="BorderThickness" Value="1, 2"/>
-                                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                                <Setter Property="Padding" Value="5"/>
-                                                <Setter Property="ContentTemplate">
-                                                    <Setter.Value>
-                                                        <DataTemplate>
-                                                            <TextBlock Background="Transparent" TextWrapping="Wrap" Text="{Binding}"/>
-                                                        </DataTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </DataGrid.ColumnHeaderStyle>
-                                        <DataGrid.RowStyle>
-                                            <Style TargetType="{x:Type DataGridRow}">
-                                                <Setter Property="Height" Value="{x:Static System:Double.NaN}"/>
-                                            </Style>
-                                        </DataGrid.RowStyle>
-                                        <DataGrid.RowHeaderStyle>
-                                            <Style TargetType="{x:Type DataGridRowHeader}">
-                                                <Setter Property="Background" Value="#FF2F2F2F"/>
-                                                <Setter Property="BorderBrush" Value="DarkSlateGray"/>
-                                                <Setter Property="BorderThickness" Value="2, 1"/>
-                                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                                <Setter Property="Padding" Value="5"/>
-                                            </Style>
-                                        </DataGrid.RowHeaderStyle>
-                                    </DataGrid>
-                                </Grid>
-                            </TabItem>
-                        </TabControl>
-                    </GroupBox>
-                </Grid>
-                <Grid Grid.Column="2" Grid.Row="2">
-                    <GroupBox x:Name="SendParamsGroupBox" Header="Аналоговое управление">
-                        <Grid Margin="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid Cursor="">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="40"/>
-                                    <RowDefinition Height="5"/>
-                                    <RowDefinition Height="40"/>
-                                    <RowDefinition Height="5"/>
-                                    <RowDefinition Height="40"/>
-                                    <RowDefinition Height="5"/>
-                                    <RowDefinition Height="40*"/>
-                                </Grid.RowDefinitions>
-                                <Button x:Name="ReadParametersButton" Content="Чтение данных с индикаторов" Command="{Binding IndicatorData.ReadIndicatorsBaseParametersCommand, Mode=OneTime}" 
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                                <Style TargetType="{x:Type DataGridCell}">
+                                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsSelected" Value="True">
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                            <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                            <Setter Property="BorderThickness" Value="0"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsEditing" Value="True">
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                            <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                            <Setter Property="BorderThickness" Value="0"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsFocused" Value="True">
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                            <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </DataGrid.Resources>
+                                            <DataGrid.Style>
+                                                <StaticResource ResourceKey="GreyDataGrid"/>
+                                            </DataGrid.Style>
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="{Binding [0], Source={StaticResource InterphaseGroundShortCircuitParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="255*"/>
+                                                <DataGridTextColumn Header="{Binding [1], Source={StaticResource InterphaseGroundShortCircuitParameters}}" Binding="{Binding TransientFieldDrop, StringFormat=d}" Width="255*"/>
+                                                <DataGridTextColumn Header="{Binding [2], Source={StaticResource InterphaseGroundShortCircuitParameters}}" Binding="{Binding FieldDropDelay, StringFormat=d}" Width="255*"/>
+                                            </DataGrid.Columns>
+                                            <DataGrid.ColumnHeaderStyle>
+                                                <Style TargetType="{x:Type DataGridColumnHeader}">
+                                                    <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                    <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+                                                    <Setter Property="BorderThickness" Value="1, 2"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                                    <Setter Property="Padding" Value="5"/>
+                                                    <Setter Property="ContentTemplate">
+                                                        <Setter.Value>
+                                                            <DataTemplate>
+                                                                <TextBlock Background="Transparent" TextWrapping="Wrap" Text="{Binding}"/>
+                                                            </DataTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </DataGrid.ColumnHeaderStyle>
+                                            <DataGrid.RowStyle>
+                                                <Style TargetType="{x:Type DataGridRow}">
+                                                    <Setter Property="Height" Value="{x:Static System:Double.NaN}"/>
+                                                </Style>
+                                            </DataGrid.RowStyle>
+                                            <DataGrid.RowHeaderStyle>
+                                                <Style TargetType="{x:Type DataGridRowHeader}">
+                                                    <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                    <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+                                                    <Setter Property="BorderThickness" Value="2, 1"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                    <Setter Property="Padding" Value="5"/>
+                                                </Style>
+                                            </DataGrid.RowHeaderStyle>
+                                        </DataGrid>
+                                    </Grid>
+                                </TabItem>
+                            </TabControl>
+                        </GroupBox>
+                    </Grid>
+                    <Grid Grid.Column="2" Grid.Row="2">
+                        <GroupBox x:Name="SendParamsGroupBox" Header="Аналоговое управление">
+                            <Grid Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid Cursor="">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="40"/>
+                                        <RowDefinition Height="5"/>
+                                        <RowDefinition Height="40"/>
+                                        <RowDefinition Height="5"/>
+                                        <RowDefinition Height="40"/>
+                                        <RowDefinition Height="5"/>
+                                        <RowDefinition Height="40*"/>
+                                    </Grid.RowDefinitions>
+                                    <Button x:Name="ReadParametersButton" Content="Чтение данных с индикаторов" Command="{Binding IndicatorData.ReadIndicatorsBaseParametersCommand, Mode=OneTime}" 
                                         Cursor="Hand" Margin="40,0,40,0" IsEnabled="{Binding IndicatorData.ButtonCheckAnyIndicators}"/>
-                                <Button x:Name="WriteParametersButton" Content="Запись данных на индикаторы" Command="{Binding IndicatorData.WriteIndicatorsBaseParametersCommand, Mode=OneTime}"
-                                        Cursor="Hand" Margin="40,0,40,0" Grid.Row="2"/>
-                                <Button x:Name="SearchButton" Content="Поиск индикаторов" Command="{Binding IndicatorData.CheckAvailibleIndicatorsCommand, Mode=OneTime}" Cursor="Hand" Margin="40,0,40,0" Grid.Row="4"/>
-                                <Button x:Name="RestartIndicatorsButton" Content="Перезапуск индикаторов" Cursor="Hand" Margin="40,0,40,0" VerticalAlignment="Stretch" Grid.Row="6" Background="Teal"/>
-                            </Grid>
-                            <Grid Grid.Column="2">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="130"/>
-                                    <RowDefinition Height="5"/>
-                                    <RowDefinition Height="40*"/>
-                                </Grid.RowDefinitions>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="180*"/>
-                                        <ColumnDefinition Width="5"/>
-                                        <ColumnDefinition Width="180*"/>
-                                    </Grid.ColumnDefinitions>
+                                    <Button x:Name="WriteParametersButton" Content="Запись данных на индикаторы" Command="{Binding IndicatorData.WriteIndicatorsBaseParametersCommand, Mode=OneTime}"
+                                        Cursor="Hand" Margin="40,0,40,0" Grid.Row="2" IsEnabled="{Binding IndicatorData.FunctionCallNumStart}"/>
+                                    <Button x:Name="SearchButton" Content="Поиск индикаторов" Command="{Binding IndicatorData.CheckAvailibleIndicatorsCommand, Mode=OneTime}" Cursor="Hand" Margin="40,0,40,0" Grid.Row="4"/>
+                                    <Button x:Name="RestartIndicatorsButton" Content="Перезапуск индикаторов" Cursor="Hand" Margin="40,0,40,0" VerticalAlignment="Stretch" Grid.Row="6" Background="Teal"/>
+                                </Grid>
+                                <Grid Grid.Column="2">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="130"/>
+                                        <RowDefinition Height="5"/>
+                                        <RowDefinition Height="40*"/>
+                                    </Grid.RowDefinitions>
                                     <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="40"/>
-                                            <RowDefinition Height="5"/>
-                                            <RowDefinition Height="40"/>
-                                            <RowDefinition Height="5"/>
-                                            <RowDefinition Height="40"/>
-                                            <RowDefinition Height="5"/>
-                                        </Grid.RowDefinitions>
-                                        <Button x:Name="IndicatorLEDOpenButton" Cursor="Hand">
-                                            <TextBlock Text="Включение световой индикации у индикаторов" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
-                                        </Button>
-                                        <Button x:Name="IndicatorTestSCButton" Cursor="Hand" Grid.Row="2">
-                                            <TextBlock Text="Проверка индикаторов на КЗ" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
-                                        </Button>
-                                        <Button x:Name="IndicatorTurnOnButton" Cursor="Hand" Grid.Row="4">
-                                            <TextBlock Text="Включение индикатора" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
-                                        </Button>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="180*"/>
+                                            <ColumnDefinition Width="5"/>
+                                            <ColumnDefinition Width="180*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="5"/>
+                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="5"/>
+                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="5"/>
+                                            </Grid.RowDefinitions>
+                                            <Button x:Name="IndicatorLEDOpenButton" Cursor="Hand">
+                                                <TextBlock Text="Включение световой индикации у индикаторов" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
+                                            </Button>
+                                            <Button x:Name="IndicatorTestSCButton" Cursor="Hand" Grid.Row="2">
+                                                <TextBlock Text="Проверка индикаторов на КЗ" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
+                                            </Button>
+                                            <Button x:Name="IndicatorTurnOnButton" Cursor="Hand" Grid.Row="4">
+                                                <TextBlock Text="Включение индикатора" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
+                                            </Button>
+                                        </Grid>
+                                        <Grid Grid.Column="2" Cursor="">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="5"/>
+                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="5"/>
+                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="5"/>
+                                            </Grid.RowDefinitions>
+                                            <Button x:Name="IndicatorLEDShutdownButton" Cursor="Hand">
+                                                <TextBlock Text="Выключение световой индикации у индикаторов" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
+                                            </Button>
+                                            <Button x:Name="IndicatorTestGSCButton" Cursor="Hand" Grid.Row="2">
+                                                <TextBlock Text="Проверка индикаторов на КЗ по земле" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
+                                            </Button>
+                                            <Button x:Name="IndicatorTurnOffButton" Cursor="Hand" Grid.Row="4">
+                                                <TextBlock Text="Выключение индикатора" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
+                                            </Button>
+                                        </Grid>
                                     </Grid>
-                                    <Grid Grid.Column="2" Cursor="">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="40"/>
-                                            <RowDefinition Height="5"/>
-                                            <RowDefinition Height="40"/>
-                                            <RowDefinition Height="5"/>
-                                            <RowDefinition Height="40"/>
-                                            <RowDefinition Height="5"/>
-                                        </Grid.RowDefinitions>
-                                        <Button x:Name="IndicatorLEDShutdownButton" Cursor="Hand">
-                                            <TextBlock Text="Выключение световой индикации у индикаторов" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
-                                        </Button>
-                                        <Button x:Name="IndicatorTestGSCButton" Cursor="Hand" Grid.Row="2">
-                                            <TextBlock Text="Проверка индикаторов на КЗ по земле" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
-                                        </Button>
-                                        <Button x:Name="IndicatorTurnOffButton" Cursor="Hand" Grid.Row="4">
-                                            <TextBlock Text="Выключение индикатора" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
-                                        </Button>
+                                    <Grid Grid.Row="2">
+                                        <Button x:Name="IndicatorFirmwareVersionButton" Content="Версия ПО у индикаторов" Cursor="Hand" VerticalAlignment="Stretch" Grid.Row="6"/>
                                     </Grid>
-                                </Grid>
-                                <Grid Grid.Row="2">
-                                    <Button x:Name="IndicatorFirmwareVersionButton" Content="Версия ПО у индикаторов" Cursor="Hand" VerticalAlignment="Stretch" Grid.Row="6"/>
                                 </Grid>
                             </Grid>
-                        </Grid>
-                    </GroupBox>
+                        </GroupBox>
+                    </Grid>
                 </Grid>
             </Grid>
         </Grid>
