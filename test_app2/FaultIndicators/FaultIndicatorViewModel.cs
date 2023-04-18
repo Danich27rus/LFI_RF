@@ -4,6 +4,7 @@ using TheRFramework.Utilities;
 using System;
 using System.Windows.Input;
 using Accessibility;
+using System.IO.Packaging;
 
 namespace test_app2.FaultIndicators
 {
@@ -29,6 +30,9 @@ namespace test_app2.FaultIndicators
         //земля
         private int _transientFieldDrop;
         private int _fieldDropDelay;
+        //параметры
+        private string _softwareVersion;
+        private string _restart;
         //ВРЕМЕННО ДЛЯ ТЕСТА ВАЛИДАЦИИ
         //private int _callAdress;
         //public int _callFrequency;
@@ -137,6 +141,12 @@ namespace test_app2.FaultIndicators
         {
             get => _fieldDropDelay;
             set => RaisePropertyChanged(ref _fieldDropDelay, value);
+        }
+
+        public string SoftwareVersion
+        {
+            get => _softwareVersion;
+            set => RaisePropertyChanged(ref _softwareVersion, value);
         }
 
         #region IEditableObject

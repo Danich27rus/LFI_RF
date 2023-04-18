@@ -98,9 +98,9 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="150"/>
-                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="190"/>
                     <ColumnDefinition Width="210"/>
-                    <ColumnDefinition Width="270"/>
+                    <ColumnDefinition Width="300"/>
                     <ColumnDefinition Width="210"/>
                     <ColumnDefinition Width="210"/>
                 </Grid.ColumnDefinitions>
@@ -377,10 +377,10 @@
                                                 <DataGridTextColumn Header="{Binding [1], Source={StaticResource BaseParameters}}" Binding="{Binding FieldThreshold, StringFormat=d}" Width="105"/>
                                                 <DataGridTextColumn Header="{Binding [2], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentThreshold, StringFormat=d}" Width="100"/>
                                                 <DataGridTextColumn Header="{Binding [3], Source={StaticResource BaseParameters}}" Binding="{Binding UploadT1, StringFormat=d}" Width="100"/>
-                                                <DataGridTextColumn Header="{Binding [4], Source={StaticResource BaseParameters}}" Binding="{Binding UploadT2, StringFormat=d}" Width="90"/>
+                                                <DataGridTextColumn Header="{Binding [4], Source={StaticResource BaseParameters}}" Binding="{Binding UploadT2, StringFormat=d}" Width="100"/>
                                                 <DataGridTextColumn Header="{Binding [5], Source={StaticResource BaseParameters}}" Binding="{Binding HeartBeat, StringFormat=d}" Width="90"/>
                                                 <DataGridTextColumn Header="{Binding [6], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentAbsoluteValue, StringFormat=d}" Width="90"/>
-                                                <DataGridTextColumn Header="{Binding [7], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentRelativeValue, StringFormat=d}" Width="90"/>
+                                                <DataGridTextColumn Header="{Binding [7], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentRelativeValue, StringFormat=d}" Width="100"/>
                                             </DataGrid.Columns>
                                             <DataGrid.ColumnHeaderStyle>
                                                 <Style TargetType="{x:Type DataGridColumnHeader}">

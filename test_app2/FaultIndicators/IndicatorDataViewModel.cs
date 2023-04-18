@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -41,8 +42,10 @@ namespace test_app2.FaultIndicators
 
         private Dictionary<string, int> _namingFamily = new()
         {
-            { "JYZ-FF", 90 },
-            { "JYZ-HW", 90 },
+            //{ "JYZ-FF", 90 },
+            //{ "JYZ-HW", 90 },
+            { "Магистральные ИКЗ", 90 },
+            { "ИКЗ с ББ в РЦДУ", 90 },
             { "JYZ-HW V2.0", 90 }
         };
 
@@ -193,6 +196,8 @@ namespace test_app2.FaultIndicators
 
         public Command WriteIndicatorsBaseParametersCommand { get; }
 
+        public Command SoftwareVersionParameterCommand { get; }
+
         public SerialPortMessagesViewModel Messages { get; set; }
 
         public SerialPortMessagesReceive Receiver { get; set; }
@@ -336,6 +341,17 @@ namespace test_app2.FaultIndicators
                         case 4:
                             Indicators[CollectionIndex].TransientFieldDrop = Convert.ToInt16(msg[26], 16);
                             Indicators[CollectionIndex].FieldDropDelay = Convert.ToInt16(msg[27], 16) + (Convert.ToInt16(msg[28], 16) << 8);
+                            break;
+                        //software
+                        case 5:
+                            for (int i = 0; i < 43; ++i)
+                            {
+                                if (msg[i] == "00")
+                                {
+                                    break;
+                                }
+                                Indicators[CollectionIndex].SoftwareVersion += (char)Int16.Parse(msg[i], NumberStyles.AllowHexSpecifier);
+                            }
                             break;
                     }
                 }
@@ -600,6 +616,64 @@ namespace test_app2.FaultIndicators
                 Thread.Sleep(200);
             }
 
+        }
+
+        public void SoftwareVersionParameter()
+        {
+            if (!Sender.Port.IsOpen)
+            {
+                Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
+                return;
+            }
+            if (DeviceCommunicationProtocolNum == 0 && DeviceFamilyNum == 0)
+            {
+                Messages.AddMessage("Для ИКЗ не выбран протокол общения или семейство устройств");
+                return;
+            }
+            if (Indicators.Count < 0)
+            {
+                Messages.AddMessage("Информация не считана, ни одного индикатора КЗ нет в списке");
+                return;
+            }
+            foreach (var indicator in Indicators)
+            {
+                //MAC = indicator.MACAdress;
+                int crc;
+                var splittedMac = indicator.MACAdress.Split('-');
+
+                Request =
+                    new string[] { $"{_namingProtocol.ElementAt(DeviceCommunicationProtocolNum - 1).Value:X2}",
+                    $"{_namingFamily.ElementAt(DeviceFamilyNum - 1).Value:X2}",
+                    "15",
+                    "25",
+                    $"{CallTime:X2}",
+                    $"{WaitTime:X2}",
+                    "00",
+                    $"{CallFrequency:X2}",
+                    "00",
+                    $"{splittedMac[6]:X2}",
+                    $"{splittedMac[5]:X2}",
+                    $"{splittedMac[4]:X2}",
+                    $"{splittedMac[3]:X2}",
+                    $"{splittedMac[2]:X2}",
+                    $"{splittedMac[1]:X2}",
+                    $"{splittedMac[0]:X2}",
+                    $"{5:X2}",   //software info command
+                    $"{FunctionCallNumEnd:X2}",
+                    "00",
+                    "00",
+                    $"{Trailer:X2}" };
+
+                crc = checksum.CheckSum_CRC(Request, 2, Request.Length);
+                Request[^2] = string.Join("", (crc & 255).ToString("X2"));
+                Request[^3] = string.Join("", (crc >> 8).ToString("X2"));
+                //orderNumber++;
+
+                Sender.SendHEXMessage(string.Join(" ", Request));
+                Messages.AddSentMessage(string.Join(" ", Request));
+
+                Thread.Sleep(200);
+            }
         }
 
         public void UpdateModelContent()

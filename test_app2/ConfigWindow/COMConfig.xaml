@@ -10,7 +10,7 @@
       xmlns:config="clr-namespace:test_app2.Config" 
       d:DataContext="{d:DesignInstance Type=config:ConfigViewModel}"
       mc:Ignorable="d" 
-      Height="580" Width="800"
+      Height="540" Width="800"
       Title="Конфигурация COM"
       Closing="ConfigWindow_Closing"
       Style="{DynamicResource CustomWindowStyle}">
@@ -233,13 +233,13 @@
                             </Grid.RowDefinitions>
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="50*"/>
-                                    <RowDefinition Height="90*"/>
-                                    <RowDefinition Height="110*"/>
+                                    <RowDefinition Height="60*"/>
+                                    <RowDefinition Height="60*"/>
+                                    <RowDefinition Height="150*"/>
                                 </Grid.RowDefinitions>
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="25"/>
+                                        <RowDefinition Height="20"/>
                                         <RowDefinition Height="30"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Text="Тип устройства" Padding="10 5" HorizontalAlignment="Center" Grid.Row="0"/>
@@ -251,17 +251,17 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="25*"/>
                                         <RowDefinition Height="25*"/>
-                                        <RowDefinition Height="25*"/>
-                                        <RowDefinition Height="25*"/>
+                                        <!--RowDefinition Height="25*"/>
+                                        <RowDefinition Height="25*"/-->
                                     </Grid.RowDefinitions>
                                     <TextBlock Text="Протокол общения" Padding="5" HorizontalAlignment="Center"/>
-                                    <RadioButton Content="XY-Old" Grid.Row="1"
+                                    <!--RadioButton Content="XY-Old" Grid.Row="1"
                                  IsChecked="{Binding IndicatorData.DeviceCommunicationProtocolNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=1}"
                                  Command="{Binding IndicatorData.UpdateCommunicationProtocolCommand}"/>
                                     <RadioButton Content="XY-New" Grid.Row="2"
                                  IsChecked="{Binding IndicatorData.DeviceCommunicationProtocolNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=2}"
-                                 Command="{Binding IndicatorData.UpdateCommunicationProtocolCommand}"/>
-                                    <RadioButton Content="LB-FF" Grid.Row="3"
+                                 Command="{Binding IndicatorData.UpdateCommunicationProtocolCommand}"/-->
+                                    <RadioButton Content="LB-FF" Grid.Row="1"
                                  IsChecked="{Binding IndicatorData.DeviceCommunicationProtocolNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=3}"
                                  Command="{Binding IndicatorData.UpdateCommunicationProtocolCommand}"/>
                                 </Grid>
@@ -273,15 +273,15 @@
                                         <RowDefinition Height="30"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Text="Выбор семейства устройства" Padding="5" HorizontalAlignment="Center"/>
-                                    <RadioButton Content="FP (JYZ-FF)" Grid.Row="1"
+                                    <RadioButton Content="Магистральные ИКЗ" Grid.Row="1"
                                  IsChecked="{Binding IndicatorData.DeviceFamilyNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=1}"
                                  Command="{Binding IndicatorData.UpdateFamilyContentCommand}">
                                     </RadioButton>
-                                    <RadioButton Content="LED (JYZ-HW)" Grid.Row="2"
+                                    <RadioButton Content="ИКЗ с ББ" Grid.Row="2"
                                  IsChecked="{Binding IndicatorData.DeviceFamilyNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=2}"
                                  Command="{Binding IndicatorData.UpdateFamilyContentCommand}">
                                     </RadioButton>
-                                    <RadioButton Content="LED_7 (JYZ-HW V2.0 ?)" Grid.Row="3"
+                                    <RadioButton Content="LED__7 (JYZ-HW V2.0, не используется)" Grid.Row="3"
                                  IsChecked="{Binding IndicatorData.DeviceFamilyNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=3}"
                                  Command="{Binding IndicatorData.UpdateFamilyContentCommand}" Cursor="">
                                     </RadioButton>
