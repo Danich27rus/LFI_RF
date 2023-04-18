@@ -10,8 +10,8 @@
       xmlns:config="clr-namespace:test_app2.Config" 
       d:DataContext="{d:DesignInstance Type=config:ConfigViewModel}"
       mc:Ignorable="d" 
-      Height="540" Width="800"
-      Title="Конфигурация COM"
+      Height="500" Width="800"
+      Title="Конфигурация устройств"
       Closing="ConfigWindow_Closing"
       Style="{DynamicResource CustomWindowStyle}">
     <Window.Resources>
@@ -36,19 +36,19 @@
         <Grid>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="215"/>
+                    <RowDefinition Height="200"/>
                     <RowDefinition Height="5"/>
                     <RowDefinition Height="250*"/>
                 </Grid.RowDefinitions>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="40"/>
                         <RowDefinition Height="5"/>
-                        <RowDefinition Height="95*"/>
+                        <RowDefinition Height="150"/>
                     </Grid.RowDefinitions>
                     <Grid>
                         <StackPanel>
-                            <TextBlock Text="Конфигурация COM порта" FontSize="30" TextWrapping="Wrap"/>
+                            <TextBlock Text="Настройка COM порта" FontSize="20" TextWrapping="Wrap"/>
                             <Separator Margin="0 5"/>
                         </StackPanel>
                     </Grid>
@@ -149,7 +149,7 @@
                         </Grid>
                         <Grid Grid.Column="6">
                             <TextBlock Text="Биты данных" Padding="2 5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                            <ListBox x:Name="COMDataBits" Margin="0,25,0,0" HorizontalAlignment="Stretch" FontSize="20"
+                            <ListBox x:Name="COMDataBits" Margin="0,25,0,0" HorizontalAlignment="Stretch"
                                      SelectedIndex="3"
                                      ItemsSource="{StaticResource dataBits}"
                                      SelectedItem="{Binding SerialPort.Settings.SelectedDataBits, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"/>
@@ -169,7 +169,7 @@
                         </Grid>
                         <Grid Grid.Column="10">
                             <TextBlock Text="Биты паритета" Padding="2 5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                            <ListBox x:Name="COMParityBits" Margin="0,25,0,0" HorizontalAlignment="Stretch" FontSize="16"
+                            <ListBox x:Name="COMParityBits" Margin="0,25,0,0" HorizontalAlignment="Stretch"
                                      SelectedIndex="0"
                                      ItemsSource="{StaticResource parities}"
                                      SelectedItem="{Binding SerialPort.Settings.SelectedParityBits, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"/>
@@ -196,7 +196,7 @@
                         <RowDefinition Height="95*"/>
                     </Grid.RowDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Выбор модели ИКЗ" FontSize="30" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                        <TextBlock Text="Выбор модели ИКЗ" FontSize="20" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
                         <Separator Margin="0 5"/>
                     </StackPanel>
                     <Grid Grid.Row="2">
@@ -291,7 +291,7 @@
                         <Grid Grid.Column="4">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="60*"/>
-                                <RowDefinition Height="150*"/>
+                                <RowDefinition Height="90*"/>
                             </Grid.RowDefinitions>
                             <!--Grid Grid.Row="1">
                                 <Grid.RowDefinitions>

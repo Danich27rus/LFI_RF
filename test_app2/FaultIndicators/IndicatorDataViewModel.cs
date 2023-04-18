@@ -236,6 +236,7 @@ namespace test_app2.FaultIndicators
             CheckAvailibleIndicatorsCommand = new Command(CheckAvailibleIndicators);
             ReadIndicatorsBaseParametersCommand = new Command(ReadIndicatorsBaseParameters);
             WriteIndicatorsBaseParametersCommand = new Command(WriteIndicatorParameters);
+            SoftwareVersionParameterCommand = new Command(SoftwareVersionParameter);
 
             /*new Thread(() =>
             {
@@ -344,13 +345,14 @@ namespace test_app2.FaultIndicators
                             break;
                         //software
                         case 5:
-                            for (int i = 0; i < 43; ++i)
+                            Indicators[CollectionIndex].Information = "";
+                            for (int i = 13; i < 43; ++i)
                             {
                                 if (msg[i] == "00")
                                 {
                                     break;
                                 }
-                                Indicators[CollectionIndex].SoftwareVersion += (char)Int16.Parse(msg[i], NumberStyles.AllowHexSpecifier);
+                                Indicators[CollectionIndex].Information += (char)Int16.Parse(msg[i], NumberStyles.AllowHexSpecifier);
                             }
                             break;
                     }
@@ -367,7 +369,7 @@ namespace test_app2.FaultIndicators
             int oldFunc;
 
             oldFunc = FunctionCallNumStart;
-            FunctionCallNumStart = 1;
+            //FunctionCallNumStart = 1;
             FunctionCallNumEnd = 0;
 
             if (!Sender.Port.IsOpen)
@@ -398,7 +400,7 @@ namespace test_app2.FaultIndicators
                     "00", 
                     $"{CallAdress:X2}", 
                     "00", 
-                    $"{FunctionCallNumStart:X2}", 
+                    $"{1:X2}", 
                     $"{FunctionCallNumEnd:X2}", 
                     "00", 
                     "00", 
@@ -456,7 +458,7 @@ namespace test_app2.FaultIndicators
                     $"{splittedMac[2]:X2}", 
                     $"{splittedMac[1]:X2}",
                     $"{splittedMac[0]:X2}",
-                    $"{FunctionCallNumStart:X2}", 
+                    $"{(FunctionCallNumStart + 1):X2}", 
                     $"{FunctionCallNumEnd:X2}", 
                     "00", 
                     "00", 
@@ -479,7 +481,7 @@ namespace test_app2.FaultIndicators
             ushort crc;
             int funcInMemory, subNumber;
 
-            funcInMemory = FunctionCallNumStart;
+            funcInMemory = FunctionCallNumStart + 1;
             //FunctionCallNumStart = 1;
             //FunctionCallNumEnd = 0;
 
