@@ -162,7 +162,7 @@
                                     <RowDefinition Height="30"/>
                                     <RowDefinition Height="30"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock x:Name="CallFreqtextBlock" HorizontalAlignment="Left" FontFamily="Verdana" FontSize="15" TextWrapping="Wrap" Margin="5,0,0,0" Text="Адрес вызова" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="CallFreqtextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5,0,0,0" Text="Адрес вызова" VerticalAlignment="Center"/>
                                 <TextBlock x:Name="CallAddrtextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5,0,0,0" Text="Частота вызова" VerticalAlignment="Center" Grid.Row="1"/>
                                 <TextBlock x:Name="CallTimetextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5" Text="Время вызова" VerticalAlignment="Center" Grid.Row="2"/>
                                 <TextBlock x:Name="WaitTimetextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5" Text="Время ожидания ответа" VerticalAlignment="Center" Grid.Row="3"/>
@@ -609,7 +609,8 @@
                                 <Button x:Name="WriteParametersButton" Content="Запись данных на индикаторы" Command="{Binding IndicatorData.WriteIndicatorsBaseParametersCommand, Mode=OneTime}"
                                         Cursor="Hand" Margin="0,0,0,0" Grid.Row="2" IsEnabled="{Binding IndicatorData.FunctionCallNumStart}"/>
                                 <Button x:Name="SearchButton" Content="Поиск индикаторов" Command="{Binding IndicatorData.CheckAvailibleIndicatorsCommand, Mode=OneTime}" Cursor="Hand" Margin="0,0,0,0" Grid.Row="4"/>
-                                <Button x:Name="RestartIndicatorsButton" Content="Перезапуск индикаторов" Cursor="Hand" Margin="0,0,0,0" VerticalAlignment="Stretch" Grid.Row="6" Background="Teal"/>
+                                <Button x:Name="RestartIndicatorsButton" Content="Перезапуск индикаторов" Command="{Binding IndicatorData.RestartCommand, Mode=OneTime}"
+                                        Cursor="Hand" Margin="0,0,0,0" VerticalAlignment="Stretch" Grid.Row="6" Background="Teal"/>
                             </Grid>
                         </GroupBox>
                         <GroupBox x:Name="AnalogParamsGroupBox" Header="Аналоговое управление" Grid.Column="1">
@@ -629,7 +630,7 @@
                                             <ColumnDefinition Width="5"/>
                                             <ColumnDefinition Width="180*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Grid>
+                                        <Grid Cursor="">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="40"/>
                                                 <RowDefinition Height="5"/>
@@ -641,7 +642,7 @@
                                             <Button x:Name="IndicatorLEDOpenButton" Cursor="Hand">
                                                 <TextBlock Text="Включение световой индикации у индикаторов" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
                                             </Button>
-                                            <Button x:Name="IndicatorTestSCButton" Cursor="Hand" Grid.Row="2">
+                                            <Button x:Name="IndicatorTestSCButton" Cursor="Hand" Command="{Binding IndicatorData.ControlActionParameterCommand, Mode=OneTime}" Grid.Row="2">
                                                 <TextBlock Text="Проверка индикаторов на КЗ" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
                                             </Button>
                                             <Button x:Name="IndicatorTurnOnButton" Cursor="Hand" Grid.Row="4">
@@ -660,7 +661,7 @@
                                             <Button x:Name="IndicatorLEDShutdownButton" Cursor="Hand">
                                                 <TextBlock Text="Выключение световой индикации у индикаторов" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
                                             </Button>
-                                            <Button x:Name="IndicatorTestGSCButton" Cursor="Hand" Grid.Row="2">
+                                            <Button x:Name="IndicatorTestGSCButton" Cursor="Hand" Command="{Binding IndicatorData.ControlReturnParameterCommand, Mode=OneTime}" Grid.Row="2">
                                                 <TextBlock Text="Проверка индикаторов на КЗ по земле" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
                                             </Button>
                                             <Button x:Name="IndicatorTurnOffButton" Cursor="Hand" Grid.Row="4">

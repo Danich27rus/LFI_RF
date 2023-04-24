@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -54,7 +55,11 @@ namespace test_app2.FaultIndicators
             "E5 E5",        //Подтверждение от RF
             "11 84",        //Кол-во индикаторов
             "18 44",        //MAC адреса индикаторов
-            "2F 45"         //Чтение данных
+            "2F 45",        //Чтение данных
+            "11 C7",        //action
+            "11 C8",        //return
+            "11 CA",        //short circuit, ground
+            "11 CB"         //Рестарт
         };
 
         private int _deviceModelNum;
@@ -198,6 +203,12 @@ namespace test_app2.FaultIndicators
 
         public Command SoftwareVersionParameterCommand { get; }
 
+        public Command ControlActionParameterCommand { get; }
+
+        public Command ControlReturnParameterCommand { get; }
+
+        public Command RestartCommand { get; }
+
         public SerialPortMessagesViewModel Messages { get; set; }
 
         public SerialPortMessagesReceive Receiver { get; set; }
@@ -207,7 +218,7 @@ namespace test_app2.FaultIndicators
         public ObservableCollection<FaultIndicatorViewModel> Indicators { get; set; }
 
         public string IndicatorConfirm { get; set; }
-        
+
         public Checksum checksum { get; set; }
 
         public IndicatorDataViewModel()
@@ -237,6 +248,9 @@ namespace test_app2.FaultIndicators
             ReadIndicatorsBaseParametersCommand = new Command(ReadIndicatorsBaseParameters);
             WriteIndicatorsBaseParametersCommand = new Command(WriteIndicatorParameters);
             SoftwareVersionParameterCommand = new Command(SoftwareVersionParameter);
+            ControlActionParameterCommand = new Command(ControlActionParameter);
+            ControlReturnParameterCommand = new Command(ControlReturnParameter);
+            RestartCommand = new Command(Restart);
 
             /*new Thread(() =>
             {
@@ -286,7 +300,7 @@ namespace test_app2.FaultIndicators
 
                 MACShoertened = $"{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
                 MAC = $"{msg[10]}-{msg[9]}-{msg[8]}-{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
-                
+
                 App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
                 {
                     if (Indicators.Any(x => x.MACAdress == MAC))
@@ -324,7 +338,7 @@ namespace test_app2.FaultIndicators
                             Indicators[CollectionIndex].FieldThreshold = Convert.ToInt16(msg[16], 16) + (Convert.ToInt16(msg[17], 16) << 8);
                             Indicators[CollectionIndex].CurrentThreshold = Convert.ToInt16(msg[18], 16) / 10;
                             Indicators[CollectionIndex].UploadT1 = Convert.ToInt16(msg[23], 16) + (Convert.ToInt16(msg[24], 16) << 8);
-                            Indicators[CollectionIndex].UploadT2 = Convert.ToInt16(msg[25], 16) + (Convert.ToInt16(msg[26], 16) << 8) + 
+                            Indicators[CollectionIndex].UploadT2 = Convert.ToInt16(msg[25], 16) + (Convert.ToInt16(msg[26], 16) << 8) +
                                                                   (Convert.ToInt16(msg[27], 16) << 16) + (Convert.ToInt16(msg[28], 16) << 24);
                             Indicators[CollectionIndex].HeartBeat = Convert.ToInt16(msg[29], 16) + (Convert.ToInt16(msg[30], 16) << 8);
                             Indicators[CollectionIndex].CurrentIValue = Convert.ToInt16(msg[31], 16) / 10;
@@ -358,6 +372,43 @@ namespace test_app2.FaultIndicators
                     }
                 }
             }
+            if (IndicatorConfirm.Contains(_patterns[4]) || 
+                IndicatorConfirm.Contains(_patterns[5]) || 
+                IndicatorConfirm.Contains(_patterns[6]) || 
+                IndicatorConfirm.Contains(_patterns[7]))
+            {
+                Dictionary<string, string> CommandType = new()
+                {
+            //{ "JYZ-FF", 90 },
+            //{ "JYZ-HW", 90 },
+                    { "C7", "Откидная пластина в порядке - " },
+                    { "C8", "Откидная задняя пластина в порядке - " },
+                    { "CA", "Проверка на " },
+                    { "CB", "Перезапуск индикаторов - " },
+                };
+                string[] msg;
+                msg = IndicatorConfirm.Split(' ');
+
+                MAC = $"{msg[10]}-{msg[9]}-{msg[8]}-{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
+                var CollectionIndex = Indicators.IndexOf(Indicators.FirstOrDefault(x => x.MACAdress == MAC));
+
+                if (CollectionIndex == null)
+                {
+                    Messages.AddMessage("НЕ МОЖЕТ БЫТЬ!");
+                    return;
+                }
+                switch (Convert.ToInt16(msg[11], 16))
+                {
+                    case 229:
+                        Indicators[CollectionIndex].Information = "";
+                        Indicators[CollectionIndex].Information = CommandType[msg[3]] + "успешно";
+                        break;
+                    default:
+                        Indicators[CollectionIndex].Information = "";
+                        Indicators[CollectionIndex].Information = CommandType[msg[3]] + "неудачно";
+                        break;
+                }
+            }
             IndicatorConfirm = "";
             //Thread.Sleep(5);
         }
@@ -382,28 +433,27 @@ namespace test_app2.FaultIndicators
                 Messages.AddMessage("Для ИКЗ не выбран протокол общения или семейство устройств");
                 return;
             }
-
-            Request = 
-                new string[] { $"{_namingProtocol.ElementAt(DeviceCommunicationProtocolNum - 1).Value:X2}", 
-                    $"{_namingFamily.ElementAt(DeviceFamilyNum - 1).Value:X2}", 
-                    "15", 
-                    "24", 
-                    $"{CallTime:X2}", 
-                    $"{WaitTime:X2}", 
-                    "00", 
-                    $"{CallFrequency:X2}", 
-                    "00", 
-                    "00", 
-                    "00", 
-                    "00", 
-                    "00", 
-                    "00", 
-                    $"{CallAdress:X2}", 
-                    "00", 
-                    $"{1:X2}", 
-                    $"{FunctionCallNumEnd:X2}", 
-                    "00", 
-                    "00", 
+            Request =
+                new string[] { $"{_namingProtocol.ElementAt(DeviceCommunicationProtocolNum - 1).Value:X2}",
+                    $"{_namingFamily.ElementAt(DeviceFamilyNum - 1).Value:X2}",
+                    "15",
+                    "24",
+                    $"{CallTime:X2}",
+                    $"{WaitTime:X2}",
+                    "00",
+                    $"{CallFrequency:X2}",
+                    "00",
+                    "00",
+                    "00",
+                    "00",
+                    "00",
+                    "00",
+                    $"{CallAdress:X2}",
+                    "00",
+                    $"{1:X2}",
+                    $"{FunctionCallNumEnd:X2}",
+                    "00",
+                    "00",
                     $"{Trailer:X2}" };
 
             crc = checksum.CheckSum_CRC(Request, 2, Request.Length);
@@ -434,34 +484,39 @@ namespace test_app2.FaultIndicators
                 Messages.AddMessage("Для ИКЗ не выбран протокол общения или семейство устройств");
                 return;
             }
+            if (Indicators.Count < 1)
+            {
+                Messages.AddMessage("Информация не считана, ни одного индикатора КЗ нет в списке");
+                return;
+            }
             //TODO: вынести в отдельный поток
-            foreach(var indicator in Indicators)
+            foreach (var indicator in Indicators)
             {
                 //MAC = indicator.MACAdress;
 
                 var splittedMac = indicator.MACAdress.Split('-');
                 //MAC = $"{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
                 Request =
-                new string[] { $"{_namingProtocol.ElementAt(DeviceCommunicationProtocolNum - 1).Value:X2}", 
-                    $"{_namingFamily.ElementAt(DeviceFamilyNum - 1).Value:X2}", 
-                    "15", 
-                    "25", 
-                    $"{CallTime:X2}", 
-                    $"{WaitTime:X2}", 
-                    "00", 
-                    $"{CallFrequency:X2}", 
+                new string[] { $"{_namingProtocol.ElementAt(DeviceCommunicationProtocolNum - 1).Value:X2}",
+                    $"{_namingFamily.ElementAt(DeviceFamilyNum - 1).Value:X2}",
+                    "15",
+                    "25",
+                    $"{CallTime:X2}",
+                    $"{WaitTime:X2}",
+                    "00",
+                    $"{CallFrequency:X2}",
                     "00",
                     $"{splittedMac[6]:X2}",
                     $"{splittedMac[5]:X2}",
                     $"{splittedMac[4]:X2}",
-                    $"{splittedMac[3]:X2}", 
-                    $"{splittedMac[2]:X2}", 
+                    $"{splittedMac[3]:X2}",
+                    $"{splittedMac[2]:X2}",
                     $"{splittedMac[1]:X2}",
                     $"{splittedMac[0]:X2}",
-                    $"{(FunctionCallNumStart + 1):X2}", 
-                    $"{FunctionCallNumEnd:X2}", 
-                    "00", 
-                    "00", 
+                    $"{(FunctionCallNumStart + 1):X2}",
+                    $"{FunctionCallNumEnd:X2}",
+                    "00",
+                    "00",
                     $"{Trailer:X2}" };
 
                 crc = checksum.CheckSum_CRC(Request, 2, Request.Length);
@@ -493,6 +548,11 @@ namespace test_app2.FaultIndicators
             if (DeviceCommunicationProtocolNum == 0 && DeviceFamilyNum == 0)
             {
                 Messages.AddMessage("Для ИКЗ не выбран протокол общения или семейство устройств");
+                return;
+            }
+            if (Indicators.Count < 1)
+            {
+                Messages.AddMessage("Информация не считана, ни одного индикатора КЗ нет в списке");
                 return;
             }
             //TODO: вынести в отдельный поток
@@ -527,12 +587,12 @@ namespace test_app2.FaultIndicators
                     "00", "00", "00", "00",
                     "00", "00", "00", "00",
                     "00", "00", "00", "00",
-                    "00", "00", "00", "00", 
+                    "00", "00", "00", "00",
                     "00", "00", "00", "00",
                     "00",
                     $"{Trailer:X2}" };
 
-                switch(funcInMemory)
+                switch (funcInMemory)
                 {
                     case 2:
                         Request[18] = "18";
@@ -620,7 +680,7 @@ namespace test_app2.FaultIndicators
 
         }
 
-        public void SoftwareVersionParameter()
+        public void Restart()
         {
             if (!Sender.Port.IsOpen)
             {
@@ -632,7 +692,7 @@ namespace test_app2.FaultIndicators
                 Messages.AddMessage("Для ИКЗ не выбран протокол общения или семейство устройств");
                 return;
             }
-            if (Indicators.Count < 0)
+            if (Indicators.Count < 1)
             {
                 Messages.AddMessage("Информация не считана, ни одного индикатора КЗ нет в списке");
                 return;
@@ -647,7 +707,65 @@ namespace test_app2.FaultIndicators
                     new string[] { $"{_namingProtocol.ElementAt(DeviceCommunicationProtocolNum - 1).Value:X2}",
                     $"{_namingFamily.ElementAt(DeviceFamilyNum - 1).Value:X2}",
                     "15",
-                    "25",
+                    "2B",                   //restart action command
+                    $"{CallTime:X2}",
+                    $"{WaitTime:X2}",
+                    "00",
+                    $"{CallFrequency:X2}",
+                    "00",
+                    $"{splittedMac[6]:X2}",
+                    $"{splittedMac[5]:X2}",
+                    $"{splittedMac[4]:X2}",
+                    $"{splittedMac[3]:X2}",
+                    $"{splittedMac[2]:X2}",
+                    $"{splittedMac[1]:X2}",
+                    $"{splittedMac[0]:X2}",
+                    $"00",                  
+                    $"{FunctionCallNumEnd:X2}",
+                    "00",
+                    "00",
+                    $"{Trailer:X2}" };
+
+                crc = checksum.CheckSum_CRC(Request, 2, Request.Length);
+                Request[^2] = string.Join("", (crc & 255).ToString("X2"));
+                Request[^3] = string.Join("", (crc >> 8).ToString("X2"));
+                //orderNumber++;
+
+                Sender.SendHEXMessage(string.Join(" ", Request));
+                Messages.AddSentMessage(string.Join(" ", Request));
+
+                Thread.Sleep(200);
+            }
+        }
+
+        public void SoftwareVersionParameter()
+        {
+            if (!Sender.Port.IsOpen)
+            {
+                Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
+                return;
+            }
+            if (DeviceCommunicationProtocolNum == 0 && DeviceFamilyNum == 0)
+            {
+                Messages.AddMessage("Для ИКЗ не выбран протокол общения или семейство устройств");
+                return;
+            }
+            if (Indicators.Count < 1)
+            {
+                Messages.AddMessage("Информация не считана, ни одного индикатора КЗ нет в списке");
+                return;
+            }
+            foreach (var indicator in Indicators)
+            {
+                //MAC = indicator.MACAdress;
+                int crc;
+                var splittedMac = indicator.MACAdress.Split('-');
+
+                Request =
+                    new string[] { $"{_namingProtocol.ElementAt(DeviceCommunicationProtocolNum - 1).Value:X2}",
+                    $"{_namingFamily.ElementAt(DeviceFamilyNum - 1).Value:X2}",
+                    "15",
+                    "25",       //software info command
                     $"{CallTime:X2}",
                     $"{WaitTime:X2}",
                     "00",
@@ -661,6 +779,122 @@ namespace test_app2.FaultIndicators
                     $"{splittedMac[1]:X2}",
                     $"{splittedMac[0]:X2}",
                     $"{5:X2}",   //software info command
+                    $"{FunctionCallNumEnd:X2}",
+                    "00",
+                    "00",
+                    $"{Trailer:X2}" };
+
+                crc = checksum.CheckSum_CRC(Request, 2, Request.Length);
+                Request[^2] = string.Join("", (crc & 255).ToString("X2"));
+                Request[^3] = string.Join("", (crc >> 8).ToString("X2"));
+                //orderNumber++;
+
+                Sender.SendHEXMessage(string.Join(" ", Request));
+                Messages.AddSentMessage(string.Join(" ", Request));
+
+                Thread.Sleep(200);
+            }
+        }
+
+        public void ControlActionParameter()
+        {
+            if (!Sender.Port.IsOpen)
+            {
+                Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
+                return;
+            }
+            if (DeviceCommunicationProtocolNum == 0 && DeviceFamilyNum == 0)
+            {
+                Messages.AddMessage("Для ИКЗ не выбран протокол общения или семейство устройств");
+                return;
+            }
+            if (Indicators.Count < 1)
+            {
+                Messages.AddMessage("Информация не считана, ни одного индикатора КЗ нет в списке");
+                return;
+            }
+            foreach (var indicator in Indicators)
+            {
+                //MAC = indicator.MACAdress;
+                int crc;
+                var splittedMac = indicator.MACAdress.Split('-');
+
+                Request =
+                    new string[] { $"{_namingProtocol.ElementAt(DeviceCommunicationProtocolNum - 1).Value:X2}",
+                    $"{_namingFamily.ElementAt(DeviceFamilyNum - 1).Value:X2}",
+                    "15",
+                    "27",                   //control action command
+                    $"{CallTime:X2}",
+                    $"{WaitTime:X2}",
+                    "00",
+                    $"{CallFrequency:X2}",
+                    "00",
+                    $"{splittedMac[6]:X2}",
+                    $"{splittedMac[5]:X2}",
+                    $"{splittedMac[4]:X2}",
+                    $"{splittedMac[3]:X2}",
+                    $"{splittedMac[2]:X2}",
+                    $"{splittedMac[1]:X2}",
+                    $"{splittedMac[0]:X2}",
+                    $"{splittedMac[2]:X2}",   //control action phase check
+                    $"{FunctionCallNumEnd:X2}",
+                    "00",
+                    "00",
+                    $"{Trailer:X2}" };
+
+                crc = checksum.CheckSum_CRC(Request, 2, Request.Length);
+                Request[^2] = string.Join("", (crc & 255).ToString("X2"));
+                Request[^3] = string.Join("", (crc >> 8).ToString("X2"));
+                //orderNumber++;
+
+                Sender.SendHEXMessage(string.Join(" ", Request));
+                Messages.AddSentMessage(string.Join(" ", Request));
+
+                Thread.Sleep(200);
+            }
+        }
+
+        public void ControlReturnParameter()
+        {
+            if (!Sender.Port.IsOpen)
+            {
+                Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
+                return;
+            }
+            if (DeviceCommunicationProtocolNum == 0 && DeviceFamilyNum == 0)
+            {
+                Messages.AddMessage("Для ИКЗ не выбран протокол общения или семейство устройств");
+                return;
+            }
+            if (Indicators.Count < 1)
+            {
+                Messages.AddMessage("Информация не считана, ни одного индикатора КЗ нет в списке");
+                return;
+            }
+            foreach (var indicator in Indicators)
+            {
+                //MAC = indicator.MACAdress;
+                int crc;
+                var splittedMac = indicator.MACAdress.Split('-');
+
+                Request =
+                    new string[] { $"{_namingProtocol.ElementAt(DeviceCommunicationProtocolNum - 1).Value:X2}",
+                    $"{_namingFamily.ElementAt(DeviceFamilyNum - 1).Value:X2}",
+                    "15",
+                    "28",                  //control return command
+                    $"{CallTime:X2}",
+                    $"{WaitTime:X2}",
+                    "00",
+                    $"{CallFrequency:X2}",
+                    "00",
+                    $"{splittedMac[6]:X2}",
+                    $"{splittedMac[5]:X2}",
+                    $"{splittedMac[4]:X2}",
+                    $"{splittedMac[3]:X2}",
+                    $"{splittedMac[2]:X2}",
+                    $"{splittedMac[1]:X2}",
+                    $"{splittedMac[0]:X2}",
+                    $"{21:X2}",             //control return phase check
                     $"{FunctionCallNumEnd:X2}",
                     "00",
                     "00",

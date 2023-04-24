@@ -143,7 +143,7 @@
                         </Grid>
                         <Grid Grid.Column="4">
                             <TextBlock Text="Скорость" Padding="2 5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                            <ListBox x:Name="COMBaudRate" Margin="0,25,0,0" SelectedIndex="6"
+                            <ListBox x:Name="COMBaudRate" Margin="0,25,0,0" SelectedIndex="9"
                             ItemsSource="{StaticResource baudRates}"
                             SelectedItem="{Binding SerialPort.Settings.SelectedBaudRate, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"/>
                         </Grid>
