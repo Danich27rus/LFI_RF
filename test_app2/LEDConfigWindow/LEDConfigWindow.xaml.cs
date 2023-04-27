@@ -23,5 +23,14 @@ namespace test_app2.LEDConfigWindow
         {
             InitializeComponent();
         }
+        private void LEDConfigWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
+        }
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+        }
     }
 }

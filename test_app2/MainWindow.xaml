@@ -13,7 +13,7 @@
         mc:Ignorable="d"
         Closing="Window_Closing"
         Title="Aboba" Height="720" Width="1280"
-        MinWidth="1280"
+        MinHeight="720" MinWidth="1280"
         Style="{DynamicResource CustomWindowStyle}">
     <Window.Resources>
         <ObjectDataProvider x:Key="PortParitySettingsViewModel" 
@@ -181,13 +181,13 @@
                         <GroupBox Header="Сообщения">
                             <Grid>
                                 <TextBox
-                         TextWrapping="Wrap" 
-                         VerticalScrollBarVisibility="Auto" 
-                         AcceptsReturn="True"
-                         Text="{Binding Messages.MessagesText, UpdateSourceTrigger=PropertyChanged}"
-                         FontSize="12"
-                         IsReadOnly="true"
-                         Margin="0,0,0,0"/>
+                                    TextWrapping="Wrap" 
+                                    VerticalScrollBarVisibility="Auto" 
+                                    AcceptsReturn="True"
+                                    Text="{Binding Messages.MessagesText, UpdateSourceTrigger=PropertyChanged}"
+                                    FontSize="12"
+                                    IsReadOnly="true"
+                                    Margin="0,0,0,0"/>
                             </Grid>
                         </GroupBox>
                         <Grid Grid.Row="1">
@@ -593,7 +593,7 @@
                             <ColumnDefinition Width="400"/>
                             <ColumnDefinition Width="400*"/>
                         </Grid.ColumnDefinitions>
-                        <GroupBox x:Name="SendParamsGroupBox" Header="Аналоговое управление">
+                        <GroupBox x:Name="SendParamsGroupBox" Header="Данные с ИКЗ">
                             <Grid Margin="5">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="40"/>
@@ -613,7 +613,7 @@
                                         Cursor="Hand" Margin="0,0,0,0" VerticalAlignment="Stretch" Grid.Row="6" Background="Teal"/>
                             </Grid>
                         </GroupBox>
-                        <GroupBox x:Name="AnalogParamsGroupBox" Header="Аналоговое управление" Grid.Column="1">
+                        <GroupBox x:Name="AnalogParamsGroupBox" Header="Управление ИКЗ" Grid.Column="1">
                             <Grid Margin="5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -639,8 +639,8 @@
                                                 <RowDefinition Height="40"/>
                                                 <RowDefinition Height="5"/>
                                             </Grid.RowDefinitions>
-                                            <Button x:Name="IndicatorLEDOpenButton" Cursor="Hand">
-                                                <TextBlock Text="Включение световой индикации у индикаторов" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
+                                            <Button x:Name="IndicatorLEDOpenButton" Cursor="Hand" Command="{Binding Config.LEDConfigCommand, Mode=OneTime}" CommandParameter="2">
+                                                <TextBlock Text="Включение световой индикации у индикаторов" TextWrapping="WrapWithOverflow" TextAlignment="Center" />
                                             </Button>
                                             <Button x:Name="IndicatorTestSCButton" Cursor="Hand" Command="{Binding IndicatorData.ControlActionParameterCommand, Mode=OneTime}" Grid.Row="2">
                                                 <TextBlock Text="Проверка индикаторов на КЗ" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
@@ -658,7 +658,7 @@
                                                 <RowDefinition Height="40"/>
                                                 <RowDefinition Height="5"/>
                                             </Grid.RowDefinitions>
-                                            <Button x:Name="IndicatorLEDShutdownButton" Cursor="Hand">
+                                            <Button x:Name="IndicatorLEDShutdownButton" Cursor="Hand" Command="{Binding Config.LEDConfigCommand, Mode=OneTime}">
                                                 <TextBlock Text="Выключение световой индикации у индикаторов" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
                                             </Button>
                                             <Button x:Name="IndicatorTestGSCButton" Cursor="Hand" Command="{Binding IndicatorData.ControlReturnParameterCommand, Mode=OneTime}" Grid.Row="2">

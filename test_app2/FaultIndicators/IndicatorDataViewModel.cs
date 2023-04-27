@@ -69,7 +69,7 @@ namespace test_app2.FaultIndicators
         private string _deviceFamily;
         private string _deviceCommunicationProtocol;
         private string[] _request;
-        private byte[] _requestTest;
+        //private byte[] _requestTest;
         private int _callAdress;
         private int _callFrequency;
         private int _callTime;
@@ -85,6 +85,8 @@ namespace test_app2.FaultIndicators
         //Всё что ниже - относится к индикатору
         private string _mac;
         private string _macShortened;
+        private int _ledControl;
+        private int _ledCommand;
 
         private bool _buttonCheckAnyIndicators = false;
 
@@ -163,11 +165,21 @@ namespace test_app2.FaultIndicators
             get => _request;
             set => RaisePropertyChanged(ref _request, value);
         }
-        public byte[] RequestTest
+        public int LEDControl
+        {
+            get => _ledControl;
+            set => RaisePropertyChanged(ref _ledControl, value);
+        }
+        public int LEDCommand
+        {
+            get => _ledCommand;
+            set => RaisePropertyChanged(ref _ledCommand, value);
+        }
+        /*public byte[] RequestTest
         {
             get => _requestTest;
             set => RaisePropertyChanged(ref _requestTest, value);
-        }
+        }*/
         public bool ButtonCheckAnyIndicators
         {
             get => _buttonCheckAnyIndicators;
@@ -208,6 +220,10 @@ namespace test_app2.FaultIndicators
         public Command ControlReturnParameterCommand { get; }
 
         public Command RestartCommand { get; }
+
+        public Command LEDOnCommand { get; }
+
+        public Command LEDOffCommand { get; }
 
         public SerialPortMessagesViewModel Messages { get; set; }
 
@@ -251,6 +267,8 @@ namespace test_app2.FaultIndicators
             ControlActionParameterCommand = new Command(ControlActionParameter);
             ControlReturnParameterCommand = new Command(ControlReturnParameter);
             RestartCommand = new Command(Restart);
+            LEDOnCommand = new Command(LEDOn);
+            LEDOffCommand = new Command(LEDOff);
 
             /*new Thread(() =>
             {
@@ -738,6 +756,122 @@ namespace test_app2.FaultIndicators
             }
         }
 
+        public void LEDOff()
+        {
+            if (!Sender.Port.IsOpen)
+            {
+                Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
+                return;
+            }
+            if (DeviceCommunicationProtocolNum == 0 && DeviceFamilyNum == 0)
+            {
+                Messages.AddMessage("Для ИКЗ не выбран протокол общения или семейство устройств");
+                return;
+            }
+            if (Indicators.Count < 1)
+            {
+                Messages.AddMessage("Информация не считана, ни одного индикатора КЗ нет в списке");
+                return;
+            }
+            foreach (var indicator in Indicators)
+            {
+                //MAC = indicator.MACAdress;
+                int crc;
+                var splittedMac = indicator.MACAdress.Split('-');
+
+                Request =
+                    new string[] { $"{_namingProtocol.ElementAt(DeviceCommunicationProtocolNum - 1).Value:X2}",
+                    $"{_namingFamily.ElementAt(DeviceFamilyNum - 1).Value:X2}",
+                    "15",
+                    "28",                   //control action command
+                    $"{CallTime:X2}",
+                    $"{WaitTime:X2}",
+                    "00",
+                    $"{CallFrequency:X2}",
+                    "00",
+                    $"{splittedMac[6]:X2}",
+                    $"{splittedMac[5]:X2}",
+                    $"{splittedMac[4]:X2}",
+                    $"{splittedMac[3]:X2}",
+                    $"{splittedMac[2]:X2}",
+                    $"{splittedMac[1]:X2}",
+                    $"{splittedMac[0]:X2}",
+                    $"{splittedMac[2]:X2}",   //выбор цвета led индикатора
+                    $"{LEDControl:X2}",
+                    "00",
+                    "00",
+                    $"{Trailer:X2}" };
+
+                crc = checksum.CheckSum_CRC(Request, 2, Request.Length);
+                Request[^2] = string.Join("", (crc & 255).ToString("X2"));
+                Request[^3] = string.Join("", (crc >> 8).ToString("X2"));
+                //orderNumber++;
+
+                Sender.SendHEXMessage(string.Join(" ", Request));
+                Messages.AddSentMessage(string.Join(" ", Request));
+
+                Thread.Sleep(200);
+            }
+        }
+
+        public void LEDOn()
+        {
+            if (!Sender.Port.IsOpen)
+            {
+                Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
+                return;
+            }
+            if (DeviceCommunicationProtocolNum == 0 && DeviceFamilyNum == 0)
+            {
+                Messages.AddMessage("Для ИКЗ не выбран протокол общения или семейство устройств");
+                return;
+            }
+            if (Indicators.Count < 1)
+            {
+                Messages.AddMessage("Информация не считана, ни одного индикатора КЗ нет в списке");
+                return;
+            }
+            foreach (var indicator in Indicators)
+            {
+                //MAC = indicator.MACAdress;
+                int crc;
+                var splittedMac = indicator.MACAdress.Split('-');
+
+                Request =
+                    new string[] { $"{_namingProtocol.ElementAt(DeviceCommunicationProtocolNum - 1).Value:X2}",
+                    $"{_namingFamily.ElementAt(DeviceFamilyNum - 1).Value:X2}",
+                    "15",
+                    "27",                   //control action command
+                    $"{CallTime:X2}",
+                    $"{WaitTime:X2}",
+                    "00",
+                    $"{CallFrequency:X2}",
+                    "00",
+                    $"{splittedMac[6]:X2}",
+                    $"{splittedMac[5]:X2}",
+                    $"{splittedMac[4]:X2}",
+                    $"{splittedMac[3]:X2}",
+                    $"{splittedMac[2]:X2}",
+                    $"{splittedMac[1]:X2}",
+                    $"{splittedMac[0]:X2}",
+                    $"{splittedMac[2]:X2}",   //выбор цвета led индикатора
+                    $"{LEDControl:X2}",
+                    "00",
+                    "00",
+                    $"{Trailer:X2}" };
+
+                crc = checksum.CheckSum_CRC(Request, 2, Request.Length);
+                Request[^2] = string.Join("", (crc & 255).ToString("X2"));
+                Request[^3] = string.Join("", (crc >> 8).ToString("X2"));
+                //orderNumber++;
+
+                Sender.SendHEXMessage(string.Join(" ", Request));
+                Messages.AddSentMessage(string.Join(" ", Request));
+
+                Thread.Sleep(200);
+            }
+        }
+
         public void SoftwareVersionParameter()
         {
             if (!Sender.Port.IsOpen)
@@ -837,7 +971,7 @@ namespace test_app2.FaultIndicators
                     $"{splittedMac[1]:X2}",
                     $"{splittedMac[0]:X2}",
                     $"{splittedMac[2]:X2}",   //control action phase check
-                    $"{FunctionCallNumEnd:X2}",
+                    $"{1:X2}",
                     "00",
                     "00",
                     $"{Trailer:X2}" };

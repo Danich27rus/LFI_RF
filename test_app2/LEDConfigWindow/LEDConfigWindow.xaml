@@ -4,30 +4,54 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:test_app2.LEDConfigWindow"
+        xmlns:config="clr-namespace:test_app2.Config" 
+        xmlns:Converters="clr-namespace:test_app2.Converters"
+        xmlns:behavior="http://schemas.microsoft.com/xaml/behaviors"
+        d:DataContext="{d:DesignInstance Type=config:ConfigViewModel}"
         mc:Ignorable="d"
         Title="Отключение/Включение инидкатора LED" Height="120" Width="300"
-        Style="{DynamicResource CustomWindowStyle}">
+        ResizeMode="NoResize"
+        Style="{DynamicResource CustomWindowStyle}" Cursor="">
+    <Window.Resources>
+        <Converters:RadioBoolToIntConverter x:Key="RadioBoolToIntConverter"/>
+    </Window.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="15"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150*"/>
+            <ColumnDefinition Width="100*"/>
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+            <!--RowDefinition Height="15"/-->
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30*"/>
         </Grid.RowDefinitions>
-        <TextBlock FontSize="10" 
+        <!--TextBlock FontSize="10" 
                    Text="12321"
-                   VerticalAlignment="Top"/>
-        <RadioButton Content="Красный" Grid.Row="1"
-                                 IsChecked="False"
-                                 Cursor="">
+                   VerticalAlignment="Center" Grid.ColumnSpan="2"/-->
+        <RadioButton Content="Красный"
+                                 IsChecked="{Binding IndicatorData.LEDControl, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=0}"
+                                 Cursor="" Grid.ColumnSpan="2" Margin="10,5,10,5">
         </RadioButton>
-        <RadioButton Content="Желтый" Grid.Row="2"
-                                 IsChecked="False"
-                                 Cursor="">
+        <RadioButton Content="Желтый" Grid.Row="1"
+                                 IsChecked="{Binding IndicatorData.LEDControl, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=2}"
+                                 Cursor="" Grid.ColumnSpan="2" Margin="10,5,10,5">
         </RadioButton>
-        <RadioButton Content="Зелёный" Grid.Row="3"
-                                 IsChecked="True"
-                                 Cursor="">
+        <RadioButton Content="Зелёный" Grid.Row="2"
+                                 IsChecked="{Binding IndicatorData.LEDControl, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=3}"
+                                 Cursor="" Grid.ColumnSpan="2" Margin="10,5,10,5">
         </RadioButton>
+        </Grid>
+        <Button Grid.Column="1" Content="Отправить" IsCancel="True" Command="{Binding IndicatorData.ControlActionParameterCommand, Mode=OneTime}">
+            <behavior:Interaction.Triggers>
+                <behavior:EventTrigger EventName="Click">
+                    <behavior:CallMethodAction MethodName="Close"
+                           TargetObject="{Binding RelativeSource={RelativeSource
+                                                  Mode=FindAncestor,
+                                                  AncestorType=Window}}" />
+                </behavior:EventTrigger>
+            </behavior:Interaction.Triggers>
+        </Button>
     </Grid>
 </Window>
