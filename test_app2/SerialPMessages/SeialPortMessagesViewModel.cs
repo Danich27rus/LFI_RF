@@ -64,7 +64,7 @@ namespace test_app2.SerialPMessages
             //Indicators = new ObservableCollection<FaultIndicatorViewModel>();
             MessagesText = "";
             ToBeSentText = "";
-            IsHEX = false;
+            IsHEX = true;
             AddNewLine = false;
 
             ClearMessagesCommand = new Command(ClearMessages);

@@ -182,10 +182,5 @@ namespace test_app2.FaultIndicators
         {
             //UpdateContentCommand = new Command(UpdateContent);
         }
-
-        public void UpdateContent()
-        {
-            //DeviceModel = _naming[DeviceModelNum];
-        }
     }
 }

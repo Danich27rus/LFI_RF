@@ -7,7 +7,7 @@
       xmlns:System="clr-namespace:System;assembly=mscorlib"
       xmlns:settings="clr-namespace:test_app2.SerialPortDevice"
       xmlns:Converters="clr-namespace:test_app2.Converters" 
-      xmlns:config="clr-namespace:test_app2.Config" 
+      xmlns:config="clr-namespace:test_app2.Config"
       d:DataContext="{d:DesignInstance Type=config:ConfigViewModel}"
       mc:Ignorable="d" 
       Height="500" Width="800"
@@ -31,6 +31,7 @@
         </ObjectDataProvider>
         <Converters:BoolToIsConnectedConverter x:Key="BoolToIsConnectedConverter"/>
         <Converters:RadioBoolToIntConverter x:Key="RadioBoolToIntConverter"/>
+        <Converters:RadioButtonToImageConverter x:Key="RadioButtonToImageConverter"/>
     </Window.Resources>
     <Grid Margin="5" DataContext="{Binding}">
         <Grid>
@@ -213,6 +214,20 @@
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             Loaded="Image_Loaded"/-->
+                            <Image>
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsChecked, ElementName=MainlineFI}" Value="True">
+                                                <Setter Property="Source" Value="/Images/LFI_all.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsChecked, ElementName=FIBaseBlock}" Value="True">
+                                                <Setter Property="Source" Value="/Images/LFI_BB.png"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
                         </Grid>
                         <Grid Grid.Column="2">
                             <Grid.RowDefinitions>
@@ -273,11 +288,11 @@
                                         <RowDefinition Height="30"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Text="Выбор семейства устройства" Padding="5" HorizontalAlignment="Center"/>
-                                    <RadioButton Content="Магистральные ИКЗ" Grid.Row="1"
+                                    <RadioButton x:Name="MainlineFI" Content="Магистральные ИКЗ" Grid.Row="1"
                                  IsChecked="{Binding IndicatorData.DeviceFamilyNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=1}"
                                  Command="{Binding IndicatorData.UpdateFamilyContentCommand}">
                                     </RadioButton>
-                                    <RadioButton Content="ИКЗ с ББ" Grid.Row="2"
+                                    <RadioButton x:Name="FIBaseBlock" Content="ИКЗ с ББ" Grid.Row="2"
                                  IsChecked="{Binding IndicatorData.DeviceFamilyNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=2}"
                                  Command="{Binding IndicatorData.UpdateFamilyContentCommand}">
                                     </RadioButton>

@@ -9,12 +9,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\LFI_all.png" />
+    <None Remove="Images\LFI_BB.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="System.IO.Ports" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Themes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\LFI_all.png" />
+    <Resource Include="Images\LFI_BB.png" />
   </ItemGroup>
 
 </Project>
