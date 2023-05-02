@@ -291,8 +291,8 @@
                                             </DataGrid.Style>
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Header="{Binding [0], Source={StaticResource BaseParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="105*"/>
-                                                <DataGridTextColumn Header="Информация" Binding="{Binding Information, StringFormat=d}" Width="100*"/>
-                                                <DataGridTextColumn Header="Статус" Binding="{Binding Status, StringFormat=d}" Width="100*"/>
+                                                <DataGridTextColumn Header="Информация" Binding="{Binding Information, StringFormat=d}" Width="200*"/>
+                                                <DataGridTextColumn Header="Статус" Binding="{Binding Status, StringFormat=d}" Width="50*"/>
                                             </DataGrid.Columns>
                                             <DataGrid.ColumnHeaderStyle>
                                                 <Style TargetType="{x:Type DataGridColumnHeader}">
@@ -642,11 +642,11 @@
                                             <Button x:Name="IndicatorLEDOpenButton" Cursor="Hand" Command="{Binding Config.LEDConfigCommand, Mode=OneTime}" CommandParameter="2">
                                                 <TextBlock Text="Включение световой индикации у индикаторов" TextWrapping="WrapWithOverflow" TextAlignment="Center" />
                                             </Button>
-                                            <Button x:Name="IndicatorTestSCButton" Cursor="Hand" Command="{Binding IndicatorData.ControlActionParameterCommand, Mode=OneTime}" Grid.Row="2">
+                                            <Button x:Name="IndicatorTestSCButton" Cursor="Hand" Command="{Binding IndicatorData.ShortCircuitCheckCommand, Mode=OneTime}" Grid.Row="2">
                                                 <TextBlock Text="Проверка индикаторов на КЗ" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
                                             </Button>
                                             <Button x:Name="IndicatorTurnOnButton" Cursor="Hand" Grid.Row="4">
-                                                <TextBlock Text="Включение индикатора" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
+                                                <TextBlock Text="Проверка передней пластины" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
                                             </Button>
                                         </Grid>
                                         <Grid Grid.Column="2" Cursor="">
@@ -661,11 +661,11 @@
                                             <Button x:Name="IndicatorLEDShutdownButton" Cursor="Hand" Command="{Binding Config.LEDConfigCommand, Mode=OneTime}">
                                                 <TextBlock Text="Выключение световой индикации у индикаторов" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
                                             </Button>
-                                            <Button x:Name="IndicatorTestGSCButton" Cursor="Hand" Command="{Binding IndicatorData.ControlReturnParameterCommand, Mode=OneTime}" Grid.Row="2">
+                                            <Button x:Name="IndicatorTestGSCButton" Cursor="Hand" Command="{Binding IndicatorData.GroundShortCircuitCheckCommand, Mode=OneTime}" Grid.Row="2">
                                                 <TextBlock Text="Проверка индикаторов на КЗ по земле" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
                                             </Button>
                                             <Button x:Name="IndicatorTurnOffButton" Cursor="Hand" Grid.Row="4">
-                                                <TextBlock Text="Выключение индикатора" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
+                                                <TextBlock Text="Проверка задней пластины" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
                                             </Button>
                                         </Grid>
                                     </Grid>

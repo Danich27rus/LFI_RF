@@ -32,7 +32,6 @@ namespace test_app2.FaultIndicators
         private int _fieldDropDelay;
         //параметры
         private string _softwareVersion;
-        private string _restart;
         //ВРЕМЕННО ДЛЯ ТЕСТА ВАЛИДАЦИИ
         //private int _callAdress;
         //public int _callFrequency;
