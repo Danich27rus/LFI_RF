@@ -9,7 +9,7 @@
         xmlns:behavior="http://schemas.microsoft.com/xaml/behaviors"
         d:DataContext="{d:DesignInstance Type=config:ConfigViewModel}"
         mc:Ignorable="d"
-        Title="Отключение/Включение инидкатора LED" Height="120" Width="300"
+        Title="Отключение/Включение инидкатора LED" Height="120" Width="350"
         ResizeMode="NoResize"
         Style="{DynamicResource CustomWindowStyle}" Cursor="">
     <Window.Resources>
@@ -18,32 +18,48 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150*"/>
+            <ColumnDefinition Width="150*"/>
             <ColumnDefinition Width="100*"/>
         </Grid.ColumnDefinitions>
         <Grid>
             <Grid.RowDefinitions>
-            <!--RowDefinition Height="15"/-->
-            <RowDefinition Height="30*"/>
-            <RowDefinition Height="30*"/>
-            <RowDefinition Height="30*"/>
-        </Grid.RowDefinitions>
-        <!--TextBlock FontSize="10" 
+                <!--RowDefinition Height="15"/-->
+                <RowDefinition Height="30*"/>
+                <RowDefinition Height="30*"/>
+                <RowDefinition Height="30*"/>
+            </Grid.RowDefinitions>
+            <!--TextBlock FontSize="10" 
                    Text="12321"
                    VerticalAlignment="Center" Grid.ColumnSpan="2"/-->
-        <RadioButton Content="Красный"
+            <RadioButton Content="Красный"
                                  IsChecked="{Binding IndicatorData.LEDControl, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=0}"
                                  Cursor="" Grid.ColumnSpan="2" Margin="10,5,10,5">
-        </RadioButton>
-        <RadioButton Content="Желтый" Grid.Row="1"
-                                 IsChecked="{Binding IndicatorData.LEDControl, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=2}"
-                                 Cursor="" Grid.ColumnSpan="2" Margin="10,5,10,5">
-        </RadioButton>
-        <RadioButton Content="Зелёный" Grid.Row="2"
+            </RadioButton>
+            <RadioButton Content="Желтый" Grid.Row="1"
                                  IsChecked="{Binding IndicatorData.LEDControl, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=3}"
                                  Cursor="" Grid.ColumnSpan="2" Margin="10,5,10,5">
-        </RadioButton>
+            </RadioButton>
+            <RadioButton Content="Зелёный" Grid.Row="2"
+                                 IsChecked="{Binding IndicatorData.LEDControl, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=2}"
+                                 Cursor="" Grid.ColumnSpan="2" Margin="10,5,10,5">
+            </RadioButton>
         </Grid>
-        <Button Grid.Column="1" Content="Отправить" IsCancel="True" Command="{Binding IndicatorData.ControlActionParameterCommand, Mode=OneTime}">
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <!--RowDefinition Height="15"/-->
+                <RowDefinition Height="52.02"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <RadioButton Content="Включение" Grid.Row="0"
+                                 IsChecked="{Binding IndicatorData.LEDCommand, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=0}"
+                                 Cursor="" Grid.ColumnSpan="2" Margin="10,5,10,5">
+            </RadioButton>
+            <RadioButton Content="Отключение" Grid.Row="1"
+                                 IsChecked="{Binding IndicatorData.LEDCommand, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=1}"
+                                 Cursor="" Grid.ColumnSpan="2" Margin="10,5,10,5">
+            </RadioButton>
+        </Grid>
+        <Button Grid.Column="2" Content="Отправить" IsCancel="True" Command="{Binding IndicatorData.LEDConfCommand, Mode=OneTime}">
             <behavior:Interaction.Triggers>
                 <behavior:EventTrigger EventName="Click">
                     <behavior:CallMethodAction MethodName="Close"

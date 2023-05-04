@@ -225,9 +225,9 @@ namespace test_app2.FaultIndicators
 
         public Command RestartCommand { get; }
 
-        public Command LEDOnCommand { get; }
+        public Command LEDConfCommand { get; }
 
-        public Command LEDOffCommand { get; }
+        public Command ClearDataGridContentCommand { get; }
 
         public SerialPortMessagesViewModel Messages { get; set; }
 
@@ -262,6 +262,7 @@ namespace test_app2.FaultIndicators
 
             UpdateModelContentCommand = new Command(UpdateModelContent);
             UpdateFamilyContentCommand = new Command(UpdateFamilyContent);
+            ClearDataGridContentCommand = new Command(ClearDataGridContent);
             ClearAllContentCommand = new Command(ClearAllContent);
             UpdateCommunicationProtocolCommand = new Command(UpdateCommunicationContent);
             CheckAvailibleIndicatorsCommand = new Command(CheckAvailibleIndicators);
@@ -273,8 +274,7 @@ namespace test_app2.FaultIndicators
             ShortCircuitCheckCommand = new Command(ShortCircuitCheck);
             GroundShortCircuitCheckCommand = new Command(GroundShortCircuitCheck);
             RestartCommand = new Command(Restart);
-            LEDOnCommand = new Command(LEDOn);
-            LEDOffCommand = new Command(LEDOff);
+            LEDConfCommand = new Command(LEDConf);
 
             DeviceCommunicationProtocolNum = 2;
             DeviceModel = _namingModel[DeviceModelNum];
@@ -427,6 +427,20 @@ namespace test_app2.FaultIndicators
                     return;
                 }
                 Indicators[CollectionIndex].Information = CommandType[msg[3]];
+                if (msg[13] != "01" && (msg[3] == "C7" || msg[3] == "C8"))
+                {
+                    if (msg[3] == "C7")
+                    {
+                        Indicators[CollectionIndex].Information = "Включение";
+                    }
+                    if (msg[3] == "C8")
+                    {
+                        Indicators[CollectionIndex].Information = "Отключение";
+                    }
+                    if (msg[13] == "00") Indicators[CollectionIndex].Information += " красного индикатора - ";
+                    if (msg[13] == "02") Indicators[CollectionIndex].Information += " зелёного индикатора - ";
+                    if (msg[13] == "03") Indicators[CollectionIndex].Information += " желтого индикатора - ";
+                }
                 if (msg[12] == "01" && msg[3] == "CA")
                 {
                     Indicators[CollectionIndex].Information += "межфазное замыкание - ";
@@ -1031,7 +1045,7 @@ namespace test_app2.FaultIndicators
 
             //_functionCallNumStart = 2;
             //_functionCallNumEnd = 0;
-            orderNumber = 5;
+            orderNumber = 4;
             if (!Sender.Port.IsOpen)
             {
                 Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
@@ -1086,7 +1100,7 @@ namespace test_app2.FaultIndicators
         public void ControlReturnParameter()
         {
             ushort orderNumber;
-            orderNumber = 5;
+            orderNumber = 4;
             if (!Sender.Port.IsOpen)
             {
                 Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
@@ -1138,6 +1152,67 @@ namespace test_app2.FaultIndicators
             }
         }
 
+        public void LEDConf()
+        {
+            ushort orderNumber;
+
+            //_functionCallNumStart = 2;
+            //_functionCallNumEnd = 0;
+            orderNumber = 4;
+            if (!Sender.Port.IsOpen)
+            {
+                Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
+                return;
+            }
+            if (Indicators.Count < 1)
+            {
+                Messages.AddMessage("Информация не считана, ни одного индикатора КЗ нет в списке");
+                return;
+            }
+            new Thread(() =>
+            {
+                foreach (var indicator in Indicators)
+                {
+                    //MAC = indicator.MACAdress;
+                    int crc;
+                    var splittedMac = indicator.MACAdress.Split('-');
+
+                    Request =
+                        new string[] { $"{_namingProtocol.ElementAt(DeviceCommunicationProtocolNum).Value:X2}",
+                    $"{_namingFamily.ElementAt(DeviceFamilyNum).Value:X2}",
+                    "15",
+                    $"{39+LEDCommand:X2}",                   //led action command
+                    $"{CallTime:X2}",
+                    $"{WaitTime:X2}",
+                    "00",
+                    $"{CallFrequency:X2}",
+                    "00",
+                    $"{splittedMac[6]:X2}",
+                    $"{splittedMac[5]:X2}",
+                    $"{splittedMac[4]:X2}",
+                    $"{splittedMac[3]:X2}",
+                    $"{splittedMac[2]:X2}",
+                    $"{CallAdress:X2}",
+                    $"{0:X2}",
+                    $"{orderNumber += 1:X2}",   //led action phase check
+                    $"{LEDControl:X2}",
+                    "00",
+                    "00",
+                    $"{Trailer:X2}" };
+
+                    crc = checksum.CheckSum_CRC(Request, 2, Request.Length);
+                    Request[^2] = string.Join("", (crc & 255).ToString("X2"));
+                    Request[^3] = string.Join("", (crc >> 8).ToString("X2"));
+                    //orderNumber++;
+
+                    Sender.SendHEXMessage(string.Join(" ", Request));
+                    Messages.AddSentMessage(string.Join(" ", Request));
+
+                    Thread.Sleep(300);
+                }
+            }).Start();
+    }
+
         public void UpdateModelContent()
         {
             //TODO: Исправить баг с выбором при отсчёте с 0
@@ -1154,6 +1229,11 @@ namespace test_app2.FaultIndicators
         {
             //TODO: Исправить баг с выбором при отсчёте с 0
             DeviceCommunicationProtocol = _namingProtocol.ElementAt(DeviceCommunicationProtocolNum - 1).Key;
+        }
+
+        public void ClearDataGridContent()
+        {
+            Indicators.Clear();
         }
 
         public void ClearAllContent()
