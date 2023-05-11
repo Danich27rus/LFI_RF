@@ -1,23 +1,34 @@
 ﻿using System.Windows;
-using System.IO.Ports;
-using test_app2.SerialPortDevice;
 using test_app2.ViewModels;
-using test_app2.Config;
+using test_app2.Interfaces;
+using System.Windows.Controls;
 
 namespace test_app2
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Логика основоног оокна MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IMessageBoxes
     {
         public MainWindow()
         {
             InitializeComponent();
-            //test_app2.SerialPortDevice.CustomParity;
+            //заисимость для работы скроллинга
+            ((MainViewModel)DataContext).Messages.MessageBoxes = this;
         }
+
+        public void ScrollToBottom()
+        {
+            Application.Current?.Dispatcher?.Invoke(() =>
+            {
+                consoleBox.ScrollToEnd();
+            });
+        }
+
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            //необходимо чтобы приложение не висело "в воздухе"
+            //т.к. получение сообщений реализуется отдельным потоком
             ((MainViewModel)DataContext).SerialPort.CloseAll();
             Application.Current.Shutdown();
         }

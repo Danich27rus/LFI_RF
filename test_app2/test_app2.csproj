@@ -11,6 +11,7 @@
   <ItemGroup>
     <None Remove="Images\LFI_all.png" />
     <None Remove="Images\LFI_BB.png" />
+    <None Remove="Images\LFI_ERROR.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +26,7 @@
   <ItemGroup>
     <Resource Include="Images\LFI_all.png" />
     <Resource Include="Images\LFI_BB.png" />
+    <Resource Include="Images\LFI_ERROR.png" />
   </ItemGroup>
 
 </Project>

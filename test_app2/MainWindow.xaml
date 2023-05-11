@@ -8,11 +8,12 @@
         xmlns:Converters="clr-namespace:test_app2.Converters"
         xmlns:UI="clr-namespace:test_app2.UI"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:attached="clr-namespace:test_app2.AttachedProperties"
         xmlns:interact="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:Config="clr-namespace:test_app2.Config" x:Class="test_app2.MainWindow"
         mc:Ignorable="d"
         Closing="Window_Closing"
-        Title="Aboba" Height="720" Width="1280"
+        Title="Конфигуратор ИКЗ" Height="720" Width="1280"
         MinHeight="720" MinWidth="1280"
         Style="{DynamicResource CustomWindowStyle}">
     <Window.Resources>
@@ -181,12 +182,16 @@
                         <GroupBox Header="Сообщения">
                             <Grid>
                                 <TextBox
+                                    x:Name="consoleBox"
                                     TextWrapping="Wrap" 
                                     VerticalScrollBarVisibility="Auto" 
-                                    AcceptsReturn="True"
+                                    HorizontalScrollBarVisibility="Visible"
+                                    AcceptsReturn="False"
+                                    AcceptsTab="False"
                                     Text="{Binding Messages.MessagesText, UpdateSourceTrigger=PropertyChanged}"
                                     FontSize="12"
                                     IsReadOnly="true"
+                                    attached:HorizontalScrolling.UseHorizontalScrollingValue="True"
                                     Margin="0,0,0,0"/>
                             </Grid>
                         </GroupBox>

@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Documents;
-using test_app2.FaultIndicators;
+using test_app2.Interfaces;
 using TheRFramework.Utilities;
 
 namespace test_app2.SerialPMessages
@@ -54,6 +46,8 @@ namespace test_app2.SerialPMessages
         public Command ClearMessagesCommand { get; }
         public Command SendMessageCommand { get; }
         public Command SendIndicatorMessageCommand { get; }
+
+        public IMessageBoxes MessageBoxes { get; internal set; }
 
         public SerialPortMessagesSend Sender { get; set; }
 
@@ -126,7 +120,7 @@ namespace test_app2.SerialPMessages
             // (Date) | TX> hello there
             // byte[] bytes = Encoding.UTF8.GetBytes(message);
             // AddMessage($"{DateTime.Now} | TX> {bytes}");
-            AddMessage($"{DateTime.Now} | TX> {message}"); 
+            AddMessage($"{DateTime.Now} | TX> {message}");
         }
 
         public void AddReceivedMessage(string message)
@@ -143,6 +137,7 @@ namespace test_app2.SerialPMessages
         public void WriteLine(string text)
         {
             MessagesText += text + '\n';
+            MessageBoxes.ScrollToBottom();
         }
     }
 }

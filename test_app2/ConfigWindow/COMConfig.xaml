@@ -224,6 +224,9 @@
                                             <DataTrigger Binding="{Binding IsChecked, ElementName=FIBaseBlock}" Value="True">
                                                 <Setter Property="Source" Value="/Images/LFI_BB.png"/>
                                             </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsChecked, ElementName=FINotUsed}" Value="True">
+                                                <Setter Property="Source" Value="/Images/LFI_ERROR.png"/>
+                                            </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </Image.Style>
@@ -296,7 +299,7 @@
                                  IsChecked="{Binding IndicatorData.DeviceFamilyNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=1}"
                                  Command="{Binding IndicatorData.UpdateFamilyContentCommand}">
                                     </RadioButton>
-                                    <RadioButton Content="LED__7 (JYZ-HW V2.0, не используется)" Grid.Row="3"
+                                    <RadioButton x:Name="FINotUsed" Content="LED__7 (JYZ-HW V2.0, не используется)" Grid.Row="3"
                                  IsChecked="{Binding IndicatorData.DeviceFamilyNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=2}"
                                  Command="{Binding IndicatorData.UpdateFamilyContentCommand}" Cursor="">
                                     </RadioButton>
