@@ -227,24 +227,24 @@
                             <x:Array x:Key="BaseParameters" Type="{x:Type System:String}">
                                 <System:String>MAC-Адрес, фаза</System:String>
                                 <System:String>Величина электрического поля (в В/м)</System:String>
-                                <System:String>Минимальное значение тока в линии (в А)</System:String>
+                                <System:String>Ток чувствительности (в А)</System:String>
                                 <System:String>Интервал отправки телеизмерений №1 (в с)</System:String>
                                 <System:String>Интервал отправки телеизмерений №2 (в с)</System:String>
-                                <System:String>Период отключения датчиков (в мин)</System:String>
+                                <System:String>Стандартный период отправки телеизмерений (в мин)</System:String>
                                 <System:String>Порог значения тока отправки телеизмерений (в А)</System:String>
-                                <System:String>Относительное значение тока (в %)</System:String>
-                                <System:String>Абсолютное значение изменения тока (в А)</System:String>
+                                <System:String>Величина относительного изменения тока для отправки спорадических телеизмерений (в %)</System:String>
+                                <System:String>Величина абсолютного изменения тока для отправки спорадических телеизмеренийа (в А)</System:String>
                             </x:Array>
                             <x:Array x:Key="InterphaseShortCircuitParameters" Type="{x:Type System:String}">
                                 <System:String>MAC-Адрес, фаза</System:String>
-                                <System:String>Время перезапуска индикаторов после КЗ на линии(в c)</System:String>
-                                <System:String>Время перезапуска индикаторов после КЗ после перезапуска линии (в с)</System:String>
-                                <System:String>Минимальное значение тока КЗ на линии (в А)</System:String>
+                                <System:String>Время сброса индикации после КЗ (в c)</System:String>
+                                <System:String>Время сброса индикации после перезапуска линии (в с)</System:String>
+                                <System:String>Величина мгновенного изменения тока для срабатывания КЗ (в А)</System:String>
                             </x:Array>
                             <x:Array x:Key="InterphaseGroundShortCircuitParameters" Type="{x:Type System:String}">
                                 <System:String>MAC-Адрес, фаза</System:String>
-                                <System:String>Падение напряжения в линии (в %)</System:String>
-                                <System:String>Время засечки падения напряжения (в с)</System:String>
+                                <System:String>Относительно значение падения напряжения в линии (в %)</System:String>
+                                <System:String>Период падения напряжения (в с)</System:String>
                             </x:Array>
                         </Grid.Resources>
                         <!--ScrollViewer/-->
@@ -252,7 +252,7 @@
                         <GroupBox x:Name="IndicatorParamsGroupBox" Header="Значения в памяти индикатора">
                             <TabControl x:Name="IndicatorParamsTabControl"
                                     SelectedIndex="{Binding IndicatorData.FunctionCallNumStart, Mode=TwoWay}">
-                                <TabItem Header="Общая информация проверок" Width="190" Height="30">
+                                <TabItem Header="Служебные функции" Width="130" Height="30">
                                     <Grid>
                                         <DataGrid x:Name="IndicatorInfoDataGrid"
                                               AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding IndicatorData.Indicators, Mode=OneWay}"
@@ -335,11 +335,15 @@
                                         </DataGrid>
                                     </Grid>
                                 </TabItem>
-                                <TabItem Header="Общие параметры индикатора" Width="190" Height="30">
+                                <TabItem Header="Общие параметры индикатора" Width="215" Height="30">
                                     <Grid>
+                                        <!--Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="179*"/>
+                                            <ColumnDefinition Width="222*"/>
+                                        </Grid.ColumnDefinitions-->
                                         <DataGrid x:Name="IndicatorBaseDataGrid"
                                               AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding IndicatorData.Indicators, Mode=OneWay}"
-                                              RowHeight="45" RowBackground="#FF2F2F2F" AlternatingRowBackground="#FF2F2F2F" GridLinesVisibility="None" BorderBrush="#FF2F2F2F">
+                                              RowHeight="45" RowBackground="#FF2F2F2F" AlternatingRowBackground="#FF2F2F2F" GridLinesVisibility="None" BorderBrush="#FF2F2F2F" Grid.ColumnSpan="2">
                                             <DataGrid.Resources>
                                                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF2F2F2F"/>
                                                 <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
@@ -378,14 +382,15 @@
                                                 <StaticResource ResourceKey="GreyDataGrid"/>
                                             </DataGrid.Style>
                                             <DataGrid.Columns>
-                                                <DataGridTextColumn Header="{Binding [0], Source={StaticResource BaseParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="100"/>
-                                                <DataGridTextColumn Header="{Binding [1], Source={StaticResource BaseParameters}}" Binding="{Binding FieldThreshold, StringFormat=d}" Width="105"/>
-                                                <DataGridTextColumn Header="{Binding [2], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentThreshold, StringFormat=d}" Width="100"/>
-                                                <DataGridTextColumn Header="{Binding [3], Source={StaticResource BaseParameters}}" Binding="{Binding UploadT1, StringFormat=d}" Width="100"/>
-                                                <DataGridTextColumn Header="{Binding [4], Source={StaticResource BaseParameters}}" Binding="{Binding UploadT2, StringFormat=d}" Width="100"/>
-                                                <DataGridTextColumn Header="{Binding [5], Source={StaticResource BaseParameters}}" Binding="{Binding HeartBeat, StringFormat=d}" Width="90"/>
-                                                <DataGridTextColumn Header="{Binding [6], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentAbsoluteValue, StringFormat=d}" Width="90"/>
-                                                <DataGridTextColumn Header="{Binding [7], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentRelativeValue, StringFormat=d}" Width="100"/>
+                                                <DataGridTextColumn Header="{Binding [0], Source={StaticResource BaseParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="85*"/>
+                                                <DataGridTextColumn Header="{Binding [1], Source={StaticResource BaseParameters}}" Binding="{Binding FieldThreshold, StringFormat=d}" Width="85*"/>
+                                                <DataGridTextColumn Header="{Binding [2], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentThreshold, StringFormat=d}" Width="85*"/>
+                                                <DataGridTextColumn Header="{Binding [3], Source={StaticResource BaseParameters}}" Binding="{Binding UploadT1, StringFormat=d}" Width="90*"/>
+                                                <DataGridTextColumn Header="{Binding [4], Source={StaticResource BaseParameters}}" Binding="{Binding UploadT2, StringFormat=d}" Width="90*"/>
+                                                <DataGridTextColumn Header="{Binding [5], Source={StaticResource BaseParameters}}" Binding="{Binding HeartBeat, StringFormat=d}" Width="90*"/>
+                                                <DataGridTextColumn Header="{Binding [6], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentIValue, StringFormat=d}" Width="100*"/>
+                                                <DataGridTextColumn Header="{Binding [7], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentAbsoluteValue, StringFormat=d}" Width="110*"/>
+                                                <DataGridTextColumn Header="{Binding [8], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentRelativeValue, StringFormat=d}" Width="110*"/>
                                             </DataGrid.Columns>
                                             <DataGrid.ColumnHeaderStyle>
                                                 <Style TargetType="{x:Type DataGridColumnHeader}">
@@ -423,12 +428,12 @@
                                         </DataGrid>
                                     </Grid>
                                 </TabItem>
-                                <TabItem Header="Параметры межфазного замыкания" Width="220" Height="30">
+                                <TabItem Header="Параметры короткого замыкания" Width="250" Height="30">
                                     <Grid Background="#FF2F2F2F">
-                                        <Grid.ColumnDefinitions>
+                                        <!--Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="169*"/>
                                             <ColumnDefinition Width="232*"/>
-                                        </Grid.ColumnDefinitions>
+                                        </Grid.ColumnDefinitions-->
                                         <DataGrid x:Name="IndicatorSCDataGrid"
                                               AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding IndicatorData.Indicators, Mode=OneWay}"
                                               RowHeight="45" RowBackground="#FF2F2F2F" AlternatingRowBackground="#FF2F2F2F" GridLinesVisibility="None" BorderBrush="#FF2F2F2F" Grid.ColumnSpan="2">
@@ -471,9 +476,9 @@
                                             </DataGrid.Style>
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Header="{Binding [0], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="160"/>
-                                                <DataGridTextColumn Header="{Binding [1], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding TimeDelay, StringFormat=d}" Width="205"/>
-                                                <DataGridTextColumn Header="{Binding [2], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding RepowerDelay, StringFormat=d}" Width="205"/>
-                                                <DataGridTextColumn Header="{Binding [3], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding ShortCurrent, StringFormat=d}" Width="205"/>
+                                                <DataGridTextColumn Header="{Binding [1], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding TimeDelay, StringFormat=d}" Width="205*"/>
+                                                <DataGridTextColumn Header="{Binding [2], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding RepowerDelay, StringFormat=d}" Width="205*"/>
+                                                <DataGridTextColumn Header="{Binding [3], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding ShortCurrent, StringFormat=d}" Width="205*"/>
                                             </DataGrid.Columns>
                                             <DataGrid.ColumnHeaderStyle>
                                                 <Style TargetType="{x:Type DataGridColumnHeader}">
@@ -509,7 +514,7 @@
                                         </DataGrid>
                                     </Grid>
                                 </TabItem>
-                                <TabItem Header="Параметры замыкания на землю" Width="200" Height="30">
+                                <TabItem Header="Параметры замыкания на землю" Width="195" Height="30">
                                     <Grid Background="#FF2F2F2F">
                                         <DataGrid x:Name="IndicatorGSCDataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                               AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding IndicatorData.Indicators, Mode=OneWay}"
@@ -612,11 +617,11 @@
                                     <RowDefinition Height="40*"/>
                                 </Grid.RowDefinitions>
                                 <Button x:Name="ReadParametersButton" Content="Чтение данных с индикаторов" Command="{Binding IndicatorData.ReadIndicatorsBaseParametersCommand, Mode=OneTime}" 
-                                        Cursor="Hand" Margin="0,0,0,0" IsEnabled="{Binding IndicatorData.ButtonCheckAnyIndicators}"/>
+                                        Cursor="Hand" Margin="0,0,0,0" IsEnabled="{Binding IndicatorData.FunctionCallNumStart}"/>
                                 <Button x:Name="WriteParametersButton" Content="Запись данных на индикаторы" Command="{Binding IndicatorData.WriteIndicatorsBaseParametersCommand, Mode=OneTime}"
                                         Cursor="Hand" Margin="0,0,0,0" Grid.Row="2" IsEnabled="{Binding IndicatorData.FunctionCallNumStart}"/>
                                 <Button x:Name="SearchButton" Content="Поиск индикаторов" Command="{Binding IndicatorData.CheckAvailibleIndicatorsCommand, Mode=OneTime}" Cursor="Hand" Margin="0,0,0,0" Grid.Row="4"/>
-                                <Button x:Name="RestartIndicatorsButton" Content="Перезапуск индикаторов" Command="{Binding IndicatorData.RestartCommand, Mode=OneTime}"
+                                <Button x:Name="RestartIndicatorsButton" Content="Сброс индикаторов" Command="{Binding IndicatorData.RestartCommand, Mode=OneTime}"
                                         Cursor="Hand" Margin="0,0,0,0" VerticalAlignment="Stretch" Grid.Row="6" Background="Teal"/>
                             </Grid>
                         </GroupBox>

@@ -62,6 +62,11 @@ namespace test_app2.FaultIndicators
             "11 CB"         //Рестарт
         };
 
+        private int[] _blackListIndesxes =
+        {
+            2
+        };
+
         private int _deviceModelNum;
         private int _deviceFamilyNum;
         private int _deviceCommunicationProtocolNum;
@@ -305,6 +310,11 @@ namespace test_app2.FaultIndicators
             {
                 return;
             }
+            if (_blackListIndesxes.Contains(DeviceFamilyNum))
+            {
+                Messages.AddMessage("Этот тип индикаторов пока нельзя использовать");
+                return;
+            }
             if (IndicatorConfirm.Contains(_patterns[0]))
             {
                 Messages.AddMessage("Пришел ответ от RF конвертора...");
@@ -472,7 +482,11 @@ namespace test_app2.FaultIndicators
             oldFunc = FunctionCallNumStart;
             //FunctionCallNumStart = 1;
             FunctionCallNumEnd = 0;
-
+            if (_blackListIndesxes.Contains(DeviceFamilyNum))
+            {
+                Messages.AddMessage("Этот тип индикаторов пока нельзя использовать");
+                return;
+            }
             if (!Sender.Port.IsOpen)
             {
                 Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
@@ -518,7 +532,11 @@ namespace test_app2.FaultIndicators
             //_functionCallNumStart = 2;
             //_functionCallNumEnd = 0;
             orderNumber = 5;
-
+            if (_blackListIndesxes.Contains(DeviceFamilyNum))
+            {
+                Messages.AddMessage("Этот тип индикаторов пока нельзя использовать");
+                return;
+            }
             if (!Sender.Port.IsOpen)
             {
                 Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
@@ -530,7 +548,9 @@ namespace test_app2.FaultIndicators
                 return;
             }
             //TODO: вынести в отдельный поток
-            foreach (var indicator in Indicators)
+            new Thread(() =>
+            {
+                foreach (var indicator in Indicators)
             {
                 //MAC = indicator.MACAdress;
 
@@ -567,8 +587,9 @@ namespace test_app2.FaultIndicators
                 Sender.SendHEXMessage(string.Join(" ", Request));
                 Messages.AddSentMessage(string.Join(" ", Request));
 
-                Thread.Sleep(200);
+                Thread.Sleep(500);
             }
+            }).Start();
         }
 
         public void WriteIndicatorParameters()
@@ -579,7 +600,11 @@ namespace test_app2.FaultIndicators
             funcInMemory = FunctionCallNumStart + 1;
             //FunctionCallNumStart = 1;
             //FunctionCallNumEnd = 0;
-
+            if (_blackListIndesxes.Contains(DeviceFamilyNum))
+            {
+                Messages.AddMessage("Этот тип индикаторов пока нельзя использовать");
+                return;
+            }
             if (!Sender.Port.IsOpen)
             {
                 Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
@@ -717,6 +742,11 @@ namespace test_app2.FaultIndicators
 
         public void Restart()
         {
+            if (_blackListIndesxes.Contains(DeviceFamilyNum))
+            {
+                Messages.AddMessage("Этот тип индикаторов пока нельзя использовать");
+                return;
+            }
             if (!Sender.Port.IsOpen)
             {
                 Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
@@ -770,6 +800,11 @@ namespace test_app2.FaultIndicators
 
         public void LEDOff()
         {
+            if (_blackListIndesxes.Contains(DeviceFamilyNum))
+            {
+                Messages.AddMessage("Этот тип индикаторов пока нельзя использовать");
+                return;
+            }
             if (!Sender.Port.IsOpen)
             {
                 Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
@@ -823,6 +858,11 @@ namespace test_app2.FaultIndicators
 
         public void LEDOn()
         {
+            if (_blackListIndesxes.Contains(DeviceFamilyNum))
+            {
+                Messages.AddMessage("Этот тип индикаторов пока нельзя использовать");
+                return;
+            }
             if (!Sender.Port.IsOpen)
             {
                 Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
@@ -876,6 +916,11 @@ namespace test_app2.FaultIndicators
 
         public void SoftwareVersionParameter()
         {
+            if (_blackListIndesxes.Contains(DeviceFamilyNum))
+            {
+                Messages.AddMessage("Этот тип индикаторов пока нельзя использовать");
+                return;
+            }
             if (!Sender.Port.IsOpen)
             {
                 Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
@@ -886,7 +931,9 @@ namespace test_app2.FaultIndicators
                 Messages.AddMessage("Информация не считана, ни одного индикатора КЗ нет в списке");
                 return;
             }
-            foreach (var indicator in Indicators)
+            new Thread(() =>
+            {
+                foreach (var indicator in Indicators)
             {
                 //MAC = indicator.MACAdress;
                 int crc;
@@ -923,12 +970,18 @@ namespace test_app2.FaultIndicators
                 Sender.SendHEXMessage(string.Join(" ", Request));
                 Messages.AddSentMessage(string.Join(" ", Request));
 
-                Thread.Sleep(200);
+                Thread.Sleep(500);
             }
+            }).Start();
         }
 
         public void ShortCircuitCheck()
         {
+            if (_blackListIndesxes.Contains(DeviceFamilyNum))
+            {
+                Messages.AddMessage("Этот тип индикаторов пока нельзя использовать");
+                return;
+            }
             if (!Sender.Port.IsOpen)
             {
                 Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
@@ -985,6 +1038,11 @@ namespace test_app2.FaultIndicators
 
         public void GroundShortCircuitCheck()
         {
+            if (_blackListIndesxes.Contains(DeviceFamilyNum))
+            {
+                Messages.AddMessage("Этот тип индикаторов пока нельзя использовать");
+                return;
+            }
             if (!Sender.Port.IsOpen)
             {
                 Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
@@ -1046,6 +1104,11 @@ namespace test_app2.FaultIndicators
             //_functionCallNumStart = 2;
             //_functionCallNumEnd = 0;
             orderNumber = 4;
+            if (_blackListIndesxes.Contains(DeviceFamilyNum))
+            {
+                Messages.AddMessage("Этот тип индикаторов пока нельзя использовать");
+                return;
+            }
             if (!Sender.Port.IsOpen)
             {
                 Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
@@ -1101,6 +1164,11 @@ namespace test_app2.FaultIndicators
         {
             ushort orderNumber;
             orderNumber = 4;
+            if (_blackListIndesxes.Contains(DeviceFamilyNum))
+            {
+                Messages.AddMessage("Этот тип индикаторов пока нельзя использовать");
+                return;
+            }
             if (!Sender.Port.IsOpen)
             {
                 Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
@@ -1159,6 +1227,11 @@ namespace test_app2.FaultIndicators
             //_functionCallNumStart = 2;
             //_functionCallNumEnd = 0;
             orderNumber = 4;
+            if (_blackListIndesxes.Contains(DeviceFamilyNum))
+            {
+                Messages.AddMessage("Этот тип индикаторов пока нельзя использовать");
+                return;
+            }
             if (!Sender.Port.IsOpen)
             {
                 Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
@@ -1234,6 +1307,7 @@ namespace test_app2.FaultIndicators
         public void ClearDataGridContent()
         {
             Indicators.Clear();
+            ButtonCheckAnyIndicators = false;
         }
 
         public void ClearAllContent()
