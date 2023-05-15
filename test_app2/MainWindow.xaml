@@ -382,11 +382,41 @@
                                                 <StaticResource ResourceKey="GreyDataGrid"/>
                                             </DataGrid.Style>
                                             <DataGrid.Columns>
-                                                <DataGridTextColumn Header="{Binding [0], Source={StaticResource BaseParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="85*"/>
-                                                <DataGridTextColumn Header="{Binding [1], Source={StaticResource BaseParameters}}" Binding="{Binding FieldThreshold, StringFormat=d}" Width="85*"/>
-                                                <DataGridTextColumn Header="{Binding [2], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentThreshold, StringFormat=d}" Width="85*"/>
-                                                <DataGridTextColumn Header="{Binding [3], Source={StaticResource BaseParameters}}" Binding="{Binding UploadT1, StringFormat=d}" Width="90*"/>
-                                                <DataGridTextColumn Header="{Binding [4], Source={StaticResource BaseParameters}}" Binding="{Binding UploadT2, StringFormat=d}" Width="90*"/>
+                                                <DataGridTextColumn Binding="{Binding MACAdressShow, StringFormat=d}" Width="85*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [0], Source={StaticResource BaseParameters}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding FieldThreshold, StringFormat=d}" Width="85*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [1], Source={StaticResource BaseParameters}}" ToolTip="Величина напряженности электрического поля. Благодаря этому параметру определяется есть ли напряжение на линии, не реккомендуется менять"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding CurrentThreshold, StringFormat=d}" Width="85*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [2], Source={StaticResource BaseParameters}}" ToolTip="Величина предела тока, после превышения которого телеизмерения передаются с интервалом T2, не реккомендуется менять"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding UploadT1, StringFormat=d}" Width="90*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [3], Source={StaticResource BaseParameters}}" ToolTip="Время периода отправки телеизмерений, если значение тока превысило значение порога тока для отправки телеизмерений"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding UploadT2, StringFormat=d}" Width="90*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [4], Source={StaticResource BaseParameters}}" ToolTip="Время периода отправки телеизмерений, если значение тока превысило значение тока чувствительности"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
                                                 <DataGridTextColumn Header="{Binding [5], Source={StaticResource BaseParameters}}" Binding="{Binding HeartBeat, StringFormat=d}" Width="90*"/>
                                                 <DataGridTextColumn Header="{Binding [6], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentIValue, StringFormat=d}" Width="100*"/>
                                                 <DataGridTextColumn Header="{Binding [7], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentAbsoluteValue, StringFormat=d}" Width="110*"/>
