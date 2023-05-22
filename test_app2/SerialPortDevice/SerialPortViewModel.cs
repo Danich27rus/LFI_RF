@@ -23,10 +23,15 @@ namespace test_app2.SerialPortDevice
         public SerialPort Port { get; set; }
 
         private bool _isConnected;
+
         public bool IsConnected
         {
             get => _isConnected;
-            set => RaisePropertyChanged(ref _isConnected, value);
+            set
+            {
+                RaisePropertyChanged(ref _isConnected, value);
+                Settings.CanEditControls = !value;
+            }
         }
 
         public void CloseAll()

@@ -32,7 +32,9 @@ namespace test_app2.Config
             {
                 DataContext = this
             };
-            configWindow.Show();
+            configWindow.ShowDialog();
+            //не очень хорошее решение на текущий момент (22.05.2023)
+            //прекрывает доступ к основному окну
         }
 
         private void ShowLEDConfigWindow()
@@ -41,7 +43,7 @@ namespace test_app2.Config
             {
                 DataContext = this
             };
-            ledWindow.Show();
+            ledWindow.ShowDialog();
         }
     }
 }

@@ -163,10 +163,10 @@
                                     <RowDefinition Height="30"/>
                                     <RowDefinition Height="30"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock x:Name="CallFreqtextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5,0,0,0" Text="Адрес вызова" VerticalAlignment="Center"/>
-                                <TextBlock x:Name="CallAddrtextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5,0,0,0" Text="Частота вызова" VerticalAlignment="Center" Grid.Row="1"/>
-                                <TextBlock x:Name="CallTimetextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5" Text="Время вызова" VerticalAlignment="Center" Grid.Row="2"/>
-                                <TextBlock x:Name="WaitTimetextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5" Text="Время ожидания ответа" VerticalAlignment="Center" Grid.Row="3"/>
+                                <TextBlock x:Name="CallFreqtextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5,0,0,0" Text="Адрес ИКЗ для опроса" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="CallAddrtextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5,0,0,0" Text="Частота ИКЗ для опроса" VerticalAlignment="Center" Grid.Row="1"/>
+                                <TextBlock x:Name="CallTimetextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5" Text="Время опроса индикаторов" VerticalAlignment="Center" Grid.Row="2"/>
+                                <TextBlock x:Name="WaitTimetextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5" Text="Время ожидания ответа от индикаторов" VerticalAlignment="Center" Grid.Row="3"/>
                                 <TextBox x:Name="CallFreqtextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.CallAdress, TargetNullValue='', StringFormat=d, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="0" Margin="0,0,20,0"/>
                                 <TextBox x:Name="CallAddrtextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.CallFrequency, TargetNullValue='', StringFormat=d, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="1" Margin="0,0,20,0"/>
                                 <TextBox x:Name="CallTimetextBox" BorderBrush="#FF2A2A2A" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding IndicatorData.CallTime, TargetNullValue='', StringFormat=d, UpdateSourceTrigger=PropertyChanged}" UI:Masking.Mask="^[0-9]+$" VerticalAlignment="Center" Width="100" Grid.Row="2" Margin="0,0,20,0"/>
@@ -237,14 +237,14 @@
                             </x:Array>
                             <x:Array x:Key="InterphaseShortCircuitParameters" Type="{x:Type System:String}">
                                 <System:String>MAC-Адрес, фаза</System:String>
-                                <System:String>Время сброса индикации после КЗ (в c)</System:String>
+                                <System:String>Время сброса индикации (в c)</System:String>
                                 <System:String>Время сброса индикации после перезапуска линии (в с)</System:String>
                                 <System:String>Величина мгновенного изменения тока для срабатывания КЗ (в А)</System:String>
                             </x:Array>
                             <x:Array x:Key="InterphaseGroundShortCircuitParameters" Type="{x:Type System:String}">
                                 <System:String>MAC-Адрес, фаза</System:String>
-                                <System:String>Относительно значение падения напряжения в линии (в %)</System:String>
-                                <System:String>Период падения напряжения (в с)</System:String>
+                                <System:String>Относительное значение падения напряжения в линии (в %)</System:String>
+                                <System:String>Продолжительность замыкания (в с)</System:String>
                             </x:Array>
                         </Grid.Resources>
                         <!--ScrollViewer/-->
@@ -417,10 +417,34 @@
                                                         </DataTemplate>
                                                     </DataGridTextColumn.HeaderTemplate>
                                                 </DataGridTextColumn>
-                                                <DataGridTextColumn Header="{Binding [5], Source={StaticResource BaseParameters}}" Binding="{Binding HeartBeat, StringFormat=d}" Width="90*"/>
-                                                <DataGridTextColumn Header="{Binding [6], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentIValue, StringFormat=d}" Width="100*"/>
-                                                <DataGridTextColumn Header="{Binding [7], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentAbsoluteValue, StringFormat=d}" Width="110*"/>
-                                                <DataGridTextColumn Header="{Binding [8], Source={StaticResource BaseParameters}}" Binding="{Binding CurrentRelativeValue, StringFormat=d}" Width="110*"/>
+                                                <DataGridTextColumn Binding="{Binding HeartBeat, StringFormat=d}" Width="90*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [5], Source={StaticResource BaseParameters}}" ToolTip="Время, после которого будут отправлены телеизмерения, если на линии нет тока"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding CurrentIValue, StringFormat=d}" Width="100*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [6], Source={StaticResource BaseParameters}}" ToolTip="Предел тока, после преодоления которого время отправки телеизмерений равно интервалу №2"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding CurrentAbsoluteValue, StringFormat=d}" Width="110*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [7], Source={StaticResource BaseParameters}}" ToolTip="Если в в опредёлнный момент величина тока изменяется больше чем на относительное и абсолютное значение, индикаторы отправят телеизмерения обратно на рабочую станцию. Не реккомендуется менять"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding CurrentRelativeValue, StringFormat=d}" Width="110*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [8], Source={StaticResource BaseParameters}}" ToolTip="Если в в опредёлнный момент величина тока изменяется больше чем на относительное и абсолютное значение, индикаторы отправят телеизмерения обратно на рабочую станцию. Не реккомендуется менять"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
                                             </DataGrid.Columns>
                                             <DataGrid.ColumnHeaderStyle>
                                                 <Style TargetType="{x:Type DataGridColumnHeader}">
@@ -458,7 +482,7 @@
                                         </DataGrid>
                                     </Grid>
                                 </TabItem>
-                                <TabItem Header="Параметры короткого замыкания" Width="250" Height="30">
+                                <TabItem Header="Параметры КЗ" Width="250" Height="30">
                                     <Grid Background="#FF2F2F2F">
                                         <!--Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="169*"/>
@@ -505,10 +529,35 @@
                                                 <StaticResource ResourceKey="GreyDataGrid"/>
                                             </DataGrid.Style>
                                             <DataGrid.Columns>
-                                                <DataGridTextColumn Header="{Binding [0], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="160"/>
-                                                <DataGridTextColumn Header="{Binding [1], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding TimeDelay, StringFormat=d}" Width="205*"/>
-                                                <DataGridTextColumn Header="{Binding [2], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding RepowerDelay, StringFormat=d}" Width="205*"/>
-                                                <DataGridTextColumn Header="{Binding [3], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding ShortCurrent, StringFormat=d}" Width="205*"/>
+                                                <!--DataGridTextColumn Header="{Binding [0], Source={StaticResource InterphaseShortCircuitParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="160"/-->
+                                                <DataGridTextColumn Binding="{Binding MACAdressShow, StringFormat=d}" Width="85*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [0], Source={StaticResource InterphaseShortCircuitParameters}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding TimeDelay, StringFormat=d}" Width="205*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [1], Source={StaticResource InterphaseShortCircuitParameters}}" ToolTip="Время, после которого у ИКЗ сбросится индикация, сигнализируящая о КЗ на линии"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding RepowerDelay, StringFormat=d}" Width="205*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [2], Source={StaticResource InterphaseShortCircuitParameters}}" ToolTip="Время, после которого у ИКЗ сбросится индикация, если линия была перезапущена. Предпологается что время перезапуска будет равно 30 секундам (стандартное значение)"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding ShortCurrent, StringFormat=d}" Width="205*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [3], Source={StaticResource InterphaseShortCircuitParameters}}" ToolTip="Если величина тока увеличися мгновенно на данное значение, ИКЗ это расценит как короткое замыкание и включится индикация"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
                                             </DataGrid.Columns>
                                             <DataGrid.ColumnHeaderStyle>
                                                 <Style TargetType="{x:Type DataGridColumnHeader}">
@@ -544,7 +593,7 @@
                                         </DataGrid>
                                     </Grid>
                                 </TabItem>
-                                <TabItem Header="Параметры замыкания на землю" Width="195" Height="30">
+                                <TabItem Header="Параметры ОЗЗ" Width="205" Height="30">
                                     <Grid Background="#FF2F2F2F">
                                         <DataGrid x:Name="IndicatorGSCDataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                               AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding IndicatorData.Indicators, Mode=OneWay}"
@@ -587,9 +636,27 @@
                                                 <StaticResource ResourceKey="GreyDataGrid"/>
                                             </DataGrid.Style>
                                             <DataGrid.Columns>
-                                                <DataGridTextColumn Header="{Binding [0], Source={StaticResource InterphaseGroundShortCircuitParameters}}" Binding="{Binding MACAdressShow, StringFormat=d}" Width="255*"/>
-                                                <DataGridTextColumn Header="{Binding [1], Source={StaticResource InterphaseGroundShortCircuitParameters}}" Binding="{Binding TransientFieldDrop, StringFormat=d}" Width="255*"/>
-                                                <DataGridTextColumn Header="{Binding [2], Source={StaticResource InterphaseGroundShortCircuitParameters}}" Binding="{Binding FieldDropDelay, StringFormat=d}" Width="255*"/>
+                                                <DataGridTextColumn Binding="{Binding MACAdressShow, StringFormat=d}" Width="255*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [0], Source={StaticResource InterphaseGroundShortCircuitParameters}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding TransientFieldDrop, StringFormat=d}" Width="255*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [1], Source={StaticResource InterphaseGroundShortCircuitParameters}}" ToolTip="Значение падения напряжения, после которого и с соблюдением условия по времени ИКЗ будет считать что произошло однофазное замыкание на землю"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding FieldDropDelay, StringFormat=d}" Width="255*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [2], Source={StaticResource InterphaseGroundShortCircuitParameters}}" ToolTip="Если в течении этого периода ток не возвращается к исходному значению и уже происходил бросок напряжения, ИКЗ это расценит как ОЗЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
                                             </DataGrid.Columns>
                                             <DataGrid.ColumnHeaderStyle>
                                                 <Style TargetType="{x:Type DataGridColumnHeader}">

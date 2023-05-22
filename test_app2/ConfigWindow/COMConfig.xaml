@@ -134,7 +134,7 @@
                       VerticalAlignment="Stretch" Grid.Row="5" HorizontalAlignment="Stretch"
                       />
                         </Grid>
-                        <Grid Grid.Column="2">
+                        <Grid Grid.Column="2" IsEnabled="{Binding SerialPort.Settings.CanEditControls}">
                             <TextBlock Text="COM Порт" Padding="2 5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                             <ListBox x:Name="SelectedCOM" 
                                      Margin="0,25,0,0"
@@ -142,20 +142,20 @@
                                      SelectedItem="{Binding SerialPort.Settings.SelectedCOMPort, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"
                                      />
                         </Grid>
-                        <Grid Grid.Column="4">
+                        <Grid Grid.Column="4" IsEnabled="{Binding SerialPort.Settings.CanEditControls}">
                             <TextBlock Text="Скорость" Padding="2 5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                             <ListBox x:Name="COMBaudRate" Margin="0,25,0,0" SelectedIndex="9"
                             ItemsSource="{StaticResource baudRates}"
                             SelectedItem="{Binding SerialPort.Settings.SelectedBaudRate, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"/>
                         </Grid>
-                        <Grid Grid.Column="6">
+                        <Grid Grid.Column="6" IsEnabled="{Binding SerialPort.Settings.CanEditControls}">
                             <TextBlock Text="Биты данных" Padding="2 5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                             <ListBox x:Name="COMDataBits" Margin="0,25,0,0" HorizontalAlignment="Stretch"
                                      SelectedIndex="3"
                                      ItemsSource="{StaticResource dataBits}"
                                      SelectedItem="{Binding SerialPort.Settings.SelectedDataBits, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"/>
                         </Grid>
-                        <Grid Grid.Column="8">
+                        <Grid Grid.Column="8" IsEnabled="{Binding SerialPort.Settings.CanEditControls}">
                             <TextBlock Text="Стоповые биты" Padding="2 5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                             <ListBox x:Name="COMStopBits" Margin="0,25,0,0"
                                      SelectedIndex="0"
@@ -168,14 +168,14 @@
                                 </ListBox.ItemTemplate>
                             </ListBox>
                         </Grid>
-                        <Grid Grid.Column="10">
+                        <Grid Grid.Column="10" IsEnabled="{Binding SerialPort.Settings.CanEditControls}">
                             <TextBlock Text="Биты паритета" Padding="2 5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                             <ListBox x:Name="COMParityBits" Margin="0,25,0,0" HorizontalAlignment="Stretch"
                                      SelectedIndex="0"
                                      ItemsSource="{StaticResource parities}"
                                      SelectedItem="{Binding SerialPort.Settings.SelectedParityBits, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"/>
                         </Grid>
-                        <Grid Grid.Column="12">
+                        <Grid Grid.Column="12" IsEnabled="{Binding SerialPort.Settings.CanEditControls}">
                             <TextBlock Text="Рукопожатие" Padding="2 5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                             <ListBox x:Name="COMHandshake" Margin="0,25,0,0"
                                       SelectedIndex="0"

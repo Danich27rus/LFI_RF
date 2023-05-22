@@ -20,6 +20,8 @@ namespace test_app2.SerialPortDevice
         private string _selectedDataBits;
         private SettingsItemViewModel _selectedStopBits;
         private SettingsItemViewModel _handShake;
+        private bool _canEditControls = true;
+
         public string SelectedCOMPort 
         {
             get => _selectedComPort; 
@@ -50,6 +52,12 @@ namespace test_app2.SerialPortDevice
             get => _handShake;
             set => RaisePropertyChanged(ref _handShake, value);
         }
+        public bool CanEditControls
+        {
+            get => _canEditControls;
+            set => RaisePropertyChanged(ref _canEditControls, value);
+        }
+
         public ObservableCollection<string> AvaliablePorts { get; set; }
 
         public ObservableCollection<int> BaudRates { get; set; }
