@@ -246,6 +246,34 @@
                                 <System:String>Относительное значение падения напряжения в линии (в %)</System:String>
                                 <System:String>Продолжительность замыкания (в с)</System:String>
                             </x:Array>
+                            <x:Array x:Key="IndicatorTelemetry" Type="{x:Type System:String}">
+                                <System:String>MAC</System:String>
+                                <System:String>Номер группы устройств</System:String>
+                                <System:String>Номер линии, заданной на устройстве</System:String>
+                                <System:String>Буква фазы</System:String>
+                                <System:String>Величина электрического поля</System:String>
+                                <System:String>Текущее значение тока в линии</System:String>
+                                <System:String>Пиковый ток КЗ</System:String>
+                                <!--Значение тока КЗ, превысившее ток уставки-->
+                                <System:String>Температура воздуха</System:String>
+                                <System:String>Напряжение батареи</System:String>
+                                <!--внутренней-->
+                                <System:String>Величина падения электрического поля</System:String>
+                                <System:String>КЗ краткосрочное?</System:String>
+                                <!--КЗ по длительности является краткосрочным?-->
+                                <System:String>КЗ постоянное?</System:String>
+                                <!--КЗ по длительности является постоянным?-->
+                                <System:String>Перегрузка по току</System:String>
+                                <System:String>ОЗЗ?</System:String>
+                                <!--Состояние земли/Было ли заммыкание на землю?-->
+                                <System:String>Низкое напряжение батареи?</System:String>
+                                <System:String>Включена механическая индикация (UNUSED)?</System:String>
+                                <!--TODO: удостовериться что этоот параметер не нужен-->
+                                <System:String>LED?</System:String>
+                                <!--Включена светодиодная индикация?-->
+                                <System:String>Текущее состояние индикатора</System:String>
+                                <System:String>Дополнительная информация</System:String>
+                            </x:Array>
                         </Grid.Resources>
                         <!--ScrollViewer/-->
                         <!--DataGrid x:Name="dataGrid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,0,0,97"/-->
@@ -482,7 +510,7 @@
                                         </DataGrid>
                                     </Grid>
                                 </TabItem>
-                                <TabItem Header="Параметры КЗ" Width="250" Height="30">
+                                <TabItem Header="Параметры КЗ" Width="150" Height="30">
                                     <Grid Background="#FF2F2F2F">
                                         <!--Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="169*"/>
@@ -593,7 +621,7 @@
                                         </DataGrid>
                                     </Grid>
                                 </TabItem>
-                                <TabItem Header="Параметры ОЗЗ" Width="205" Height="30">
+                                <TabItem Header="Параметры ОЗЗ" Width="150" Height="30">
                                     <Grid Background="#FF2F2F2F">
                                         <DataGrid x:Name="IndicatorGSCDataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                               AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding IndicatorData.Indicators, Mode=OneWay}"
@@ -657,6 +685,217 @@
                                                         </DataTemplate>
                                                     </DataGridTextColumn.HeaderTemplate>
                                                 </DataGridTextColumn>
+                                            </DataGrid.Columns>
+                                            <DataGrid.ColumnHeaderStyle>
+                                                <Style TargetType="{x:Type DataGridColumnHeader}">
+                                                    <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                    <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+                                                    <Setter Property="BorderThickness" Value="1, 2"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                                    <Setter Property="Padding" Value="5"/>
+                                                    <Setter Property="ContentTemplate">
+                                                        <Setter.Value>
+                                                            <DataTemplate>
+                                                                <TextBlock Background="Transparent" TextWrapping="Wrap" Text="{Binding}"/>
+                                                            </DataTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </DataGrid.ColumnHeaderStyle>
+                                            <DataGrid.RowStyle>
+                                                <Style TargetType="{x:Type DataGridRow}">
+                                                    <Setter Property="Height" Value="{x:Static System:Double.NaN}"/>
+                                                </Style>
+                                            </DataGrid.RowStyle>
+                                            <DataGrid.RowHeaderStyle>
+                                                <Style TargetType="{x:Type DataGridRowHeader}">
+                                                    <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                    <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+                                                    <Setter Property="BorderThickness" Value="2, 1"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                    <Setter Property="Padding" Value="5"/>
+                                                </Style>
+                                            </DataGrid.RowHeaderStyle>
+                                        </DataGrid>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="Телеизмерения" Width="150">
+                                    <Grid>
+                                        <DataGrid x:Name="IndidcatorTelemetryDataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                              AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding IndicatorData.Indicators, Mode=OneWay}"
+                                              RowHeight="45" RowBackground="#FF2F2F2F" AlternatingRowBackground="#FF2F2F2F" GridLinesVisibility="None" BorderBrush="#FF2F2F2F">
+                                            <DataGrid.Resources>
+                                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF2F2F2F"/>
+                                                <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
+                                                    <Setter Property="Padding" Value="-2"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="Validation.HasError" Value="True">
+                                                            <Setter Property="Background" Value="Red"/>
+                                                            <Setter Property="ToolTip" 
+                                                        Value="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                                <Style TargetType="{x:Type DataGridCell}">
+                                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsSelected" Value="True">
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                            <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                            <Setter Property="BorderThickness" Value="0"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsEditing" Value="True">
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                            <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                            <Setter Property="BorderThickness" Value="0"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsFocused" Value="True">
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                            <Setter Property="Background" Value="#FF2F2F2F"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </DataGrid.Resources>
+                                            <DataGrid.Style>
+                                                <StaticResource ResourceKey="GreyDataGrid"/>
+                                            </DataGrid.Style>
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Binding="{Binding MACAdressShow, StringFormat=d}" Width="255*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [0], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <!--DataGridTextColumn Binding="{Binding TGroupAddr, StringFormat=d}" Width="255*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [1], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding TRoute, StringFormat=d}" Width="255*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [2], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn-->
+                                                <DataGridTextColumn Binding="{Binding TPhase, StringFormat=d}" Width="150*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [3], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ, буква фазы на самом индикаторе"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding TElectricalFieldValue, StringFormat=d}" Width="255*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [4], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding TCurrentValue, StringFormat=d}" Width="195*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [5], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding TCurrentSettingOverflowValue, StringFormat=d}" Width="210*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [6], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <!--DataGridTextColumn Binding="{Binding TTemprature, StringFormat=d}" Width="255*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [7], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding TBatteryVoltage, StringFormat=d}" Width="255*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [8], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn-->
+                                                <DataGridTextColumn Binding="{Binding TElectricalFieldDropdownValue, StringFormat=d}" Width="255*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [9], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding TQuickShortCircuit, StringFormat=d}" Width="255*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [10], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding TPermanentShortCircuit, StringFormat=d}" Width="255*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [11], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <!--DataGridTextColumn Binding="{Binding TGroupAddr, StringFormat=d}" Width="255*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [12], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn-->
+                                                <DataGridTextColumn Binding="{Binding TGroupAddr, StringFormat=d}" Width="150*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [13], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding TGroupAddr, StringFormat=d}" Width="255*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [14], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <!--DataGridTextColumn Binding="{Binding TGroupAddr, StringFormat=d}" Width="255*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [15], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn-->
+                                                <DataGridTextColumn Binding="{Binding TGroupAddr, StringFormat=d}" Width="125*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [16], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <!--DataGridTextColumn Binding="{Binding TGroupAddr, StringFormat=d}" Width="255*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [17], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding TGroupAddr, StringFormat=d}" Width="255*">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [18], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn-->
                                             </DataGrid.Columns>
                                             <DataGrid.ColumnHeaderStyle>
                                                 <Style TargetType="{x:Type DataGridColumnHeader}">

@@ -8,6 +8,7 @@ using System.IO.Packaging;
 
 namespace test_app2.FaultIndicators
 {
+    //TODO: вывести модель данных для инидкатора в отдельный модуль "Models"
     public class FaultIndicatorViewModel : BaseViewModel, IEditableObject
     {
         private string _macAdress;
@@ -23,7 +24,7 @@ namespace test_app2.FaultIndicators
         private int _currentIValue;
         private int _currentRelativeValue;
         private int _currentAbsoluteValue;
-        //межфазные
+        //межфазное
         private int _timeDelay;
         private int _repowerDelay;
         private int _shortCurrent;
@@ -32,6 +33,25 @@ namespace test_app2.FaultIndicators
         private int _fieldDropDelay;
         //параметры
         private string _softwareVersion;
+        //телеизмерения в реальном временеи
+        private int _tGroupAddr;
+        private int _tRoute;
+        private char _tPhase;
+        private int _tElectricalFieldValue;
+        private int _tCurrentValue;
+        private int _tCurrentSettingOverflowValue;
+        private int _tBatteryVoltage;
+        private int _tTemprature;
+        private int _tElectricalFieldDropdownValue;
+        private bool _tMechanicIndicationStatus;
+        private bool _tLEDIndicationStatus;
+        private bool _tQuickShortCircut;
+        private bool _tPermanentShortCicruit;
+        private bool _tOverCurrent;
+        private bool _tGroundShortCircuit;
+        private bool _tLowBatteryValue;
+        private string _tIndicatorProtectionState;
+        private string _tIndicatorAdditionalInfo;
         //ВРЕМЕННО ДЛЯ ТЕСТА ВАЛИДАЦИИ
         //private int _callAdress;
         //public int _callFrequency;
@@ -146,6 +166,114 @@ namespace test_app2.FaultIndicators
         {
             get => _softwareVersion;
             set => RaisePropertyChanged(ref _softwareVersion, value);
+        }
+
+        public int TGroupAddr
+        {
+            get => _tGroupAddr;
+            set => RaisePropertyChanged(ref _tGroupAddr, value);
+        }
+
+        public int TRoute
+        {
+            get => _tRoute;
+            set => RaisePropertyChanged(ref _tRoute, value);
+        }
+
+        public char TPhase
+        {
+            get => _tPhase;
+            set => RaisePropertyChanged(ref _tPhase, value);
+        }
+
+        public int TElectricalFieldValue
+        {
+            get => _tElectricalFieldValue;
+            set => RaisePropertyChanged(ref _tElectricalFieldValue, value);
+        }
+
+        public int TCurrentValue
+        {
+            get => _tCurrentValue; 
+            set => RaisePropertyChanged(ref _tCurrentValue, value);
+        }
+
+        public int TCurrentSettingOverflowValue
+        {
+            get => _tCurrentSettingOverflowValue; 
+            set => RaisePropertyChanged(ref _tCurrentSettingOverflowValue, value);
+        }
+
+        public int TBatteryVoltage
+        {
+            get => _tBatteryVoltage; 
+            set => RaisePropertyChanged(ref _tBatteryVoltage, value);
+        }
+
+        public int TTemprature
+        {
+            get => _tTemprature; 
+            set => RaisePropertyChanged(ref _tTemprature, value);
+        }
+
+        public int TElectricalFieldDropdownValue
+        {
+            get => _tElectricalFieldDropdownValue; 
+            set => RaisePropertyChanged(ref _tElectricalFieldDropdownValue, value);
+        }
+
+        public bool TMechanicIndicationStatus
+        {
+            get => _tMechanicIndicationStatus;
+            set => RaisePropertyChanged(ref _tMechanicIndicationStatus, value);
+        }
+
+        public bool TLEDIndicationStatus
+        {
+            get => _tLEDIndicationStatus; 
+            set => RaisePropertyChanged(ref _tLEDIndicationStatus, value);
+        }
+
+        public bool TQuickShortCircuit
+        {
+            get => _tQuickShortCircut;
+            set => RaisePropertyChanged(ref _tQuickShortCircut, value);
+        }
+
+        public bool TPermanentShortCircuit
+        {
+            get => _tPermanentShortCicruit; 
+            set => RaisePropertyChanged(ref _tPermanentShortCicruit, value);
+        }
+
+        public bool TOverCurrent
+        {
+            get => _tOverCurrent; 
+            set => RaisePropertyChanged(ref _tOverCurrent, value);
+        }
+
+        public bool TGroundShortCircuit
+        {
+            get => _tGroundShortCircuit; 
+            set => RaisePropertyChanged(ref _tGroundShortCircuit, value);
+        }
+
+        public bool TLowBatteryValue
+        {
+            get => _tLowBatteryValue; 
+            set => RaisePropertyChanged(ref _tLowBatteryValue, value);
+        }
+
+        public string TIndicatorProtectionState
+        {
+            get => _tIndicatorProtectionState; 
+            set => RaisePropertyChanged(ref _tIndicatorProtectionState, value);
+        }
+
+        public string TIndicatorAdditionalInfo
+        {
+            get => _tIndicatorAdditionalInfo; 
+            set => RaisePropertyChanged(ref _tIndicatorAdditionalInfo, value);
         }
 
         #region IEditableObject

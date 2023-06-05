@@ -81,7 +81,7 @@ namespace test_app2.SerialPortDevice
                 AvaliablePorts.Add(comPort);
             }
 
-            //TODO: разщбор COM порта
+            //TODO: разбор COM порта
             //if (AvaliablePorts.Count > 0)
             //{
                 //SelectedCOMPort = AvaliablePorts[0];
