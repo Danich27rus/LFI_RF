@@ -290,16 +290,16 @@
                                         <RowDefinition Height="30"/>
                                         <RowDefinition Height="30"/>
                                     </Grid.RowDefinitions>
-                                    <TextBlock Text="Выбор семейства устройства" Padding="5" HorizontalAlignment="Center"/>
-                                    <RadioButton x:Name="MainlineFI" Content="Магистральные ИКЗ" Grid.Row="1"
+                                    <TextBlock Text="Выбор типа ИКЗ" Padding="5" HorizontalAlignment="Center"/>
+                                    <RadioButton x:Name="MainlineFI" Content="ИКЗ с механиеской индикацией" Grid.Row="1"
                                  IsChecked="{Binding IndicatorData.DeviceFamilyNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=0}"
                                  Command="{Binding IndicatorData.UpdateFamilyContentCommand}">
                                     </RadioButton>
-                                    <RadioButton x:Name="FIBaseBlock" Content="ИКЗ с ББ" Grid.Row="2"
+                                    <RadioButton x:Name="FIBaseBlock" Content="ИКЗ с трёхцветной инидкацией" Grid.Row="2"
                                  IsChecked="{Binding IndicatorData.DeviceFamilyNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=1}"
                                  Command="{Binding IndicatorData.UpdateFamilyContentCommand}">
                                     </RadioButton>
-                                    <RadioButton x:Name="FINotUsed" Content="LED__7 (JYZ-HW V2.0, не используется)" Grid.Row="3"
+                                    <RadioButton x:Name="FINotUsed" Content="ИКЗ с 7-ми цветной индикацией (UNUSED)" Grid.Row="3"
                                  IsChecked="{Binding IndicatorData.DeviceFamilyNum, Converter={StaticResource RadioBoolToIntConverter}, ConverterParameter=2}"
                                  Command="{Binding IndicatorData.UpdateFamilyContentCommand}" Cursor="">
                                     </RadioButton>

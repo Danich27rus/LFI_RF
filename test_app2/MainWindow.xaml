@@ -794,21 +794,21 @@
                                                 <DataGridTextColumn Binding="{Binding TElectricalFieldValue, StringFormat=d}" Width="255*">
                                                     <DataGridTextColumn.HeaderTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [4], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [4], Source={StaticResource IndicatorTelemetry}}" ToolTip="Велиина показывающая напржённость электриеского поля, в В/м"/>
                                                         </DataTemplate>
                                                     </DataGridTextColumn.HeaderTemplate>
                                                 </DataGridTextColumn>
                                                 <DataGridTextColumn Binding="{Binding TCurrentValue, StringFormat=d}" Width="195*">
                                                     <DataGridTextColumn.HeaderTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [5], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [5], Source={StaticResource IndicatorTelemetry}}" ToolTip="Значение тока в линии, в А"/>
                                                         </DataTemplate>
                                                     </DataGridTextColumn.HeaderTemplate>
                                                 </DataGridTextColumn>
                                                 <DataGridTextColumn Binding="{Binding TCurrentSettingOverflowValue, StringFormat=d}" Width="210*">
                                                     <DataGridTextColumn.HeaderTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [6], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [6], Source={StaticResource IndicatorTelemetry}}" ToolTip="Величина тока перегрузки, ???"/>
                                                         </DataTemplate>
                                                     </DataGridTextColumn.HeaderTemplate>
                                                 </DataGridTextColumn>
@@ -829,21 +829,21 @@
                                                 <DataGridTextColumn Binding="{Binding TElectricalFieldDropdownValue, StringFormat=d}" Width="255*">
                                                     <DataGridTextColumn.HeaderTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [9], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [9], Source={StaticResource IndicatorTelemetry}}" ToolTip="Величина падения электриеского поля, в В/м ???"/>
                                                         </DataTemplate>
                                                     </DataGridTextColumn.HeaderTemplate>
                                                 </DataGridTextColumn>
                                                 <DataGridTextColumn Binding="{Binding TQuickShortCircuit, StringFormat=d}" Width="255*">
                                                     <DataGridTextColumn.HeaderTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [10], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [10], Source={StaticResource IndicatorTelemetry}}" ToolTip="Число отображает определил ли индикатор КЗ как краткосрочное (произошедшее мгновенно/в коротки промежуток времени). 1 - Да, 2 - Нет"/>
                                                         </DataTemplate>
                                                     </DataGridTextColumn.HeaderTemplate>
                                                 </DataGridTextColumn>
                                                 <DataGridTextColumn Binding="{Binding TPermanentShortCircuit, StringFormat=d}" Width="255*">
                                                     <DataGridTextColumn.HeaderTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [11], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [11], Source={StaticResource IndicatorTelemetry}}" ToolTip="Число отображает определил ли индикатор КЗ как постонное (сохранетс на линии преодолев определённый временной лимит). 1 - Да, 2 - Нет"/>
                                                         </DataTemplate>
                                                     </DataGridTextColumn.HeaderTemplate>
                                                 </DataGridTextColumn>
@@ -854,17 +854,17 @@
                                                         </DataTemplate>
                                                     </DataGridTextColumn.HeaderTemplate>
                                                 </DataGridTextColumn-->
-                                                <DataGridTextColumn Binding="{Binding TGroupAddr, StringFormat=d}" Width="150*">
+                                                <DataGridTextColumn Binding="{Binding TGroundShortCircuit, StringFormat=d}" Width="150*">
                                                     <DataGridTextColumn.HeaderTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [13], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [13], Source={StaticResource IndicatorTelemetry}}" ToolTip="Число отображает определил ли индикатор КЗ как замыкание на землю. 1 - Да, 2 - Нет"/>
                                                         </DataTemplate>
                                                     </DataGridTextColumn.HeaderTemplate>
                                                 </DataGridTextColumn>
-                                                <DataGridTextColumn Binding="{Binding TGroupAddr, StringFormat=d}" Width="255*">
+                                                <DataGridTextColumn Binding="{Binding TLowBatteryValue, StringFormat=d}" Width="255*">
                                                     <DataGridTextColumn.HeaderTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [14], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [14], Source={StaticResource IndicatorTelemetry}}" ToolTip="Сигнал о маленьком зарде внутренней батареи в ИКЗ. 1 - Малый заряд, 2 - Всё в пордке"/>
                                                         </DataTemplate>
                                                     </DataGridTextColumn.HeaderTemplate>
                                                 </DataGridTextColumn>
@@ -875,10 +875,10 @@
                                                         </DataTemplate>
                                                     </DataGridTextColumn.HeaderTemplate>
                                                 </DataGridTextColumn-->
-                                                <DataGridTextColumn Binding="{Binding TGroupAddr, StringFormat=d}" Width="125*">
+                                                <DataGridTextColumn Binding="{Binding TLEDIndicationStatus, StringFormat=d}" Width="125*">
                                                     <DataGridTextColumn.HeaderTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [16], Source={StaticResource IndicatorTelemetry}}" ToolTip="Идентификатор устройства ИКЗ"/>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [16], Source={StaticResource IndicatorTelemetry}}" ToolTip="Сигнал о том, работает ли в данный момент световая индикация? 1 - Да, 2 - Нет"/>
                                                         </DataTemplate>
                                                     </DataGridTextColumn.HeaderTemplate>
                                                 </DataGridTextColumn>
