@@ -131,9 +131,9 @@
             </Grid>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150*"/>
+                    <ColumnDefinition Width="440"/>
                     <ColumnDefinition Width="5"/>
-                    <ColumnDefinition Width="820"/>
+                    <ColumnDefinition Width="820*"/>
                 </Grid.ColumnDefinitions>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -279,7 +279,7 @@
                         <!--DataGrid x:Name="dataGrid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,0,0,97"/-->
                         <GroupBox x:Name="IndicatorParamsGroupBox" Header="Значения в памяти индикатора">
                             <TabControl x:Name="IndicatorParamsTabControl"
-                                    SelectedIndex="{Binding IndicatorData.FunctionCallNumStart, Mode=TwoWay}">
+                                    SelectedIndex="{Binding IndicatorData.FunctionCallNumStart, Mode=TwoWay}" Margin="1,0,-1,0">
                                 <TabItem Header="Служебные функции" Width="130" Height="30">
                                     <Grid>
                                         <DataGrid x:Name="IndicatorInfoDataGrid"
@@ -722,9 +722,28 @@
                                 </TabItem>
                                 <TabItem Header="Телеизмерения" Width="150">
                                     <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="50*"/>
+                                            <RowDefinition Height="500*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid Background="#FF2F2F2F">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="250*"/>
+                                                <ColumnDefinition Width="250*"/>
+                                                <!--ColumnDefinition Width="200*"/-->
+                                            </Grid.ColumnDefinitions>
+                                            <Button x:Name="ReadTelemetryButton" Grid.Column="0"
+                                                    Command=""
+                                                    Content="Чтение данных" Margin="200,3,20,3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Cursor="Hand"
+                                            />
+                                            <CheckBox x:Name="LogTelemetryCheckBox"
+                                                Margin="0,0,200,3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                IsChecked="{Binding Messages.InLog, UpdateSourceTrigger=PropertyChanged}"
+                                                Content="Запись данных в файл" Cursor="" Grid.Column="1"/>
+                                        </Grid>
                                         <DataGrid x:Name="IndidcatorTelemetryDataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                               AutoGenerateColumns="False" Background="#FF2F2F2F" Foreground="#FFFF" ItemsSource="{Binding IndicatorData.Indicators, Mode=OneWay}"
-                                              RowHeight="45" RowBackground="#FF2F2F2F" AlternatingRowBackground="#FF2F2F2F" GridLinesVisibility="None" BorderBrush="#FF2F2F2F">
+                                              RowHeight="45" RowBackground="#FF2F2F2F" AlternatingRowBackground="#FF2F2F2F" GridLinesVisibility="None" BorderBrush="#FF2F2F2F" Grid.Row="1">
                                             <DataGrid.Resources>
                                                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF2F2F2F"/>
                                                 <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
@@ -794,7 +813,7 @@
                                                 <DataGridTextColumn Binding="{Binding TElectricalFieldValue, StringFormat=d}" Width="255*">
                                                     <DataGridTextColumn.HeaderTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [4], Source={StaticResource IndicatorTelemetry}}" ToolTip="Велиина показывающая напржённость электриеского поля, в В/м"/>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [4], Source={StaticResource IndicatorTelemetry}}" ToolTip="Велиина показывающая напряжённость электриеского поля, в В/м"/>
                                                         </DataTemplate>
                                                     </DataGridTextColumn.HeaderTemplate>
                                                 </DataGridTextColumn>
@@ -829,21 +848,21 @@
                                                 <DataGridTextColumn Binding="{Binding TElectricalFieldDropdownValue, StringFormat=d}" Width="255*">
                                                     <DataGridTextColumn.HeaderTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [9], Source={StaticResource IndicatorTelemetry}}" ToolTip="Величина падения электриеского поля, в В/м ???"/>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [9], Source={StaticResource IndicatorTelemetry}}" ToolTip="Величина падения электрического поля, в В/м ???"/>
                                                         </DataTemplate>
                                                     </DataGridTextColumn.HeaderTemplate>
                                                 </DataGridTextColumn>
                                                 <DataGridTextColumn Binding="{Binding TQuickShortCircuit, StringFormat=d}" Width="255*">
                                                     <DataGridTextColumn.HeaderTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [10], Source={StaticResource IndicatorTelemetry}}" ToolTip="Число отображает определил ли индикатор КЗ как краткосрочное (произошедшее мгновенно/в коротки промежуток времени). 1 - Да, 2 - Нет"/>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [10], Source={StaticResource IndicatorTelemetry}}" ToolTip="Число отображает определил ли индикатор КЗ как краткосрочное (произошедшее мгновенно/в короткий промежуток времени). 1 - Да, 2 - Нет"/>
                                                         </DataTemplate>
                                                     </DataGridTextColumn.HeaderTemplate>
                                                 </DataGridTextColumn>
                                                 <DataGridTextColumn Binding="{Binding TPermanentShortCircuit, StringFormat=d}" Width="255*">
                                                     <DataGridTextColumn.HeaderTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [11], Source={StaticResource IndicatorTelemetry}}" ToolTip="Число отображает определил ли индикатор КЗ как постонное (сохранетс на линии преодолев определённый временной лимит). 1 - Да, 2 - Нет"/>
+                                                            <TextBlock TextWrapping="Wrap" Text="{Binding [11], Source={StaticResource IndicatorTelemetry}}" ToolTip="Число отображает определил ли индикатор КЗ как постоянное (сохранется на линии преодолев определённый временной лимит). 1 - Да, 2 - Нет"/>
                                                         </DataTemplate>
                                                     </DataGridTextColumn.HeaderTemplate>
                                                 </DataGridTextColumn>
@@ -944,9 +963,9 @@
                         <GroupBox x:Name="SendParamsGroupBox" Header="Данные с ИКЗ">
                             <Grid Margin="5">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="40"/>
+                                    <RowDefinition Height="40*"/>
                                     <RowDefinition Height="5"/>
-                                    <RowDefinition Height="40"/>
+                                    <RowDefinition Height="40*"/>
                                     <RowDefinition Height="5"/>
                                     <RowDefinition Height="40*"/>
                                     <RowDefinition Height="5"/>
@@ -968,7 +987,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="85"/>
+                                        <RowDefinition Height="85*"/>
                                         <RowDefinition Height="5"/>
                                         <RowDefinition Height="40*"/>
                                         <RowDefinition Height="5"/>
@@ -982,9 +1001,9 @@
                                         </Grid.ColumnDefinitions>
                                         <Grid>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="40*"/>
                                                 <RowDefinition Height="5"/>
-                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="40*"/>
                                             </Grid.RowDefinitions>
                                             <Button x:Name="IndicatorTestSCButton" Cursor="Hand" Command="{Binding IndicatorData.ShortCircuitCheckCommand, Mode=OneTime}" Grid.Row="0">
                                                 <TextBlock Text="Проверка индикаторов на КЗ" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
@@ -995,9 +1014,9 @@
                                         </Grid>
                                         <Grid Grid.Column="2" Cursor="">
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="40*"/>
                                                 <RowDefinition Height="5"/>
-                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="40*"/>
                                             </Grid.RowDefinitions>
                                             <Button x:Name="IndicatorTestGSCButton" Cursor="Hand" Command="{Binding IndicatorData.GroundShortCircuitCheckCommand, Mode=OneTime}" Grid.Row="0">
                                                 <TextBlock Text="Проверка индикаторов на КЗ по земле" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>

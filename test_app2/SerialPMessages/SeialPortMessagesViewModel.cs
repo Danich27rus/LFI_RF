@@ -10,6 +10,7 @@ namespace test_app2.SerialPMessages
         private string _messagesText;
         private string _toBeSentText;
         private bool _isHEX;
+        private bool _inLog;
         private bool _isRepeat; //тест репетативной отправки
         private bool _addNewLine;
 
@@ -29,6 +30,12 @@ namespace test_app2.SerialPMessages
         {
             get => _isHEX;
             set => RaisePropertyChanged(ref _isHEX, value);
+        }
+
+        public bool InLog
+        {
+            get => _inLog;
+            set => RaisePropertyChanged(ref _inLog, value);
         }
 
         public bool AddNewLine
@@ -121,6 +128,10 @@ namespace test_app2.SerialPMessages
             // byte[] bytes = Encoding.UTF8.GetBytes(message);
             // AddMessage($"{DateTime.Now} | TX> {bytes}");
             AddMessage($"{DateTime.Now} | TX> {message}");
+            if (InLog)
+            {
+
+            }
         }
 
         public void AddReceivedMessage(string message)

@@ -3,12 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO.Ports;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using test_app2.SerialPMessages;
+using test_app2.SerialPortDevice;
 using test_app2.Utilities;
 using TheRFramework.Utilities;
 
@@ -59,12 +61,13 @@ namespace test_app2.FaultIndicators
             "11 C7",        //action
             "11 C8",        //return
             "11 CA",        //short circuit, ground
-            "11 CB"         //Рестарт
+            "11 CB",        //Рестарт
+            "22 43"         //Телеметрия
         };
 
         private int[] _blackListIndesxes =
         {
-            2
+            0, 2
         };
 
         private int _deviceModelNum;
@@ -79,7 +82,7 @@ namespace test_app2.FaultIndicators
         private int _callFrequency;
         private int _callTime;
         private int _waitTime;
-        //TODO: Разобраться что снизу
+        //TODO: Разобраться в параметрах снизу
         private int _comFrequency;
         private int _callLevel;
         /////////////////////////////
@@ -239,6 +242,8 @@ namespace test_app2.FaultIndicators
         public SerialPortMessagesReceive Receiver { get; set; }
 
         public SerialPortMessagesSend Sender { get; set; }
+
+        public SerialPortViewModel SerialPort { get; set; }
 
         public ObservableCollection<FaultIndicatorViewModel> Indicators { get; set; }
 
@@ -1318,6 +1323,7 @@ namespace test_app2.FaultIndicators
             DeviceModelNum = 0;
             DeviceFamilyNum = 0;
             DeviceCommunicationProtocolNum = 0;
+            SerialPort.Settings.CanEditControls = true;
         }
     }
 }
