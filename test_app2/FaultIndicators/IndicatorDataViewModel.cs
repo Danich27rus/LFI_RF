@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using test_app2.SerialPMessages;
 using test_app2.SerialPortDevice;
 using test_app2.Utilities;
+using test_app2.ViewModels;
 using TheRFramework.Utilities;
 
 namespace test_app2.FaultIndicators
@@ -47,9 +48,9 @@ namespace test_app2.FaultIndicators
         {
             //{ "JYZ-FF", 90 },
             //{ "JYZ-HW", 90 },
-            { "Магистральные ИКЗ", 90 },
-            { "ИКЗ с ББ в РЦДУ", 90 },
-            { "JYZ-HW V2.0", 90 }
+            { "ИКЗ с механической индикацией", 90 },
+            { "ИКЗ с LED индикацией", 90 },
+            { "ИКЗ с LED индикацией (7 цветов)", 90 }
         };
 
         private string[] _patterns =
@@ -237,6 +238,8 @@ namespace test_app2.FaultIndicators
 
         public Command ClearDataGridContentCommand { get; }
 
+        public Command ReadTelemetryCommand { get; }
+
         public SerialPortMessagesViewModel Messages { get; set; }
 
         public SerialPortMessagesReceive Receiver { get; set; }
@@ -283,6 +286,7 @@ namespace test_app2.FaultIndicators
             ControlReturnParameterCommand = new Command(ControlReturnParameter);
             ShortCircuitCheckCommand = new Command(ShortCircuitCheck);
             GroundShortCircuitCheckCommand = new Command(GroundShortCircuitCheck);
+            ReadTelemetryCommand = new Command(ReadTelemetry);
             RestartCommand = new Command(Restart);
             LEDConfCommand = new Command(LEDConf);
 
@@ -474,6 +478,44 @@ namespace test_app2.FaultIndicators
                         break;
                 }
             }
+            if (IndicatorConfirm.Contains(_patterns[8]))
+            {
+                string[] msg;
+                //IndicatorsAmount--;
+                msg = IndicatorConfirm.Split(' ');
+
+                MAC = $"{msg[10]}-{msg[9]}-{msg[8]}-{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
+                var CollectionIndex = Indicators.IndexOf(Indicators.FirstOrDefault(x => x.MACAdress == MAC));
+
+                if (CollectionIndex == null)
+                {
+                    Messages.AddMessage("НЕ МОЖЕТ БЫТЬ!");
+                    return;
+                }
+                if (CollectionIndex == -1)
+                {
+                    Messages.AddMessage("Баганный индикатор которого нет в списке, по нему пришла телеметрия");
+                    return;
+                }
+
+                Indicators[CollectionIndex].TRoute = (Convert.ToInt16(msg[8], 16) >> 2);
+                Indicators[CollectionIndex].TPhase = (char)(Convert.ToInt16(msg[8], 16) & 3);
+                Indicators[CollectionIndex].TGroupAddr = Convert.ToInt16(msg[10], 16) << 8 + Convert.ToInt16(msg[9], 16);
+                Indicators[CollectionIndex].TElectricalFieldValue = Convert.ToInt16(msg[15], 16) << 8 + Convert.ToInt16(msg[14]);
+                Indicators[CollectionIndex].TCurrentValue = (Convert.ToInt16(msg[17], 16) << 8 + Convert.ToInt16(msg[16], 16)) / 10;
+                Indicators[CollectionIndex].TCurrentSettingOverflowValue = (Convert.ToInt16(msg[19], 16) << 8 + Convert.ToInt16(msg[18], 16)) / 10;
+                Indicators[CollectionIndex].TBatteryVoltage = (Convert.ToInt16(msg[21], 16) << 8 + Convert.ToInt16(msg[20], 16)) / 1000;
+                Indicators[CollectionIndex].TransientFieldDrop = Convert.ToInt16(msg[27], 16);
+                Indicators[CollectionIndex].TTemprature = (int)((Convert.ToInt16(msg[23], 16) << 8 + Convert.ToInt16(msg[22], 16)));
+                Indicators[CollectionIndex].TQuickShortCircuit = Convert.ToBoolean(((Convert.ToInt16(msg[26], 16) << 8 + Convert.ToInt16(msg[25], 16)) >> 7) & 1);
+                Indicators[CollectionIndex].TPermanentShortCircuit = Convert.ToBoolean(((Convert.ToInt16(msg[26], 16) << 8 + Convert.ToInt16(msg[25], 16)) >> 8) & 1);
+                Indicators[CollectionIndex].TOverCurrent = Convert.ToBoolean(((Convert.ToInt16(msg[26], 16) << 8 + Convert.ToInt16(msg[25], 16)) >> 1) & 1);
+                Indicators[CollectionIndex].TGroundShortCircuit = Convert.ToBoolean(((Convert.ToInt16(msg[26], 16) << 8 + Convert.ToInt16(msg[25], 16)) >> 3) & 1);
+                Indicators[CollectionIndex].TLowBatteryValue = Convert.ToBoolean(((Convert.ToInt16(msg[26], 16) << 8 + Convert.ToInt16(msg[25], 16)) >> 4) & 1);
+                Indicators[CollectionIndex].TLEDIndicationStatus = Convert.ToBoolean(Convert.ToInt16(msg[28], 16));
+                Indicators[CollectionIndex].Information = "рыба";
+                Indicators[CollectionIndex].TIndicatorProtectionState = "рыба2";
+            }
             IndicatorConfirm = "";
             //Thread.Sleep(100);
         }
@@ -556,13 +598,13 @@ namespace test_app2.FaultIndicators
             new Thread(() =>
             {
                 foreach (var indicator in Indicators)
-            {
-                //MAC = indicator.MACAdress;
+                {
+                    //MAC = indicator.MACAdress;
 
-                var splittedMac = indicator.MACAdress.Split('-');
-                //MAC = $"{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
-                Request =
-                new string[] { $"{_namingProtocol.ElementAt(DeviceCommunicationProtocolNum).Value:X2}",
+                    var splittedMac = indicator.MACAdress.Split('-');
+                    //MAC = $"{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
+                    Request =
+                    new string[] { $"{_namingProtocol.ElementAt(DeviceCommunicationProtocolNum).Value:X2}",
                     $"{_namingFamily.ElementAt(DeviceFamilyNum).Value:X2}",
                     "15",
                     "25",
@@ -584,16 +626,16 @@ namespace test_app2.FaultIndicators
                     "00",
                     $"{Trailer:X2}" };
 
-                crc = checksum.CheckSum_CRC(Request, 2, Request.Length);
-                Request[^2] = string.Join("", (crc & 255).ToString("X2"));
-                Request[^3] = string.Join("", (crc >> 8).ToString("X2"));
-                //orderNumber++;
+                    crc = checksum.CheckSum_CRC(Request, 2, Request.Length);
+                    Request[^2] = string.Join("", (crc & 255).ToString("X2"));
+                    Request[^3] = string.Join("", (crc >> 8).ToString("X2"));
+                    //orderNumber++;
 
-                Sender.SendHEXMessage(string.Join(" ", Request));
-                Messages.AddSentMessage(string.Join(" ", Request));
+                    Sender.SendHEXMessage(string.Join(" ", Request));
+                    Messages.AddSentMessage(string.Join(" ", Request));
 
-                Thread.Sleep(500);
-            }
+                    Thread.Sleep(500);
+                }
             }).Start();
         }
 
@@ -785,7 +827,7 @@ namespace test_app2.FaultIndicators
                     $"{splittedMac[2]:X2}",
                     $"{splittedMac[1]:X2}",
                     $"{splittedMac[0]:X2}",
-                    $"00",                  
+                    $"00",
                     $"{FunctionCallNumEnd:X2}",
                     "00",
                     "00",
@@ -801,6 +843,68 @@ namespace test_app2.FaultIndicators
 
                 Thread.Sleep(200);
             }
+        }
+
+        public void ReadTelemetry()
+        {
+            if (_blackListIndesxes.Contains(DeviceFamilyNum))
+            {
+                Messages.AddMessage("Этот тип индикаторов пока нельзя использовать");
+                return;
+            }
+            if (!Sender.Port.IsOpen)
+            {
+                Messages.AddMessage("Порт не открыт, не удалось отправить сообщение");
+                return;
+            }
+            if (Indicators.Count < 1)
+            {
+                Messages.AddMessage("Информация не считана, ни одного индикатора КЗ нет в списке");
+                return;
+            }
+            new Thread(() =>
+            {
+                foreach (var indicator in Indicators)
+                {
+                    //MAC = indicator.MACAdress;
+                    int crc;
+                    var splittedMac = indicator.MACAdress.Split('-');
+
+                    Request =
+                        new string[] { $"{_namingProtocol.ElementAt(DeviceCommunicationProtocolNum).Value:X2}",
+                                $"{_namingFamily.ElementAt(DeviceFamilyNum).Value:X2}",
+                                "15",
+                                "23",                   //telemetry read command
+                                $"{CallTime:X2}",
+                                $"{0:X2}",
+                                "00",
+                                $"{CallFrequency:X2}",
+                                "00",
+                                $"{splittedMac[6]:X2}",
+                                $"{splittedMac[5]:X2}",
+                                $"{splittedMac[4]:X2}",
+                                $"{splittedMac[3]:X2}",
+                                $"{splittedMac[2]:X2}",
+                                $"{splittedMac[1]:X2}",
+                                $"{splittedMac[0]:X2}",
+                                $"01",
+                                $"{FunctionCallNumEnd:X2}",
+                                "00",
+                                "00",
+                                $"{Trailer:X2}" 
+                        };
+                    crc = checksum.CheckSum_CRC(Request, 2, Request.Length);
+                    Request[^2] = string.Join("", (crc & 255).ToString("X2"));
+                    Request[^3] = string.Join("", (crc >> 8).ToString("X2"));
+                    //orderNumber++;
+
+                    Sender.SendHEXMessage(string.Join(" ", Request));
+                    Messages.AddSentMessage(string.Join(" ", Request));
+
+
+                    Thread.Sleep(500);
+                }
+            }).Start();
         }
 
         public void LEDOff()
@@ -939,13 +1043,13 @@ namespace test_app2.FaultIndicators
             new Thread(() =>
             {
                 foreach (var indicator in Indicators)
-            {
-                //MAC = indicator.MACAdress;
-                int crc;
-                var splittedMac = indicator.MACAdress.Split('-');
+                {
+                    //MAC = indicator.MACAdress;
+                    int crc;
+                    var splittedMac = indicator.MACAdress.Split('-');
 
-                Request =
-                    new string[] { $"{_namingProtocol.ElementAt(DeviceCommunicationProtocolNum).Value:X2}",
+                    Request =
+                        new string[] { $"{_namingProtocol.ElementAt(DeviceCommunicationProtocolNum).Value:X2}",
                     $"{_namingFamily.ElementAt(DeviceFamilyNum).Value:X2}",
                     "15",
                     "25",       //software info command
@@ -967,16 +1071,16 @@ namespace test_app2.FaultIndicators
                     "00",
                     $"{Trailer:X2}" };
 
-                crc = checksum.CheckSum_CRC(Request, 2, Request.Length);
-                Request[^2] = string.Join("", (crc & 255).ToString("X2"));
-                Request[^3] = string.Join("", (crc >> 8).ToString("X2"));
-                //orderNumber++;
+                    crc = checksum.CheckSum_CRC(Request, 2, Request.Length);
+                    Request[^2] = string.Join("", (crc & 255).ToString("X2"));
+                    Request[^3] = string.Join("", (crc >> 8).ToString("X2"));
+                    //orderNumber++;
 
-                Sender.SendHEXMessage(string.Join(" ", Request));
-                Messages.AddSentMessage(string.Join(" ", Request));
+                    Sender.SendHEXMessage(string.Join(" ", Request));
+                    Messages.AddSentMessage(string.Join(" ", Request));
 
-                Thread.Sleep(500);
-            }
+                    Thread.Sleep(500);
+                }
             }).Start();
         }
 
@@ -997,7 +1101,7 @@ namespace test_app2.FaultIndicators
                 Messages.AddMessage("Информация не считана, ни одного индикатора КЗ нет в списке");
                 return;
             }
-            new Thread (() =>
+            new Thread(() =>
             {
                 foreach (var indicator in Indicators)
                 {
@@ -1289,7 +1393,7 @@ namespace test_app2.FaultIndicators
                     Thread.Sleep(300);
                 }
             }).Start();
-    }
+        }
 
         public void UpdateModelContent()
         {
@@ -1323,6 +1427,7 @@ namespace test_app2.FaultIndicators
             DeviceModelNum = 0;
             DeviceFamilyNum = 0;
             DeviceCommunicationProtocolNum = 0;
+            //SerialPort.CloseAll();
             SerialPort.Settings.CanEditControls = true;
         }
     }

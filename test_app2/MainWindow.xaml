@@ -733,7 +733,7 @@
                                                 <!--ColumnDefinition Width="200*"/-->
                                             </Grid.ColumnDefinitions>
                                             <Button x:Name="ReadTelemetryButton" Grid.Column="0"
-                                                    Command=""
+                                                    Command="{Binding IndicatorData.ReadTelemetryCommand}"
                                                     Content="Чтение данных" Margin="200,3,20,3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Cursor="Hand"
                                             />
                                             <CheckBox x:Name="LogTelemetryCheckBox"
