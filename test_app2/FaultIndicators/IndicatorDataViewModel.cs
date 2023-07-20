@@ -526,14 +526,14 @@ namespace test_app2.FaultIndicators
                 }
 
                 Indicators[CollectionIndex].TRoute = (Convert.ToInt16(msg[8], 16) >> 2);
-                Indicators[CollectionIndex].TPhase = (char)(Convert.ToInt16(msg[8], 16) & 3);
+                Indicators[CollectionIndex].TPhase = (char)((Convert.ToInt16(msg[8], 16) & 3) + 64);
                 Indicators[CollectionIndex].TGroupAddr = Convert.ToInt16(msg[10], 16) << 8 + Convert.ToInt16(msg[9], 16);
                 Indicators[CollectionIndex].TElectricalFieldValue = Convert.ToInt16(msg[15], 16) << 8 + Convert.ToInt16(msg[14]);
-                Indicators[CollectionIndex].TCurrentValue = (Convert.ToInt16(msg[17], 16) << 8 + Convert.ToInt16(msg[16], 16)) / 10;
-                Indicators[CollectionIndex].TCurrentSettingOverflowValue = (Convert.ToInt16(msg[19], 16) << 8 + Convert.ToInt16(msg[18], 16)) / 10;
+                Indicators[CollectionIndex].TCurrentValue = ((Convert.ToInt16(msg[17], 16) << 8) + Convert.ToInt16(msg[16], 16)) / 10f;
+                Indicators[CollectionIndex].TCurrentSettingOverflowValue = (Convert.ToInt16(msg[19], 16) << 8 + Convert.ToInt16(msg[18], 16)) / 10f;
                 Indicators[CollectionIndex].TBatteryVoltage = (Convert.ToInt16(msg[21], 16) << 8 + Convert.ToInt16(msg[20], 16)) / 1000;
                 Indicators[CollectionIndex].TransientFieldDrop = Convert.ToInt16(msg[27], 16);
-                Indicators[CollectionIndex].TTemprature = (int)((Convert.ToInt16(msg[23], 16) << 8 + Convert.ToInt16(msg[22], 16)));
+                Indicators[CollectionIndex].TTemprature = Convert.ToInt16(msg[23], 16) << 8 + Convert.ToInt16(msg[22], 16);
                 Indicators[CollectionIndex].TQuickShortCircuit = Convert.ToBoolean(((Convert.ToInt16(msg[26], 16) << 8 + Convert.ToInt16(msg[25], 16)) >> 7) & 1);
                 Indicators[CollectionIndex].TPermanentShortCircuit = Convert.ToBoolean(((Convert.ToInt16(msg[26], 16) << 8 + Convert.ToInt16(msg[25], 16)) >> 8) & 1);
                 Indicators[CollectionIndex].TOverCurrent = Convert.ToBoolean(((Convert.ToInt16(msg[26], 16) << 8 + Convert.ToInt16(msg[25], 16)) >> 1) & 1);
@@ -1454,7 +1454,7 @@ namespace test_app2.FaultIndicators
             DeviceModelNum = 0;
             DeviceFamilyNum = 0;
             DeviceCommunicationProtocolNum = 0;
-            //SerialPort.CloseAll();
+            SerialPort.CloseAll();
             SerialPort.Settings.CanEditControls = true;
         }
     }

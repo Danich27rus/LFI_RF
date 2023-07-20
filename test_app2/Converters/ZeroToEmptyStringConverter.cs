@@ -23,6 +23,17 @@ namespace test_app2.Converters
                     return intValue;
                 }
             }
+            if (value is float floatValue)
+            {
+                if (floatValue == 0f)
+                {
+                    return "";
+                }
+                else
+                {
+                    return floatValue;
+                }
+            }
 
             return value;
         }

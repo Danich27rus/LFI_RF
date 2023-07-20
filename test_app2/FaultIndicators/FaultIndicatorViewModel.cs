@@ -38,8 +38,8 @@ namespace test_app2.FaultIndicators
         private int _tRoute;
         private char _tPhase;
         private int _tElectricalFieldValue;
-        private int _tCurrentValue;
-        private int _tCurrentSettingOverflowValue;
+        private float _tCurrentValue;
+        private float _tCurrentSettingOverflowValue;
         private int _tBatteryVoltage;
         private int _tTemprature;
         private int _tElectricalFieldDropdownValue;
@@ -192,13 +192,13 @@ namespace test_app2.FaultIndicators
             set => RaisePropertyChanged(ref _tElectricalFieldValue, value);
         }
 
-        public int TCurrentValue
+        public float TCurrentValue
         {
             get => _tCurrentValue; 
             set => RaisePropertyChanged(ref _tCurrentValue, value);
         }
 
-        public int TCurrentSettingOverflowValue
+        public float TCurrentSettingOverflowValue
         {
             get => _tCurrentSettingOverflowValue; 
             set => RaisePropertyChanged(ref _tCurrentSettingOverflowValue, value);

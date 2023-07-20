@@ -215,7 +215,7 @@
                             <RowDefinition Height="175*"/>
                             <RowDefinition Height="200*"/>
                         </Grid.RowDefinitions>
-                        <GroupBox x:Name="SendParamsGroupBox" Header="Данные с ИКЗ" Visibility="{Binding IndicatorData.Visibility}">
+                        <GroupBox x:Name="SendParamsGroupBox" Header="Данные с ИКЗ">
                             <Grid Margin="5">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="40*"/>
@@ -235,7 +235,7 @@
                                         Cursor="Hand" Margin="0,0,0,0" VerticalAlignment="Stretch" Grid.Row="6" Background="Teal"/>
                             </Grid>
                         </GroupBox>
-                        <GroupBox x:Name="AnalogParamsGroupBox" Header="Управление ИКЗ" Grid.Row="1" Visibility="{Binding IndicatorData.Visibility}">
+                        <GroupBox x:Name="AnalogParamsGroupBox" Header="Управление ИКЗ" Grid.Row="1" Visibility="{Binding IndicatorData.Visibility}" Background="#FF232323">
                             <Grid Margin="5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -891,21 +891,21 @@
                                                         </DataTemplate>
                                                     </DataGridTextColumn.HeaderTemplate>
                                                 </DataGridTextColumn>
-                                                <DataGridTextColumn Binding="{Binding TElectricalFieldValue, StringFormat=d}" Width="255*">
+                                                <DataGridTextColumn Binding="{Binding TElectricalFieldValue, StringFormat=f}" Width="255*">
                                                     <DataGridTextColumn.HeaderTemplate>
                                                         <DataTemplate>
                                                             <TextBlock TextWrapping="Wrap" Text="{Binding [4], Source={StaticResource IndicatorTelemetry}}" ToolTip="Велиина показывающая напряжённость электриеского поля, в В/м"/>
                                                         </DataTemplate>
                                                     </DataGridTextColumn.HeaderTemplate>
                                                 </DataGridTextColumn>
-                                                <DataGridTextColumn Binding="{Binding TCurrentValue, StringFormat=d}" Width="195*">
+                                                <DataGridTextColumn Binding="{Binding TCurrentValue, StringFormat=f}" Width="195*">
                                                     <DataGridTextColumn.HeaderTemplate>
                                                         <DataTemplate>
                                                             <TextBlock TextWrapping="Wrap" Text="{Binding [5], Source={StaticResource IndicatorTelemetry}}" ToolTip="Значение тока в линии, в А"/>
                                                         </DataTemplate>
                                                     </DataGridTextColumn.HeaderTemplate>
                                                 </DataGridTextColumn>
-                                                <DataGridTextColumn Binding="{Binding TCurrentSettingOverflowValue, StringFormat=d}" Width="210*">
+                                                <DataGridTextColumn Binding="{Binding TCurrentSettingOverflowValue, StringFormat=f}" Width="210*">
                                                     <DataGridTextColumn.HeaderTemplate>
                                                         <DataTemplate>
                                                             <TextBlock TextWrapping="Wrap" Text="{Binding [6], Source={StaticResource IndicatorTelemetry}}" ToolTip="Величина тока перегрузки, ???"/>
