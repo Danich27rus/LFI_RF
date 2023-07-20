@@ -96,6 +96,8 @@ namespace test_app2.FaultIndicators
         private string _macShortened;
         private int _ledControl;
         private int _ledCommand;
+        private bool _visibleBoxes;
+        private string _visibility;
 
         private bool _buttonCheckAnyIndicators = false;
 
@@ -197,13 +199,38 @@ namespace test_app2.FaultIndicators
         public int FunctionCallNumStart
         {
             get => _functionCallNumStart;
-            set => RaisePropertyChanged(ref _functionCallNumStart, value);
+            set
+            {
+                RaisePropertyChanged(ref _functionCallNumStart, value);
+                VisibleBoxes = !Convert.ToBoolean(value);
+                if (!VisibleBoxes)
+                {
+                    Visibility = "Hidden";
+                }
+                else
+                {
+                    Visibility = "Visible";
+                }
+            }
         }
         public int FunctionCallNumEnd
         {
             get => _functionCallNumEnd;
-            set => RaisePropertyChanged(ref _functionCallNumEnd, value);
+            set => RaisePropertyChanged(ref _functionCallNumEnd, value); 
         }
+
+        public bool VisibleBoxes
+        {
+            get => _visibleBoxes;
+            set => RaisePropertyChanged(ref _visibleBoxes, value);
+        }
+
+        public string Visibility
+        {
+            get => _visibility;
+            set => RaisePropertyChanged(ref _visibility, value);
+        }
+
 
 
         public static CancellationTokenSource cancelSource = new CancellationTokenSource();
@@ -891,7 +918,7 @@ namespace test_app2.FaultIndicators
                                 $"{FunctionCallNumEnd:X2}",
                                 "00",
                                 "00",
-                                $"{Trailer:X2}" 
+                                $"{Trailer:X2}"
                         };
                     crc = checksum.CheckSum_CRC(Request, 2, Request.Length);
                     Request[^2] = string.Join("", (crc & 255).ToString("X2"));
