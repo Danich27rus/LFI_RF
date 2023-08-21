@@ -17,7 +17,7 @@
         MinHeight="720" MinWidth="1280"
         Style="{DynamicResource CustomWindowStyle}">
     <Window.Resources>
-        <ObjectDataProvider x:Key="PortParitySettingsViewModel" 
+        <!--ObjectDataProvider x:Key="PortParitySettingsViewModel" 
                             MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>
@@ -30,7 +30,7 @@
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="custom:StopBits"/>
             </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
+        </ObjectDataProvider-->
         <Converters:BoolToIsConnectedConverter x:Key="BoolToIsConnectedConverter"/>
         <Converters:ZeroToEmptyStringConverter x:Key="ZeroToEmptyStringConverter"/>
         <Style x:Key="GreyDataGrid" TargetType="{x:Type DataGrid}">
@@ -43,39 +43,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <!--Style TargetType="{x:Type DataGridCell}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type DataGridCell}">
-                        <Border x:Name="border"
-                BorderBrush="Transparent"
-                BorderThickness="1"
-                Background="Transparent"
-                SnapsToDevicePixels="True">
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="FocusStates">
-                                    <VisualState x:Name="Unfocused" />
-                                    <VisualState x:Name="Focused" />
-                                </VisualStateGroup>
-                                <VisualStateGroup x:Name="CurrentStates">
-                                    <VisualState x:Name="Regular" />
-                                    <VisualState x:Name="Current">
-                                        <Storyboard>
-                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="border"
-                                                Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)">
-                                                <EasingColorKeyFrame KeyTime="0"
-                                         Value="White" />
-                                            </ColorAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style-->
         <Style TargetType="{x:Type DataGridColumnHeader}">
             <Setter Property="VerticalContentAlignment"
           Value="Center" />
@@ -174,42 +141,6 @@
                             </Grid>
                         </GroupBox>
                     </Grid>
-                    <!--Grid Grid.Row="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="275*"/>
-                            <RowDefinition Height="55*"/>
-                        </Grid.RowDefinitions>
-                        <GroupBox Header="Сообщения">
-                            <Grid>
-                                <TextBox
-                                    x:Name="consoleBox"
-                                    TextWrapping="Wrap" 
-                                    VerticalScrollBarVisibility="Auto" 
-                                    HorizontalScrollBarVisibility="Visible"
-                                    AcceptsReturn="False"
-                                    AcceptsTab="False"
-                                    Text="{Binding Messages.MessagesText, UpdateSourceTrigger=PropertyChanged}"
-                                    FontSize="12"
-                                    IsReadOnly="true"
-                                    attached:HorizontalScrolling.UseHorizontalScrollingValue="True"
-                                    Margin="0,0,0,0"/>
-                            </Grid>
-                        </GroupBox>
-                        <Grid Grid.Row="1">
-                            <Button x:Name="SendButton" Margin="5,0,0,0" Command="{Binding Messages.SendMessageCommand, Mode=OneTime}"
-                         Content="Отправить" HorizontalAlignment="Left" VerticalAlignment="Center" Height="45" Width="137"/>
-                            <CheckBox x:Name="HEXCheckBox"
-                         Margin="320,0,10,15" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                         IsChecked="{Binding Messages.IsHEX, UpdateSourceTrigger=PropertyChanged}"
-                         Content="Отправка HEX" Cursor=""/>
-                            <CheckBox x:Name="CRLFCheckBox"
-                         Margin="35,15,5,5" HorizontalAlignment="Right"
-                         Content="+\n в конце строки" VerticalAlignment="Top"/>
-                            <TextBox x:Name="COMInputTextBox"
-                         Text="{Binding Messages.ToBeSentText, UpdateSourceTrigger=PropertyChanged}"   
-                         Margin="150,0,150,0" TextWrapping="Wrap" VerticalAlignment="Center" Height="45"/>
-                        </Grid>
-                    </Grid-->
                     <Grid Grid.Column="2" Grid.Row="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="175*"/>
@@ -294,9 +225,9 @@
                 </Grid>
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="380"/>
+                        <RowDefinition Height="380*"/>
                         <RowDefinition Height="5"/>
-                        <RowDefinition Height="150*"/>
+                        <RowDefinition Height="250"/>
                     </Grid.RowDefinitions>
                     <Grid>
                         <Grid.Resources>

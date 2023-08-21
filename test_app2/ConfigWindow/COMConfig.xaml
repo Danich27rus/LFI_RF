@@ -13,9 +13,10 @@
       Height="500" Width="800"
       Title="Конфигурация устройств"
       Closing="ConfigWindow_Closing"
-      Style="{DynamicResource CustomWindowStyle}">
+      Style="{DynamicResource CustomWindowStyle}"
+      ResizeMode="NoResize">
     <Window.Resources>
-        <ObjectDataProvider x:Key="PortParitySettingsViewModel" 
+        <!--ObjectDataProvider x:Key="PortParitySettingsViewModel" 
                             MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>
@@ -28,7 +29,7 @@
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="custom:StopBits"/>
             </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
+        </ObjectDataProvider-->
         <Converters:BoolToIsConnectedConverter x:Key="BoolToIsConnectedConverter"/>
         <Converters:RadioBoolToIntConverter x:Key="RadioBoolToIntConverter"/>
         <Converters:RadioButtonToImageConverter x:Key="RadioButtonToImageConverter"/>
@@ -209,11 +210,6 @@
                             <ColumnDefinition Width="150*"/>
                         </Grid.ColumnDefinitions>
                         <Grid>
-                            <!--Image 
-                            x:Name="LFIImage"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Loaded="Image_Loaded"/-->
                             <Image>
                                 <Image.Style>
                                     <Style TargetType="Image">
@@ -233,22 +229,6 @@
                             </Image>
                         </Grid>
                         <Grid Grid.Column="2">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="100*"/>
-                                <!--RowDefinition Height="25*"/>
-                                <RowDefinition Height="25*"/>
-                                <RowDefinition Height="25*"/>
-                                <RowDefinition Height="25*"/>
-                                <RowDefinition Height="25*"/>
-                                <RowDefinition Height="25*"/>
-                                <RowDefinition Height="25*"/>
-                                <RowDefinition Height="25*"/>
-                                <RowDefinition Height="25*"/>
-                                <RowDefinition Height="25*"/>
-                                <RowDefinition Height="25*"/>
-                                <RowDefinition Height="25*"/>
-                                <RowDefinition Height="25*"/-->
-                            </Grid.RowDefinitions>
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="60*"/>
@@ -311,16 +291,10 @@
                                 <RowDefinition Height="60*"/>
                                 <RowDefinition Height="90*"/>
                             </Grid.RowDefinitions>
-                            <!--Grid Grid.Row="1">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="50"/>
-                                    <RowDefinition Height="50"/>
-                                </Grid.RowDefinitions-->
                             <Button VerticalAlignment="Stretch" Grid.Row="0" Cursor="Hand" Command="{Binding IndicatorData.ClearAllContentCommand}">
                                 <TextBlock Text="Сброс настроек конфигурации" TextWrapping="Wrap"/>
                             </Button>
                             <Button Content="Выход из конфигурации" Margin="0" VerticalAlignment="Stretch" Click="Button_Click" Grid.Row="5" Cursor="Hand"/>
-                            <!--/Grid-->
                         </Grid>
                     </Grid>
                 </Grid>

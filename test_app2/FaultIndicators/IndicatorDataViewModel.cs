@@ -46,8 +46,6 @@ namespace test_app2.FaultIndicators
 
         private Dictionary<string, int> _namingFamily = new()
         {
-            //{ "JYZ-FF", 90 },
-            //{ "JYZ-HW", 90 },
             { "ИКЗ с механической индикацией", 90 },
             { "ИКЗ с LED индикацией", 90 },
             { "ИКЗ с LED индикацией (7 цветов)", 90 }
