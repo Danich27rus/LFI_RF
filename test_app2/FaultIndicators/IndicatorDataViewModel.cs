@@ -184,11 +184,6 @@ namespace test_app2.FaultIndicators
             get => _ledCommand;
             set => RaisePropertyChanged(ref _ledCommand, value);
         }
-        /*public byte[] RequestTest
-        {
-            get => _requestTest;
-            set => RaisePropertyChanged(ref _requestTest, value);
-        }*/
         public bool ButtonCheckAnyIndicators
         {
             get => _buttonCheckAnyIndicators;
@@ -291,12 +286,7 @@ namespace test_app2.FaultIndicators
             Sender = new SerialPortMessagesSend();
             checksum = new Checksum();
 
-            Indicators = new ObservableCollection<FaultIndicatorViewModel>
-            {
-                //new FaultIndicatorViewModel() { MACAdress="68-04-00-DA" },
-                //new FaultIndicatorViewModel() { MACAdress="68-04-00-DB" },
-                //new FaultIndicatorViewModel() { MACAdress="68-04-00-DC" }
-            };
+            Indicators = new ObservableCollection<FaultIndicatorViewModel> { };
 
             UpdateModelContentCommand = new Command(UpdateModelContent);
             UpdateFamilyContentCommand = new Command(UpdateFamilyContent);
@@ -319,27 +309,10 @@ namespace test_app2.FaultIndicators
             DeviceModel = _namingModel[DeviceModelNum];
             DeviceFamily = _namingFamily.ElementAt(DeviceFamilyNum).Key;
             DeviceCommunicationProtocol = _namingProtocol.ElementAt(DeviceCommunicationProtocolNum - 1).Key;
-
-            /*new Thread(() =>
-            {
-                try
-                {
-                    ParseLoop(cancelSource.Token);
-                }
-                catch (OperationCanceledException)
-                {
-                    Messages.AddReceivedMessage("Галя, отмена по токену x2!");
-                }
-            }).Start();*/
         }
 
         public void ParseCommand()
         {
-            //string message = "";
-            //string byteMessage = "";
-            //char readChar;
-            //int readByte;
-
             if (string.IsNullOrEmpty(IndicatorConfirm))
             {
                 return;
@@ -395,9 +368,9 @@ namespace test_app2.FaultIndicators
                 msg = IndicatorConfirm.Split(' ');
 
                 MAC = $"{msg[10]}-{msg[9]}-{msg[8]}-{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
-                var CollectionIndex = Indicators.IndexOf(Indicators.FirstOrDefault(x => x.MACAdress == MAC));
+                int CollectionIndex = Indicators.IndexOf(Indicators.FirstOrDefault(x => x.MACAdress == MAC));
 
-                if (CollectionIndex == null)
+                if (CollectionIndex == -1)
                 {
                     Messages.AddMessage("НЕ МОЖЕТ БЫТЬ!");
                     return;
@@ -465,7 +438,7 @@ namespace test_app2.FaultIndicators
                 MAC = $"{msg[10]}-{msg[9]}-{msg[8]}-{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
                 var CollectionIndex = Indicators.IndexOf(Indicators.FirstOrDefault(x => x.MACAdress == MAC));
 
-                if (CollectionIndex == null)
+                if (CollectionIndex == -1)
                 {
                     Messages.AddMessage("НЕ МОЖЕТ БЫТЬ!");
                     return;
@@ -512,11 +485,6 @@ namespace test_app2.FaultIndicators
                 MAC = $"{msg[10]}-{msg[9]}-{msg[8]}-{msg[7]}-{msg[6]}-{msg[5]}-{msg[4]}";
                 var CollectionIndex = Indicators.IndexOf(Indicators.FirstOrDefault(x => x.MACAdress == MAC));
 
-                if (CollectionIndex == null)
-                {
-                    Messages.AddMessage("НЕ МОЖЕТ БЫТЬ!");
-                    return;
-                }
                 if (CollectionIndex == -1)
                 {
                     Messages.AddMessage("Баганный индикатор которого нет в списке, по нему пришла телеметрия");

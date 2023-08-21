@@ -249,8 +249,6 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="25*"/>
                                         <RowDefinition Height="25*"/>
-                                        <!--RowDefinition Height="25*"/>
-                                        <RowDefinition Height="25*"/-->
                                     </Grid.RowDefinitions>
                                     <TextBlock Text="Протокол общения" Padding="5" HorizontalAlignment="Center"/>
                                     <!--RadioButton Content="XY-Old" Grid.Row="1"
